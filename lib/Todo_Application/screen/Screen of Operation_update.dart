@@ -16,6 +16,7 @@ Widget Mainpart() {
           child: TextField(
             controller: taskNameController,
             decoration:  InputDecoration(
+              prefixIcon: Icon(Icons.list_alt_rounded),
               border: OutlineInputBorder(),
               labelText: 'Task Name',
               hintText: 'What needs to be done?',
@@ -26,8 +27,10 @@ Widget Mainpart() {
           padding: const EdgeInsets.all(10.0),
           child: TextField(
             controller: taskDescriptionController,
-            maxLines: null,
+            maxLines: 8,
+
             decoration: const InputDecoration(
+              suffixIcon: Icon(Icons.description),
               border: OutlineInputBorder(),
               labelText: 'Task Description',
               hintText: 'More details about the task',
