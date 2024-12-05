@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 //This is for Showing the List of the Tasks
-RxList<dynamic> taskList = ["hello"].obs;
+RxList<dynamic> taskList = [
+  {
+    "taskName": "Task 1",
+    "taskDescription": "Description 1",
+  }
+].obs;
 
 //Show Task Part from Database
 Widget showTaskpart() {
@@ -21,7 +26,8 @@ Widget showTaskpart() {
              Padding(
                padding: const EdgeInsets.all(8.0),
                child: ListTile(
-                 title: Text(taskList[index]),
+                 title: Text(taskList[index]["taskName"]),
+                 subtitle: Text(taskList[index]["taskDescription"]),
                ),
              ),
           ],
