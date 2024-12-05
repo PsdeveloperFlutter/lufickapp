@@ -10,6 +10,29 @@ RxList<dynamic> taskList = [
     "taskName": "Task 1",
     "taskDescription": "Description 1",
   }
+  ,
+  {
+    "taskName": "Task 2",
+    "taskDescription": "Description 2",
+  }
+  ,{
+    "taskName": "Task 3",
+    "taskDescription": "Description 3",
+  }
+  ,{
+    "taskName": "Task 4",
+    "taskDescription": "Description 4",
+  }
+  ,
+{
+"taskName": "Task 5",
+"taskDescription": "Description 5",
+},
+  {
+    "taskName": "Task 6",
+    "taskDescription": "Description6",
+  }
+
 ].obs;
 
 //Show Task Part from Database

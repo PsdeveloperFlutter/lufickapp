@@ -1,11 +1,16 @@
-//This is the Main Part of the Updation of Our Flutter Applications
-//This is the Main Part of Our Flutter Applications
+// This is the Main Part of Our Flutter Applications
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-import 'Main Screen.dart';
+Rx<DateTime> selectedDate = DateTime.now().obs;
 
-Widget creationpart() {
+// Controllers for text fields
+TextEditingController taskNameController = TextEditingController();
+TextEditingController dateTimeController = TextEditingController();
+TextEditingController taskDescriptionController = TextEditingController();
+
+Widget creationpart(BuildContext context) {
   return SingleChildScrollView(
     child: Column(
       children: [
@@ -24,6 +29,40 @@ Widget creationpart() {
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      firstDate: DateTime(2020),
+                      initialDate: DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      dateTimeController.text = ('\${pickedDate.day.toString().padLeft(2, 0)}-\${pickedDate.month.toString().padLeft(2, 0)}-\${pickedDate.year}');
+                    }
+                  },
+                  child: TextField(
+                    controller: dateTimeController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.calendar_today),
+                      border: OutlineInputBorder(),
+                      labelText: 'Pick Date and Time',
+                      hintText: 'Pick Date and Time',
+                    ),
+                    readOnly: true,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
           child: TextField(
             controller: taskDescriptionController,
             maxLines: 5,
@@ -36,19 +75,25 @@ Widget creationpart() {
           ),
         ),
         const SizedBox(height: 20),
-
-
         Padding(
-          padding: const EdgeInsets.only(left: 180.0),
+          padding: const EdgeInsets.only(left: 10.0),
           child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black,elevation: 4),
-              child: Text(
-                "Update",
-                style: TextStyle(color: Colors.white),
-              )),
+            onPressed: () {
+              // Add your update logic here
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+              elevation: 4,
+            ),
+            child: Text(
+              "Create Task",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         )
       ],
     ),
   );
 }
+
+
