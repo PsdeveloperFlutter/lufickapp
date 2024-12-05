@@ -31,19 +31,21 @@ class Mainscreen extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
-          bottom: const TabBar(
+          bottom:  const TabBar(
             tabs: [
               Tab(
                 icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
+                  Icons.task,
+                  color:Colors.white,
                 ),
+                child: Text("Tasks",style: TextStyle(color: Colors.white),),
               ),
               Tab(
                 icon: Icon(
-                  Icons.search,
+                  Icons.create,
                   color: Colors.white,
                 ),
+                child: Text("Create",style: TextStyle(color: Colors.white),),
               ),
               Tab(
                 icon: Icon(
@@ -54,7 +56,7 @@ class Mainscreen extends StatelessWidget {
             ],
           ),
           centerTitle: true,
-          backgroundColor: Colors.blue.shade500,
+          backgroundColor: Colors.black87,
           title: const Text(
             "ToDo App ",
             style: TextStyle(
