@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+TextEditingController taskNameController = TextEditingController();
+TextEditingController taskDescriptionController = TextEditingController();
+
 void main() {
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -50,6 +53,8 @@ class Mainscreen extends StatelessWidget {
         body: TabBarView(
           children: [
             Mainpart(),
+            Mainpart(),
+            Mainpart(),
           ],
         ),
       ),
@@ -57,13 +62,5 @@ class Mainscreen extends StatelessWidget {
   }
 }
 
-//This is the Main Part of Our Flutter Applications
-Widget Mainpart() {
-  return const SingleChildScrollView(
-    child: Column(
-      children: [
 
-      ],
-    ),
-  );
-}
+
