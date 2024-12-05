@@ -5,17 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 //This is for Showing the List of the Tasks
-RxList<dynamic> taskList = [].obs;
-
-
+RxList<dynamic> taskList = ["hello"].obs;
 
 //Show Task Part from Database
 Widget showTaskpart() {
-  return SingleChildScrollView(
-    child: Column(
-      children: [],
-    ),
+  return ListView.builder(
+    shrinkWrap: true,
+    itemCount: taskList.length,
+    itemBuilder: (context, index) {
+      return Card(
+        elevation: 4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+             Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: ListTile(
+                 title: Text(taskList[index]),
+               ),
+             ),
+          ],
+        ),
+      );
+    },
   );
 }
-
-
