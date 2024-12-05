@@ -28,7 +28,7 @@ Widget Mainpart() {
             controller: taskDescriptionController,
             maxLines: 5,
             decoration: const InputDecoration(
-              suffixIcon: Icon(Icons.description),
+              prefixIcon: Icon(Icons.description),
               border: OutlineInputBorder(),
               labelText: 'Task Description',
               hintText: 'More details about the task',

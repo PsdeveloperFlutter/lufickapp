@@ -14,9 +14,6 @@ class create extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Task'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -62,12 +59,22 @@ class create extends StatelessWidget {
                 controller: taskDescriptionController,
                 decoration: InputDecoration(
                   hintText: "More details about the task",
-                  hintStyle: TextStyle(color: Colors.grey),
+                    hintStyle: TextStyle(color: Colors.grey),
                   prefixIcon: Icon(Icons.description),
                   labelText: 'Task Description',
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
+              ),
+              const SizedBox(height: 15,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                onPressed: () {
+                  // Handle task creation logic here
+
+
+                },
+                child: Text('Create Task',style: TextStyle(color: Colors.white),),
               ),
             ],
           ),
