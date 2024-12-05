@@ -21,6 +21,15 @@ class Mainscreen extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.black,
+          onPressed: () {},
+          child: const Icon(
+            size: 20,
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
         appBar: AppBar(
           bottom: const TabBar(
             tabs: [
