@@ -1,4 +1,4 @@
-
+//This is the Main Part of the Updation of Our Flutter Applications
 //This is the Main Part of Our Flutter Applications
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,16 +6,15 @@ import 'package:flutter/material.dart';
 import 'Main Screen.dart';
 
 Widget Mainpart() {
-
-  return  SingleChildScrollView(
+  return SingleChildScrollView(
     child: Column(
       children: [
         SizedBox(height: 20),
         Padding(
-          padding:  EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0),
           child: TextField(
             controller: taskNameController,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
               prefixIcon: Icon(Icons.list_alt_rounded),
               border: OutlineInputBorder(),
               labelText: 'Task Name',
@@ -27,8 +26,7 @@ Widget Mainpart() {
           padding: const EdgeInsets.all(10.0),
           child: TextField(
             controller: taskDescriptionController,
-            maxLines: 8,
-
+            maxLines: 5,
             decoration: const InputDecoration(
               suffixIcon: Icon(Icons.description),
               border: OutlineInputBorder(),
@@ -38,6 +36,18 @@ Widget Mainpart() {
           ),
         ),
         const SizedBox(height: 20),
+
+
+        Padding(
+          padding: const EdgeInsets.only(left: 180.0),
+          child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black,elevation: 4),
+              child: Text(
+                "Update",
+                style: TextStyle(color: Colors.white),
+              )),
+        )
       ],
     ),
   );
