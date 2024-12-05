@@ -1,5 +1,10 @@
 
 //This is the Main Part of Our Flutter Applications
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'Main Screen.dart';
+
 Widget Mainpart() {
 
   return  SingleChildScrollView(
