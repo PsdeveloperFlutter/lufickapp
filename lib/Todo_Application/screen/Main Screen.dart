@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Mainscreen(),
   ));
 }
@@ -12,24 +13,57 @@ class Mainscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue.shade500,
-        title: const Text(
-          "ToDo App ",
-          style: TextStyle(color: Colors.white),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: const TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.blue.shade500,
+          title: const Text(
+            "ToDo App ",
+            style: TextStyle(
+                color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Mainpart(),
+          ],
         ),
       ),
-      body: Mainpart(),
     );
   }
 }
 
 //This is the Main Part of Our Flutter Applications
-Widget Mainpart(){
-  return SingleChildScrollView(
+Widget Mainpart() {
+  return const SingleChildScrollView(
     child: Column(
-      children: [],
+      children: [
+
+      ],
     ),
   );
 }
