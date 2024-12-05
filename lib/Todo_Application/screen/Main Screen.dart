@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'Screen of Operation_update.dart';
+import 'Show_Task_From_Database.dart';
 
 TextEditingController taskNameController = TextEditingController();
 TextEditingController taskDescriptionController = TextEditingController();
@@ -49,9 +50,10 @@ class Mainscreen extends StatelessWidget {
               ),
               Tab(
                 icon: Icon(
-                  Icons.person,
+                  Icons.update,
                   color: Colors.white,
                 ),
+                child: Text("Update",style: TextStyle(color: Colors.white),),
               ),
             ],
           ),
@@ -65,8 +67,11 @@ class Mainscreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
+         //This is Show the Task from Database in Main Screen
+            showTaskpart(),
             Mainpart(),
-            Mainpart(),
+
+          //This the Updation Part of Our Flutter Applications
             Mainpart(),
           ],
         ),
