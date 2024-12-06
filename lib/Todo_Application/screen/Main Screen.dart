@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
-import 'Show_Task_From_Database.dart';
+
+bool setcolor = false;
+Color setappbarcolor = Colors.black;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,15 +24,18 @@ class Mainscreen extends StatefulWidget {
   State<Mainscreen> createState() => MainscreenState();
 }
 
-class MainscreenState extends State<Mainscreen> {
-//THIS FUNCTION RELATED TO DATABASE OF SQFLITE DATABASE
+class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
+  //THIS FUNCTION RELATED TO DATABASE OF SQFLITE DATABASE
 
   //RxList Dynamic
   RxList<dynamic> tasks = [].obs;
 
+  late TabController _tabController;
+
   void initState() {
     super.initState();
     loadtasks();
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   //Retrive the data from the Database
@@ -43,108 +48,150 @@ class MainscreenState extends State<Mainscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.black,
-          onPressed: () async {
-            await Navigator.push(
-                context, MaterialPageRoute(builder: (context) => create()));
-            loadtasks(); // Refresh tasks after returning
-          },
-          child: const Icon(
-            size: 20,
-            Icons.add,
-            color: Colors.white,
-          ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          setState(() {
+            setcolor = !setcolor;
+          });
+        },
+        backgroundColor: setcolor == false
+            ? setappbarcolor = Colors.black
+            : setappbarcolor = Colors.blue.shade700,
+        child: const Icon(
+          size: 20,
+          Icons.add,
+          color: Colors.white,
         ),
-        appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.task,
-                  color: Colors.white,
-                ),
-                child: Text(
-                  "Tasks",
-                  style: TextStyle(color: Colors.white),
-                ),
+      ),
+      appBar: AppBar(
+        bottom: TabBar(
+          controller: _tabController,
+          onTap: (index) {
+            _tabController.animateTo(index);
+          },
+          tabs: [
+            Tab(
+              icon: Icon(
+                Icons.task,
+                color: Colors.white,
               ),
-              Tab(
-                icon: Icon(
-                  Icons.create,
-                  color: Colors.white,
-                ),
-                child: Text(
-                  "Create",
-                  style: TextStyle(color: Colors.white),
-                ),
+              child: Text(
+                "Tasks",
+                style: TextStyle(color: Colors.white),
               ),
-              Tab(
-                icon: Icon(
-                  Icons.update,
-                  color: Colors.white,
-                ),
-                child: Text(
-                  "Update",
-                  style: TextStyle(color: Colors.white),
-                ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.create,
+                color: Colors.white,
               ),
-            ],
-          ),
-
-          backgroundColor: Colors.black87,
-          title: const Text(
-            "ToDo App ",
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Itim', fontSize: 25),
-          ),
-          actions: [
-            CircleAvatar(
-              child: Image.asset("assets/images/lufick.png"),
-            )
+              child: Text(
+                "Create",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.update,
+                color: Colors.white,
+              ),
+              child: Text(
+                "Update",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         ),
-        body: TabBarView(
-          children: [
-            //This is Show the Task from Database in Main Screen
+        backgroundColor: setcolor == false
+            ? setappbarcolor = Colors.black
+            : setappbarcolor = Colors.blue.shade700,
+        title: const Text(
+          "ToDo App ",
+          style:
+              TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 18.0, top: 12),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text("Profile Image"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Container(
+                          color: Colors.green,
+                          padding: const EdgeInsets.all(14),
+                          child: Image.asset(
+                              "assets/images/IMG20240302171902.jpg"),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: CircleAvatar(
+                backgroundImage:
+                    AssetImage("assets/images/IMG20240302171902.jpg"),
+                radius: 20, // adjust the radius to your desired size
+              ),
+            ),
+          )
+        ],
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          //This is Show the Task from Database in Main Screen
 
-            Obx(() {
-              return tasks.isEmpty
-                  ? Center(child: Text("No Tasks"))
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: tasks.length,
-                      itemBuilder: (context, index) {
-                        var store = tasks[index];
-                        return Card(
-                          elevation: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  title: Text(store["name"] ?? "No Name"),
-                                  subtitle: Text(
-                                      store["description"] ?? "No Description"),
+          Obx(() {
+            return tasks.isEmpty
+                ? Center(child: Text("No Tasks"))
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      var store = tasks[index];
+                      return Card(
+                        elevation: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                title: Text(store["name"] ?? "No Name"),
+                                subtitle: Text(
+                                    store["description"] ?? "No Description"),
+                                trailing: Checkbox(
+                                  value: store["completed"] == 1,
+                                  onChanged: (value) async {
+                                    await DatabaseHelper.updateItem(
+                                      store["id"],
+                                    );
+                                    loadtasks();
+                                  },
                                 ),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-            }),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+          }),
 
-            //This is code of the Creation of the Task
-            create(),
-            //This the Updation Part of Our Flutter Applications
-            Mainpart(),
-          ],
-        ),
+          //This is code of the Creation of the Task
+          create(),
+          //This the Updation Part of Our Flutter Applications
+          Mainpart(),
+        ],
       ),
     );
   }
