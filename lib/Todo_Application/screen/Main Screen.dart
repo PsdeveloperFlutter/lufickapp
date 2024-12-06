@@ -94,13 +94,18 @@ class MainscreenState extends State<Mainscreen> {
               ),
             ],
           ),
-          centerTitle: true,
+
           backgroundColor: Colors.black87,
           title: const Text(
             "ToDo App ",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'Itim', fontSize: 25),
           ),
+          actions: [
+            CircleAvatar(
+              child: Image.asset("assets/images/lufick.png"),
+            )
+          ],
         ),
         body: TabBarView(
           children: [
