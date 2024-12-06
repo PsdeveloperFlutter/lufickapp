@@ -4,12 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-class create extends StatelessWidget {
+import '../Backend/Database of Application.dart';
+import 'Main Screen.dart';
+
+class create extends StatefulWidget {
+  @override
+  State<create> createState() => _createState();
+}
+
+class _createState extends State<create> {
   final Rx<DateTime> selectedDate = DateTime.now().obs;
 
   final TextEditingController taskNameController = TextEditingController();
+
   final TextEditingController dateTimeController = TextEditingController();
+
   final TextEditingController taskDescriptionController = TextEditingController();
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +86,25 @@ class create extends StatelessWidget {
                 onPressed: () {
                   // Handle task creation logic here
 
+
+
+
+
+
+                  //This is Responsible for adding the task to Sqflite Database
+                  void addtask() async{
+                    await DatabaseHelper.insertItem({
+                      'name':taskNameController.text,
+                      'description':taskDescriptionController.text,
+                      'dateandtime':dateTimeController.text
+                    });
+
+                    MainscreenState _mainScreenState = MainscreenState();
+                    _mainScreenState.loadtasks();
+                  }
+
+                  //This is the Function for Handling the Creation of the Task and Responsible For Adding Data of Task into Database
+                 addtask();
 
                 },
                 child: Text('Create Task',style: TextStyle(color: Colors.white),),

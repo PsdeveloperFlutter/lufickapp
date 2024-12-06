@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
 import 'Show_Task_From_Database.dart';
 
-TextEditingController taskNameController = TextEditingController();
-TextEditingController taskDescriptionController = TextEditingController();
-TextEditingController dateTimeController=TextEditingController();
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.database;
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Mainscreen(),
@@ -18,10 +19,34 @@ class Mainscreen extends StatefulWidget {
   const Mainscreen({super.key});
 
   @override
-  State<Mainscreen> createState() => _MainscreenState();
+  State<Mainscreen> createState() => MainscreenState();
 }
 
-class _MainscreenState extends State<Mainscreen> {
+class MainscreenState extends State<Mainscreen> {
+
+//THIS FUNCTION RELATED TO DATABASE OF SQFLITE DATABASE
+
+  //RxList Dynamic
+  RxList <dynamic> tasks=[].obs;
+
+  void initState() {
+    super.initState();
+    loadtasks();
+  }
+
+
+  //Retrive the data from the Database
+  void loadtasks()
+  async{
+    final task=await DatabaseHelper.getItems();
+    setState(() {
+      tasks.value=task;
+    });
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
