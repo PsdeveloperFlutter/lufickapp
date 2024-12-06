@@ -23,29 +23,23 @@ class Mainscreen extends StatefulWidget {
 }
 
 class MainscreenState extends State<Mainscreen> {
-
 //THIS FUNCTION RELATED TO DATABASE OF SQFLITE DATABASE
 
   //RxList Dynamic
-  RxList <dynamic> tasks=[].obs;
+  RxList<dynamic> tasks = [].obs;
 
   void initState() {
     super.initState();
     loadtasks();
   }
 
-
   //Retrive the data from the Database
-  void loadtasks()
-  async{
-    final task=await DatabaseHelper.getItems();
+  void loadtasks() async {
+    final task = await DatabaseHelper.getItems();
     setState(() {
-      tasks.value=task;
+      tasks.assignAll(task);
     });
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +48,11 @@ class MainscreenState extends State<Mainscreen> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.black,
-          onPressed: () {},
+          onPressed: () async {
+            await Navigator.push(
+                context, MaterialPageRoute(builder: (context) => create()));
+            loadtasks(); // Refresh tasks after returning
+          },
           child: const Icon(
             size: 20,
             Icons.add,
@@ -62,28 +60,37 @@ class MainscreenState extends State<Mainscreen> {
           ),
         ),
         appBar: AppBar(
-          bottom:  const TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(
                 icon: Icon(
                   Icons.task,
-                  color:Colors.white,
+                  color: Colors.white,
                 ),
-                child: Text("Tasks",style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "Tasks",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               Tab(
                 icon: Icon(
                   Icons.create,
                   color: Colors.white,
                 ),
-                child: Text("Create",style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "Create",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               Tab(
                 icon: Icon(
                   Icons.update,
                   color: Colors.white,
                 ),
-                child: Text("Update",style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "Update",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -97,11 +104,39 @@ class MainscreenState extends State<Mainscreen> {
         ),
         body: TabBarView(
           children: [
-         //This is Show the Task from Database in Main Screen
-            showTaskpart(),
-         //This is code of the Creation of the Task
+            //This is Show the Task from Database in Main Screen
+
+            Obx(() {
+              return tasks.isEmpty
+                  ? Center(child: Text("No Tasks"))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        var store = tasks[index];
+                        return Card(
+                          elevation: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  title: Text(store["name"] ?? "No Name"),
+                                  subtitle: Text(
+                                      store["description"] ?? "No Description"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+            }),
+
+            //This is code of the Creation of the Task
             create(),
-          //This the Updation Part of Our Flutter Applications
+            //This the Updation Part of Our Flutter Applications
             Mainpart(),
           ],
         ),
@@ -109,6 +144,3 @@ class MainscreenState extends State<Mainscreen> {
     );
   }
 }
-
-
-
