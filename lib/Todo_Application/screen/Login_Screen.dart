@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'Sign_up.dart';
+
 void main() {
   runApp(MaterialApp(
     home: LoginPage(),
@@ -184,8 +186,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text('Don\'t have an account?', style: TextStyle(color: Colors.grey.shade600, fontSize: 14.0, fontWeight: FontWeight.w400),),
                     TextButton(
-                      onPressed: () {},
-                      child: Text('Register', style: TextStyle(color: Colors.blue, fontSize: 14.0, fontWeight: FontWeight.w400),),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePageSignUp()));
+                      },
+                      child: Text('SignUp', style: TextStyle(color: Colors.blue, fontSize: 14.0, fontWeight: FontWeight.w400),),
                     )
                   ],
                 ),
