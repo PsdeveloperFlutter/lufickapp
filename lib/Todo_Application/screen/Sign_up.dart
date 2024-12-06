@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +8,7 @@ void main() {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login UI with fadeOut animation',
-      home: HomePageSignUp(),
+      home: HomePagesignup(),
     ),
   );
   SystemChrome.setSystemUIOverlayStyle(
@@ -19,14 +18,14 @@ void main() {
   );
 }
 
-class HomePageSignUp extends StatefulWidget {
-  const HomePageSignUp({Key? key}) : super(key: key);
+class HomePagesignup extends StatefulWidget {
+  const HomePagesignup({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePageSignUp>
+class _HomePageState extends State<HomePagesignup>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacity;
@@ -45,8 +44,8 @@ class _HomePageState extends State<HomePageSignUp>
         curve: Curves.ease,
       ),
     )..addListener(() {
-      setState(() {});
-    });
+        setState(() {});
+      });
 
     _transform = Tween<double>(begin: 2, end: 1).animate(
       CurvedAnimation(
@@ -72,7 +71,8 @@ class _HomePageState extends State<HomePageSignUp>
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0, systemOverlayStyle: SystemUiOverlayStyle.light,
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: ScrollConfiguration(
         behavior: MyBehavior(),
@@ -86,8 +86,8 @@ class _HomePageState extends State<HomePageSignUp>
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xffFEC37B),
-                    Color(0xffFF4184),
+                    Color(0xFFECF7D8),
+                    Color(0xFF9FFFFF),
                   ],
                 ),
               ),
@@ -130,44 +130,19 @@ class _HomePageState extends State<HomePageSignUp>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            component2(
-                              'LOGIN',
-                              2.6,
-                                  () {
-                                HapticFeedback.lightImpact();
-                              },
-                            ),
                             SizedBox(width: size.width / 25),
-                            Container(
-                              width: size.width / 2.6,
-                              alignment: Alignment.center,
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Forgotten password!',
-                                  style: TextStyle(color: Colors.blueAccent),
-                                  recognizer: TapGestureRecognizer()
-
-
-                                ),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Text(
+                                "SignUp",
+                                style: TextStyle(color: Colors.white),
                               ),
-                            )
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black),
+                            ),
                           ],
                         ),
-                        SizedBox(),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Create a new Account',
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontSize: 15,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-
-                              },
-                          ),
-                        ),
-                        SizedBox(),
+                        SizedBox(height: 20,),
                       ],
                     ),
                   ),
@@ -205,7 +180,7 @@ class _HomePageState extends State<HomePageSignUp>
           hintMaxLines: 1,
           hintText: hintText,
           hintStyle:
-          TextStyle(fontSize: 14, color: Colors.black.withOpacity(.5)),
+              TextStyle(fontSize: 14, color: Colors.black.withOpacity(.5)),
         ),
       ),
     );
@@ -237,12 +212,10 @@ class _HomePageState extends State<HomePageSignUp>
 class MyBehavior extends ScrollBehavior {
   @override
   Widget buildViewportChrome(
-      BuildContext context,
-      Widget child,
-      AxisDirection axisDirection,
-      ) {
+    BuildContext context,
+    Widget child,
+    AxisDirection axisDirection,
+  ) {
     return child;
   }
 }
-
-
