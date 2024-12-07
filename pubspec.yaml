@@ -51,6 +51,8 @@ dependencies:
   path_provider: ^2.0.13
   shared_preferences: ^2.3.3
   path: ^1.9.0
+  share_plus: ^10.1.2
+  highlight_text: ^1.8.0
   particles_flutter: ^1.0.1
   #arcore_flutter_plugin: ^0.1.0
   #fluttertoast: ^8.2.8
