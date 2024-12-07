@@ -315,6 +315,9 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     //This Function and Button IS Responsible for the Text to Speech
                     onTap: ()async {
                       FlutterTts flutterTts = FlutterTts();
+                      await flutterTts.setLanguage("en-US");
+                      await flutterTts.setSpeechRate(0.5);
+                      await flutterTts.setPitch(1.0);
                       await flutterTts.speak("${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
                     },
                     //This Function AND BODY END HERE
