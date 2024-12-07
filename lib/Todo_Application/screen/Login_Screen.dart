@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import '../Backend/Database of Application.dart';
 import 'Main Screen.dart';
@@ -9,7 +10,7 @@ import 'Sign_up.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper.database;
-  runApp(MaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: LoginPage(),
   ));

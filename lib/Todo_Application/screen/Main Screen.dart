@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
+
+RxBool isshow = true.obs;
 
 bool setcolor = false;
 Color setappbarcolor = Colors.black;
@@ -25,20 +29,17 @@ class Mainscreen extends StatefulWidget {
 }
 
 class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
-  //THIS FUNCTION RELATED TO DATABASE OF SQFLITE DATABASE
-
-  //RxList Dynamic
   RxList<dynamic> tasks = [].obs;
-
   late TabController _tabController;
+  Offset draggablePosition = const Offset(20, 20); // Initial position of FAB
 
+  @override
   void initState() {
     super.initState();
     loadtasks();
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  //Retrive the data from the Database
   void loadtasks() async {
     final task = await DatabaseHelper.getItems();
     setState(() {
@@ -49,28 +50,13 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() {
-            setcolor = !setcolor;
-          });
-        },
-        backgroundColor: setcolor == false
-            ? setappbarcolor = Colors.black
-            : setappbarcolor = Colors.blue.shade700,
-        child: const Icon(
-          size: 20,
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
       appBar: AppBar(
         bottom: TabBar(
           controller: _tabController,
           onTap: (index) {
             _tabController.animateTo(index);
           },
-          tabs: [
+          tabs: const [
             Tab(
               icon: Icon(
                 Icons.task,
@@ -108,8 +94,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             : setappbarcolor = Colors.blue.shade700,
         title: const Text(
           "ToDo App ",
-          style:
-              TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+          style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
         ),
         actions: [
           Padding(
@@ -136,63 +121,205 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   ),
                 );
               },
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 backgroundImage:
-                    AssetImage("assets/images/IMG20240302171902.jpg"),
-                radius: 20, // adjust the radius to your desired size
+                AssetImage("assets/images/IMG20240302171902.jpg"),
+                radius: 20,
               ),
             ),
           )
         ],
       ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Stack(
         children: [
-          //This is Show the Task from Database in Main Screen
-
-          Obx(() {
-            return tasks.isEmpty
-                ? Center(child: Text("No Tasks"))
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: tasks.length,
-                    itemBuilder: (context, index) {
-                      var store = tasks[index];
-                      return Card(
-                        elevation: 4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(store["name"] ?? "No Name"),
-                                subtitle: Text(
-                                    store["description"] ?? "No Description"),
-                                trailing: Checkbox(
-                                  value: store["completed"] == 1,
-                                  onChanged: (value) async {
-                                    await DatabaseHelper.updateItem(
-                                      store["id"],
-                                    );
-                                    loadtasks();
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+          TabBarView(
+            controller: _tabController,
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: TextField(
+                      controller: taskNameController,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.task),
+                        hintText: "Search Your Task",
+                        hintStyle: const TextStyle(
+                          color: Colors.grey,
                         ),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Obx(() {
+                      return tasks.isEmpty
+                          ? const Center(child: Text("No Tasks"))
+                          : ListView.separated(
+                        itemCount: tasks.length,
+                        itemBuilder: (context, index) {
+                          var store = tasks[index];
+                          return Card(
+                            elevation: 4,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const SizedBox(height: 10),
+                                ListTile(
+                                  title: Text(store["name"] ?? "No Name"),
+                                  subtitle: Text(
+                                      store["description"] ?? "No Description"),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isshow.value = !isshow.value;
+                                      });
+                                    },
+                                    icon: const Icon(Icons.more_vert),
+                                  ),
+                                ),
+                                Obx(() {
+                                  return Offstage(
+                                    offstage: isshow.value,
+                                    child: functionality(store, index),
+                                  );
+                                }),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider(
+                            color: Colors.deepOrangeAccent.withAlpha(20),
+                            thickness: 10,
+                          );
+                        },
                       );
-                    },
-                  );
-          }),
+                    }),
+                  ),
+                ],
+              ),
+              create(),
+              Mainpart(),
+            ],
+          ),
+          Positioned(
+            left: draggablePosition.dx,
+            top: draggablePosition.dy,
+            child: Draggable(
+              feedback: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    setcolor = !setcolor;
+                    setappbarcolor = setcolor == false
+                        ? Colors.black
+                        : Colors.blue.shade700;
+                  });
+                },
+                backgroundColor: setappbarcolor,
+                child: const Icon(
+                  size: 20,
+                  Icons.colorize,
+                  color: Colors.white,
+                ),
+              ),
+              childWhenDragging: Container(),
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    setcolor = !setcolor;
+                    setappbarcolor = setcolor == false
+                        ? Colors.black
+                        : Colors.blue.shade700;
+                  });
+                },
+                backgroundColor: setappbarcolor,
+                child: const Icon(
+                  size: 20,
+                  Icons.colorize,
+                  color: Colors.white,
+                ),
+              ),
 
-          //This is code of the Creation of the Task
-          create(),
-          //This the Updation Part of Our Flutter Applications
-          Mainpart(),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget functionality(dynamic store, int index) {
+    return ExpansionTile(
+      title: const Text(
+        "Features",
+        style: TextStyle(color: Colors.black),
+      ),
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            height: 550,
+            child: Column(
+              children: [
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading: const Icon(Icons.share, color: Colors.deepPurple),
+                    title: const Text("Share"),
+                    onTap: () {
+                      Share.share(
+                          "Task: ${store["name"]}\nDescription: ${store["description"]}");
+                    },
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading: const Icon(Icons.delete, color: Colors.deepPurple),
+                    title: const Text("Delete"),
+                    onTap: () async {
+                      await DatabaseHelper.deleteItem(store["id"]);
+                      tasks.removeAt(index);
+                      Get.snackbar(
+                        "Task Deleted",
+                        "The task '${store["name"]}' has been deleted successfully!",
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    },
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading: const Icon(Icons.copy_all, color: Colors.deepPurple),
+                    title: const Text("Copy and Paste"),
+                    onTap: () {
+                      Clipboard.setData(
+                        ClipboardData(
+                          text:
+                          "Task: ${store["name"]}\nDescription: ${store["description"]}",
+                        ),
+                      ).then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Copied to clipboard'),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+                Text(
+                  "Task: ${store["name"]}\nDescription: ${store["description"]}\nDate: ${store["dateandtime"]}",
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
