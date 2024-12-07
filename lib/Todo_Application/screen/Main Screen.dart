@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import '../Backend/Database of Application.dart';
@@ -280,7 +281,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       Get.snackbar(
                         "Task Deleted",
                         "The task '${store["name"]}' has been deleted successfully!",
-                        snackPosition: SnackPosition.TOP,
+                        snackPosition: SnackPosition.BOTTOM,
                       );
                     },
                   ),
@@ -306,9 +307,21 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
-                Text(
-                  "Task: ${store["name"]}\nDescription: ${store["description"]}\nDate: ${store["dateandtime"]}",
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading:  Icon(Icons.surround_sound, color: Colors.deepPurple),
+                    title:  Text("Speak Task"),
+                    //This Function and Button IS Responsible for the Text to Speech
+                    onTap: ()async {
+                      FlutterTts flutterTts = FlutterTts();
+                      await flutterTts.speak("${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
+                    },
+                    //This Function AND BODY END HERE
+
+                  ),
                 ),
+
               ],
             ),
 
