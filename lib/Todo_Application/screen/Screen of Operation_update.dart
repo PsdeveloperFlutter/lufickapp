@@ -18,6 +18,13 @@ class Mainpart extends StatefulWidget {
 
 final Rx<DateTime> selectedDate = DateTime.now().obs;
 class _MainpartState extends State<Mainpart> {
+
+  @override
+  void initState() {
+    super.initState();
+    dateTimeController.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
+  }
+
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(

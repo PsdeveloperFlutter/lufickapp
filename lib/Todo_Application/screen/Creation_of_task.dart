@@ -16,6 +16,11 @@ class _createState extends State<create> {
   final TextEditingController dateTimeController = TextEditingController();
   final TextEditingController taskDescriptionController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    dateTimeController.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
+  }
   // Method to add a task to the database
   void addTask() async {
     if (taskNameController.text.isEmpty || taskDescriptionController.text.isEmpty) {
