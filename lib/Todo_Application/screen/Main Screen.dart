@@ -32,7 +32,7 @@ class Mainscreen extends StatefulWidget {
 class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   RxList<dynamic> tasks = [].obs;
   late TabController _tabController;
-  Offset draggablePosition = const Offset(220, 500); // Initial position of FAB
+  Offset draggablePosition = const Offset(220, 430); // Initial position of FAB
 
   @override
   void initState() {
