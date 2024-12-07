@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
+import 'Text to speech.dart';
 
 RxBool isshow = true.obs;
 
@@ -31,7 +32,7 @@ class Mainscreen extends StatefulWidget {
 class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   RxList<dynamic> tasks = [].obs;
   late TabController _tabController;
-  Offset draggablePosition = const Offset(20, 20); // Initial position of FAB
+  Offset draggablePosition = const Offset(220, 500); // Initial position of FAB
 
   @override
   void initState() {
@@ -92,9 +93,16 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
         backgroundColor: setcolor == false
             ? setappbarcolor = Colors.black
             : setappbarcolor = Colors.blue.shade700,
-        title: const Text(
-          "ToDo App ",
-          style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+        title: InkWell(
+          onTap: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context){
+              return  MyApp();
+            }));
+          },
+          child: Text(
+            "ToDo App ",
+            style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+          ),
         ),
         actions: [
           Padding(
@@ -210,47 +218,33 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
           Positioned(
             left: draggablePosition.dx,
             top: draggablePosition.dy,
-            child: Draggable(
-              feedback: FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    setcolor = !setcolor;
-                    setappbarcolor = setcolor == false
-                        ? Colors.black
-                        : Colors.blue.shade700;
-                  });
-                },
-                backgroundColor: setappbarcolor,
-                child: const Icon(
-                  size: 20,
-                  Icons.colorize,
-                  color: Colors.white,
-                ),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  setcolor = !setcolor;
+                  setappbarcolor = setcolor == false
+                      ? Colors.black
+                      : Colors.blue.shade700;
+                });
+              },
+              backgroundColor: setappbarcolor,
+              child: const Icon(
+                size: 20,
+                Icons.colorize,
+                color: Colors.white,
               ),
-              childWhenDragging: Container(),
-              child: FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    setcolor = !setcolor;
-                    setappbarcolor = setcolor == false
-                        ? Colors.black
-                        : Colors.blue.shade700;
-                  });
-                },
-                backgroundColor: setappbarcolor,
-                child: const Icon(
-                  size: 20,
-                  Icons.colorize,
-                  color: Colors.white,
-                ),
-              ),
-
             ),
           ),
         ],
       ),
     );
   }
+
+
+
+
+
+
 
   Widget functionality(dynamic store, int index) {
     return ExpansionTile(
@@ -317,6 +311,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
+
           ),
         ),
       ],
