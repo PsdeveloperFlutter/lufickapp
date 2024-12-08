@@ -3,8 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
+import 'package:image_picker/image_picker.dart';
+XFile ? imagefilestoreS;
+XFile ? videofilestoreS;
 
 TextEditingController taskNameController = TextEditingController();
 TextEditingController taskDescriptionController = TextEditingController();
@@ -94,6 +95,208 @@ class _MainpartState extends State<Mainpart> {
               ),
             ),
             const SizedBox(height: 8),
+
+
+
+            const SizedBox(height: 15),
+
+            // Image Upload Section
+            GestureDetector(
+              onTap: () async {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text("Select Option"),
+                    content: const Text(
+                      "Choose from Gallery and Camera",
+                      style: TextStyle(color: Colors.black, fontSize: 12),
+                    ),
+                    actions: <Widget>[
+                      SingleChildScrollView(
+                        child: Container(
+                          width: 250,
+                          height: 100,
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                onPressed: () async {
+                                  final XFile? image =
+                                  await ImagePicker().pickImage(source: ImageSource.camera);
+                                  if (image != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image Selected")));
+
+                                    setState(() {
+                                      imagefilestoreS = image;
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  "Camera",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                onPressed: () async {
+                                  final XFile? image =
+                                  await ImagePicker().pickImage(source: ImageSource.gallery);
+                                  if (image != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image Selected")));
+                                    setState(() {
+                                      imagefilestoreS = image;
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  "Gallery",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.image,
+                        color: Colors.green.shade700,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Upload Image',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                  Offstage(
+                    offstage: imagefilestoreS == null,
+                    child: SingleChildScrollView(
+                      scrollDirection:  Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Image Uploaded: ${imagefilestoreS?.name}",
+                            style: TextStyle(color: Colors.green.shade700),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                imagefilestoreS = null;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Image Removed")));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 12),
+
+            // Video Upload Section
+            GestureDetector(
+              onTap: () async {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text("Select Option"),
+                    content: const Text(
+                      "Choose from Gallery and Camera",
+                      style: TextStyle(color: Colors.black, fontSize: 12),
+                    ),
+                    actions: <Widget>[
+                      SingleChildScrollView(
+                        child: Container(
+                          width: 250,
+                          height: 60,
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                onPressed: () async {
+                                  final XFile? video =
+                                  await ImagePicker().pickVideo(source: ImageSource.gallery);
+                                  if (video != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video Selected")));
+                                    setState(() {
+                                      videofilestoreS = video;
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  "Select Video",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.video_call,
+                        color: Colors.green.shade700,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Upload Video ',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                  Offstage(
+                    offstage: videofilestoreS == null,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Video Uploaded: ${videofilestoreS?.name}",
+                            style: TextStyle(color: Colors.green.shade700),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                videofilestoreS = null;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Video Removed")));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+
+
             ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(

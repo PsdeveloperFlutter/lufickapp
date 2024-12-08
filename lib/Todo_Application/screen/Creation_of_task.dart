@@ -76,6 +76,7 @@ class _createState extends State<create> {
                   hintStyle: TextStyle(color: Colors.grey),
                   hintText: "What needs to be done?",
                   prefixIcon: Icon(Icons.list_alt_rounded),
+                  prefixIconColor: Colors.green.shade700,
                   labelText: 'Task Name',
                   border: OutlineInputBorder(),
                 ),
@@ -86,6 +87,7 @@ class _createState extends State<create> {
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey),
                   hintText: "Date and Time",
+                  prefixIconColor: Colors.green.shade700,
                   prefixIcon: Icon(Icons.date_range),
                   labelText: 'Date and Time',
                   border: OutlineInputBorder(),
@@ -107,6 +109,7 @@ class _createState extends State<create> {
               TextField(
                 controller: taskDescriptionController,
                 decoration: InputDecoration(
+                  prefixIconColor: Colors.green.shade700,
                   hintText: "More details about the task",
                   hintStyle: TextStyle(color: Colors.grey),
                   prefixIcon: Icon(Icons.description),
@@ -117,6 +120,7 @@ class _createState extends State<create> {
               ),
               const SizedBox(height: 15),
 
+              // Image Upload Section
               GestureDetector(
                 onTap: () async {
                   showDialog(
@@ -177,23 +181,53 @@ class _createState extends State<create> {
                     ),
                   );
                 },
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.image,
-                      color: Colors.black,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.image,
+                          color: Colors.green.shade700,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Upload Image',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      'Upload Image',
-                      style: TextStyle(color: Colors.black),
+                    Offstage(
+                      offstage: imagefilestore == null,
+                      child: SingleChildScrollView(
+                        scrollDirection:  Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Image Uploaded: ${imagefilestore?.name}",
+                              style: TextStyle(color: Colors.green.shade700),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                setState(() {
+                                  imagefilestore = null;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Image Removed")));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 12),
 
-              //This is for the video selection operation
+              // Video Upload Section
               GestureDetector(
                 onTap: () async {
                   showDialog(
@@ -236,24 +270,53 @@ class _createState extends State<create> {
                     ),
                   );
                 },
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.image,
-                      color: Colors.black,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.video_call,
+                          color: Colors.green.shade700,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Upload Video ',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      'Upload Video ',
-                      style: TextStyle(color: Colors.black),
+                    Offstage(
+                      offstage: videofilestore == null,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Video Uploaded: ${videofilestore?.name}",
+                              style: TextStyle(color: Colors.green.shade700),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                setState(() {
+                                  videofilestore = null;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Video Removed")));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
 
-
               Padding(
-                padding: const EdgeInsets.only(right:148.0,top: 8),
+                padding: const EdgeInsets.only(right: 148.0, top: 8),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                   onPressed: addTask,

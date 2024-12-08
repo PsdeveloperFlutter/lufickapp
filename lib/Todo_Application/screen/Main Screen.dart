@@ -135,7 +135,12 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                               ),
                             )
                           else
-                            Text("No image selected"),
+                            Center(
+                              child: Image.asset(
+                                height: 160,
+                                width: 200,
+                                "assets/images/IMG20240302171902.jpg"),
+                            )
                         ],
                       ),
                     ),
@@ -182,8 +187,12 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     fit: BoxFit.cover, // Ensure the image fully covers the CircleAvatar
                     image: FileImage(File(imageFile!.path)),
                   )
-                      : Text("No image selected"),
-                ),
+                      :   Center(
+                    child: Image.asset(
+                        fit: BoxFit.fill,
+                        "assets/images/IMG20240302171902.jpg"),
+                  ),
+                  ),
               ),
             )
 
@@ -342,9 +351,17 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
 
   Widget functionality(dynamic store, int index) {
     return ExpansionTile(
-      title: const Text(
-        "Features",
-        style: TextStyle(color: Colors.black),
+      title: Row(
+        children: [
+          Icon(
+            Icons.more_vert,
+            color: Colors.deepPurple,
+          ),
+          const Text(
+            "Options",
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
       ),
       children: [
         SingleChildScrollView(
