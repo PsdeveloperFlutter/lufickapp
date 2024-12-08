@@ -117,100 +117,150 @@ class _createState extends State<create> {
               ),
               const SizedBox(height: 15),
 
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text("Select Option"),
-                          content: const Text(
-                            "Choose from Gallery and Camera",
-                            style: TextStyle(color: Colors.black, fontSize: 12),
-                          ),
-                          actions: <Widget>[
-                            SingleChildScrollView(
-                              child: Container(
-                                width: 250,
-                                height: 160,
-                                child: Column(
-                                  children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                                      onPressed: () async {
-                                        final XFile? image =
-                                        await ImagePicker().pickImage(source: ImageSource.camera);
-                                        if (image != null) {
-                                          setState(() {
-                                            imagefilestore = image;
-                                          });
-                                        }
-                                      },
-                                      child: const Text(
-                                        "Camera",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                                      onPressed: () async {
-                                        final XFile? image =
-                                        await ImagePicker().pickImage(source: ImageSource.gallery);
-                                        if (image != null) {
-                                          setState(() {
-                                            imagefilestore = image;
-                                          });
-                                        }
-                                      },
-                                      child: const Text(
-                                        "Gallery",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                                      onPressed: () async {
-                                        final XFile? video =
-                                        await ImagePicker().pickVideo(source: ImageSource.gallery);
-                                        if (video != null) {
-                                          setState(() {
-                                            videofilestore = video;
-                                          });
-                                        }
-                                      },
-                                      child: const Text(
-                                        "Select Video",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
+              GestureDetector(
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text("Select Option"),
+                      content: const Text(
+                        "Choose from Gallery and Camera",
+                        style: TextStyle(color: Colors.black, fontSize: 12),
+                      ),
+                      actions: <Widget>[
+                        SingleChildScrollView(
+                          child: Container(
+                            width: 250,
+                            height: 100,
+                            child: Column(
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                  onPressed: () async {
+                                    final XFile? image =
+                                    await ImagePicker().pickImage(source: ImageSource.camera);
+                                    if (image != null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image Selected")));
+
+                                      setState(() {
+                                        imagefilestore = image;
+                                      });
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Camera",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                              ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                  onPressed: () async {
+                                    final XFile? image =
+                                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                                    if (image != null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image Selected")));
+                                      setState(() {
+                                        imagefilestore = image;
+                                      });
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Gallery",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      );
-                    },
-                    child: Icon(
+                      ],
+                    ),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Icon(
                       Icons.image,
                       color: Colors.black,
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Upload Image',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
+                    SizedBox(width: 10),
+                    Text(
+                      'Upload Image',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12),
+
+              //This is for the video selection operation
+              GestureDetector(
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text("Select Option"),
+                      content: const Text(
+                        "Choose from Gallery and Camera",
+                        style: TextStyle(color: Colors.black, fontSize: 12),
+                      ),
+                      actions: <Widget>[
+                        SingleChildScrollView(
+                          child: Container(
+                            width: 250,
+                            height: 60,
+                            child: Column(
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                  onPressed: () async {
+                                    final XFile? video =
+                                    await ImagePicker().pickVideo(source: ImageSource.gallery);
+                                    if (video != null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video Selected")));
+                                      setState(() {
+                                        videofilestore = video;
+                                      });
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Select Video",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.image,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Upload Video ',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
 
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                onPressed: addTask,
-                child: Text(
-                  'Create Task',
-                  style: TextStyle(color: Colors.white),
+
+              Padding(
+                padding: const EdgeInsets.only(right:148.0,top: 8),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                  onPressed: addTask,
+                  child: Text(
+                    'Create Task',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],
