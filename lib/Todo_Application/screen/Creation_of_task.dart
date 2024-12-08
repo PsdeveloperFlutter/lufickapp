@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Backend/Database of Application.dart';
 import 'Main Screen.dart';
 import 'Particles_Flutter.dart';
+
+XFile? imagefilestore;
+XFile? videofilestore;
 
 class create extends StatefulWidget {
   @override
@@ -22,6 +26,7 @@ class _createState extends State<create> {
     super.initState();
     dateTimeController.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
   }
+
   // Method to add a task to the database
   void addTask() async {
     if (taskNameController.text.isEmpty || taskDescriptionController.text.isEmpty) {
@@ -111,6 +116,95 @@ class _createState extends State<create> {
                 maxLines: 5,
               ),
               const SizedBox(height: 15),
+
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text("Select Option"),
+                          content: const Text(
+                            "Choose from Gallery and Camera",
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          ),
+                          actions: <Widget>[
+                            SingleChildScrollView(
+                              child: Container(
+                                width: 250,
+                                height: 160,
+                                child: Column(
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                      onPressed: () async {
+                                        final XFile? image =
+                                        await ImagePicker().pickImage(source: ImageSource.camera);
+                                        if (image != null) {
+                                          setState(() {
+                                            imagefilestore = image;
+                                          });
+                                        }
+                                      },
+                                      child: const Text(
+                                        "Camera",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                      onPressed: () async {
+                                        final XFile? image =
+                                        await ImagePicker().pickImage(source: ImageSource.gallery);
+                                        if (image != null) {
+                                          setState(() {
+                                            imagefilestore = image;
+                                          });
+                                        }
+                                      },
+                                      child: const Text(
+                                        "Gallery",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                      onPressed: () async {
+                                        final XFile? video =
+                                        await ImagePicker().pickVideo(source: ImageSource.gallery);
+                                        if (video != null) {
+                                          setState(() {
+                                            videofilestore = video;
+                                          });
+                                        }
+                                      },
+                                      child: const Text(
+                                        "Select Video",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.image,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Upload Image',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 onPressed: addTask,
@@ -122,9 +216,7 @@ class _createState extends State<create> {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }
-
-

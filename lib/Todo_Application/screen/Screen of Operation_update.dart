@@ -26,10 +26,20 @@ class _MainpartState extends State<Mainpart> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(body:SingleChildScrollView(
+
+    return Scaffold(
+      appBar: AppBar(
+
+        title: Text("Update Task",style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      body:SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 8),
             Padding(
