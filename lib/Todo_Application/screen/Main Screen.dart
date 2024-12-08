@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,7 @@ import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
 
 RxBool isshow = true.obs;
+XFile ?imageFile;
 
 bool setcolor = false;
 Color setappbarcolor = Colors.black;
@@ -133,32 +136,42 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                       child: Column(
                         children: [
-                          Container(
-
-                            width: 200,
-                            height: 300,
-                            child: Image.asset(
-                              fit: BoxFit.fill,
-                              "assets/images/IMG20240302171902.jpg"),
-                          ),
+                          if (imageFile != null)
+                            Container(
+                              width: 200,
+                              height: 300,
+                              child: Image.file(
+                                File(imageFile!.path),
+                                fit: BoxFit.fill,
+                              ),
+                            )
+                          else
+                            Text("No image selected"),
                         ],
                       ),
                     ),
                     Center(
 
-                      child: ElevatedButton(onPressed: (){
+                      child: ElevatedButton(onPressed: ()async{
 
                         ImagePicker picker=ImagePicker();
-                        XFile? image=await
+                        XFile? image=await picker.pickImage(
+                            source: ImageSource.gallery);
+                        if(image!=null){
+                          setState(() {
+                            imageFile=image;
+                          });
+                        }
                       }, child: Text("Upload Image")),
                     )
                   ],
                 ),
               );
             },
-            child: const CircleAvatar(
-              backgroundImage:
-              AssetImage("assets/images/IMG20240302171902.jpg"),
+            child: CircleAvatar(
+
+              child: imageFile != null? Image(image: FileImage(File(imageFile!.path)),): Text("No image selected"),
+
               radius: 20,
             ),
           )
