@@ -7,17 +7,22 @@ import 'package:share_plus/share_plus.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
-import 'Text to speech.dart';
+import 'Splash Screen of ToDo_App.dart';
+
 
 RxBool isshow = true.obs;
 
 bool setcolor = false;
 Color setappbarcolor = Colors.black;
 
+
+TextEditingController tasksearchNameController = TextEditingController();
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper.database;
-  runApp(const MaterialApp(
+  runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: Mainscreen(),
   ));
@@ -32,6 +37,7 @@ class Mainscreen extends StatefulWidget {
 
 class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   RxList<dynamic> tasks = [].obs;
+  List<dynamic> storelist = [];
   late TabController _tabController;
   Offset draggablePosition = const Offset(220, 430); // Initial position of FAB
 
@@ -43,7 +49,10 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   }
 
   void loadtasks() async {
+
     final task = await DatabaseHelper.getItems();
+
+    storelist = List.from(task);
     setState(() {
       tasks.assignAll(task);
     });
@@ -100,9 +109,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
               return  MyApp();
             }));
           },
-          child: Text(
-            "ToDo App ",
-            style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+          child: InkWell(
+             onTap:(){
+               Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp ()));
+             },
+            child: Text(
+              "ToDo App ",
+              style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+            ),
           ),
         ),
         actions: [
@@ -149,9 +163,52 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: TextField(
-                      controller: taskNameController,
+                      controller: tasksearchNameController,
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.task),
+                        suffixIcon:
+
+
+                        InkWell(
+                          onTap: () {
+                            if (tasks.isEmpty) {
+                              // If the tasks list is empty
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('No Task')),
+                              );
+                            } else if (tasksearchNameController.text.isEmpty) {
+                              // If the search field is empty, restore the original list
+                              tasks.assignAll(storelist); // Restore from the original backup
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Search field is empty')),
+                              );
+                            } else {
+                              // Perform the search
+                              final searchResults = tasks.where((element) {
+                                final lowerCaseElement = (element['name'] ?? '').toLowerCase();
+                                final lowerCaseElementdescription=(element['description'] ?? '').toLowerCase();
+                                final lowerCaseSearchTerm = tasksearchNameController.text.toLowerCase();
+                                return lowerCaseElement.contains(lowerCaseSearchTerm)  || lowerCaseElementdescription.contains(lowerCaseSearchTerm);
+                              }).toList();
+
+                              if (searchResults.isEmpty) {
+                                // If no matches are found, restore the original list
+                                tasks.assignAll(storelist); // Restore from the backup
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('No tasks match your search')),
+                                );
+                              } else {
+                                // Update tasks with the search results
+                                tasks.assignAll(searchResults);
+                              }
+                            }
+                          },
+                          child: const Icon(Icons.search),
+                        ),
+
+
+
+
+
                         hintText: "Search Your Task",
                         hintStyle: const TextStyle(
                           color: Colors.grey,
