@@ -23,10 +23,9 @@ TextEditingController tasksearchNameController = TextEditingController();
 
 
 void main() async {
-  runApp(const GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Mainscreen(),
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.database;
+  runApp(Mainscreen());
 }
 
 class Mainscreen extends StatefulWidget {
@@ -164,16 +163,40 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                         }
                       }, child: Text("Upload Image")),
                     )
+                    ,
+                    Center(
+
+                      child: ElevatedButton(onPressed: ()async{
+
+                        ImagePicker picker=ImagePicker();
+                        XFile? image=await picker.pickImage(
+                            source: ImageSource.camera);
+                        if(image!=null){
+                          setState(() {
+                            imageFile=image;
+                          });
+                        }
+                      }, child: Text("Take Picture ")),
+                    )
                   ],
                 ),
               );
             },
-            child: CircleAvatar(
+            child: Padding(
+              padding: const EdgeInsets.only(right:12.0),
+              child: CircleAvatar(
+                radius: 20,
+                child: ClipOval(
+                  child: imageFile != null
+                      ? Image(
+                    fit: BoxFit.cover, // Ensure the image fully covers the CircleAvatar
+                    image: FileImage(File(imageFile!.path)),
+                  )
+                      : Text("No image selected"),
+                ),
+              ),
+            )
 
-              child: imageFile != null? Image(image: FileImage(File(imageFile!.path)),): Text("No image selected"),
-
-              radius: 20,
-            ),
           )
         ],
       ),
