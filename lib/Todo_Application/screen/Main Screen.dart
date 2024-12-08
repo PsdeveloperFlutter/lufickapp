@@ -45,7 +45,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     loadtasks();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   void loadtasks() async {
@@ -85,16 +85,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
               ),
               child: Text(
                 "Create",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            Tab(
-              icon: Icon(
-                Icons.update,
-                color: Colors.white,
-              ),
-              child: Text(
-                "Update",
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -317,7 +307,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 ],
               ),
               create(),
-              Mainpart(),
             ],
           ),
           Positioned(
@@ -374,6 +363,19 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading: const Icon(Icons.update, color: Colors.deepPurple),
+                    title: const Text("Update"),
+                    onTap: ()  {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return Mainpart();
+                      }));
+                    },
+                  ),
+                ),
+
                 Card(
                   elevation: 5,
                   child: ListTile(

@@ -26,7 +26,7 @@ class _MainpartState extends State<Mainpart> {
   }
 
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Scaffold(body:SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -92,10 +92,11 @@ class _MainpartState extends State<Mainpart> {
                   "Update",
                   style: TextStyle(color: Colors.white),
                 ))
-            
+
           ],
         ),
       ),
+    ),
     );
   }
 }

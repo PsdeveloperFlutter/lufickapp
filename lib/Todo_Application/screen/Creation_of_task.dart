@@ -4,6 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../Backend/Database of Application.dart';
 import 'Main Screen.dart';
+import 'Particles_Flutter.dart';
 
 class create extends StatefulWidget {
   @override
@@ -121,7 +122,9 @@ class _createState extends State<create> {
             ],
           ),
         ),
-      ),
+      )
     );
   }
 }
+
+
