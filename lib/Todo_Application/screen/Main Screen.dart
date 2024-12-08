@@ -8,7 +8,7 @@ import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
 import 'Splash Screen of ToDo_App.dart';
-
+import 'package:image_picker/image_picker.dart';
 
 RxBool isshow = true.obs;
 
@@ -20,8 +20,6 @@ TextEditingController tasksearchNameController = TextEditingController();
 
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.database;
   runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: Mainscreen(),
@@ -120,35 +118,48 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 18.0, top: 12),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text("Profile Image"),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                        },
-                        child: Container(
-                          color: Colors.green,
-                          padding: const EdgeInsets.all(14),
-                          child: Image.asset(
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text("Profile Image"),
+                  actions: <Widget>[
+
+
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+
+                            width: 200,
+                            height: 300,
+                            child: Image.asset(
+                              fit: BoxFit.fill,
                               "assets/images/IMG20240302171902.jpg"),
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              },
-              child: const CircleAvatar(
-                backgroundImage:
-                AssetImage("assets/images/IMG20240302171902.jpg"),
-                radius: 20,
-              ),
+                    ),
+                    Center(
+
+                      child: ElevatedButton(onPressed: (){
+
+                        ImagePicker picker=ImagePicker();
+                        XFile? image=await
+                      }, child: Text("Upload Image")),
+                    )
+                  ],
+                ),
+              );
+            },
+            child: const CircleAvatar(
+              backgroundImage:
+              AssetImage("assets/images/IMG20240302171902.jpg"),
+              radius: 20,
             ),
           )
         ],
