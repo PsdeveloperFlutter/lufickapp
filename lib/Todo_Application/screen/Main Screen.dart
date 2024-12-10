@@ -12,6 +12,8 @@ import 'Screen of Operation_update.dart';
 import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
 
+
+bool changes=false;
 RxBool isshow = true.obs;
 XFile ?imageFile;
 
@@ -161,15 +163,50 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                   PopupMenuItem(
-                    child: Text("Sort Items"),
+                    child: Text("Sort by time"),
                     onTap: () async{
-                   Future.delayed(Duration.zero,()async{
-                     tasks.sort((a,b)=>b['name'].toString().toLowerCase().compareTo(a['taskName'].toString().toLowerCase()));
-                   setState(() {
+                      Future.delayed(Duration.zero,()async{
+                        tasks.sort((a,b)=>b['dateandtime'].toString().toLowerCase().compareTo(a['dateandtime'].toString().toLowerCase()));
+                        setState(() {
 
-                   });
-                });
-                   },
+                        });
+                      });
+                    },
+                  ),
+
+                  PopupMenuItem(
+                    child: Text("Sort by description"),
+                    onTap: () async{
+                      Future.delayed(Duration.zero,()async{
+                        if(changes==false){
+                          tasks.sort((a,b)=>b['description'].toString().toLowerCase().compareTo(a['description'].toString().toLowerCase()));
+                             changes=true;
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(
+                           backgroundColor: Color(0xff0000FF),
+                           content: Text(' Sorted by Descending Order'),
+                         ),
+                       );
+                        }
+                        else{
+                          tasks.sort((a,b)=>a['description'].toString().toLowerCase().compareTo(b['description'].toString().toLowerCase()));
+                          changes=false;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color(0xff0000FF),
+                              content: Text(' Sorted by Ascending Order'),
+                            ),
+                          );
+
+
+                        }
+
+
+                        setState(() {
+
+                        });
+                      });
+                    },
                   ),
                 ],
               );
