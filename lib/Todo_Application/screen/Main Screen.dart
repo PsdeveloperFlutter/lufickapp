@@ -302,7 +302,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                         }
 
                                         setState(() {
-
+                                        loadtasks();
                                         });
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
