@@ -18,12 +18,12 @@ TextEditingController dateTimeControllerupdate = TextEditingController();
 
 class Mainpart extends StatefulWidget {
 
-  final int id;
-
-
+  final dynamic id;
+  final int index;
+   List<dynamic>tasks=[];
       Mainpart(
         {Key? key,
-        required this.id}
+        required this.id,required this.index,required this.tasks}
        );
 
   @override
@@ -37,6 +37,9 @@ class _MainpartState extends State<Mainpart> {
   void initState(){
     super.initState();
     dateTimeControllerupdate.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
+    taskDescriptionControllerupdate.text=widget.tasks[widget.index]['description'];
+    taskNameControllerupdate.text=widget.tasks[widget.index]['name'];
+
   }
 
   Widget build(BuildContext context) {
@@ -328,7 +331,7 @@ class _MainpartState extends State<Mainpart> {
 
                     // Update the database
                     await DatabaseHelper.updateItem(
-                      4,
+                      widget.id,
                       taskNameControllerupdate.text.toString(),
                       taskDescriptionControllerupdate.text.toString(),
                       dateTimeControllerupdate.text.toString()

@@ -162,10 +162,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   ),
                   PopupMenuItem(
                     child: Text("Sort Items"),
-                    onTap: () {
-                      // Sort items functionality
-                      _sortItems();
-                    },
+                    onTap: () async{
+                   Future.delayed(Duration.zero,()async{
+                     tasks.sort((a,b)=>b['name'].toString().toLowerCase().compareTo(a['taskName'].toString().toLowerCase()));
+                   setState(() {
+
+                   });
+                });
+                   },
                   ),
                 ],
               );
@@ -360,6 +364,26 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             height: 500,
             child: Column(
               children: [
+                //Done Option
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading: const Icon(Icons.done, color: Colors.deepPurple),
+                    title: const Text("Done"),
+                    onTap: ()async {
+                      await DatabaseHelper.deleteItem(store["id"]);
+                      tasks.removeAt(index);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            backgroundColor: Color(0xff4796ff),
+                            content: Text('Task Done')),
+                      );
+                    },
+                  ),
+                ),
+
+
+                //Share Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -371,6 +395,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
+                //Update Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -378,15 +403,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     title: const Text("Update"),
                     onTap: ()  {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-
                         //This is Pass Id TO ANOTHER SCREEN FOR UPDATION
-                        return Mainpart(id:store["id"]);
+                        return Mainpart(id:store["id"],index:index,tasks:tasks);
 
                       }));
                     },
                   ),
                 ),
-
+               //Delete Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -403,6 +427,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
+                //Copy and Paste
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -424,6 +449,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
+                // Speak task
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -441,11 +467,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
 
                   ),
                 ),
-
-
-
-
-
+                //Archive task
                 Card(
                   elevation: 5,
                   child: ListTile(
