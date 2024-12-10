@@ -17,7 +17,7 @@ import 'package:image_picker/image_picker.dart';
 bool changes=false;
 bool timechanges=false;
 RxBool isshow = true.obs;
-RxBool mdeletion=true.obs;
+RxBool mdeletion=false.obs;
 XFile ?imageFile;
 
 bool setcolor = false;
