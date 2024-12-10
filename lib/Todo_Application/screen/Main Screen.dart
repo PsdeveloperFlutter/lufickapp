@@ -13,8 +13,11 @@ import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
 
 
+
 bool changes=false;
+bool timechanges=false;
 RxBool isshow = true.obs;
+RxBool mdeletion=true.obs;
 XFile ?imageFile;
 
 bool setcolor = false;
@@ -113,6 +116,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 context: context,
                 position: RelativeRect.fromLTRB(100, 100, 0, 0), // Position of the menu
                 items: [
+
+                  //Change Image
                   PopupMenuItem(
                     child: Text("Change Image"),
                     onTap: () {
@@ -162,18 +167,54 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       );
                     },
                   ),
+
+                  //Time
                   PopupMenuItem(
                     child: Text("Sort by time"),
                     onTap: () async{
-                      Future.delayed(Duration.zero,()async{
-                        tasks.sort((a,b)=>b['dateandtime'].toString().toLowerCase().compareTo(a['dateandtime'].toString().toLowerCase()));
-                        setState(() {
+                     if(timechanges==false){
+                       timechanges=true;
+                       Future.delayed(Duration.zero,()async{
+                         tasks.sort((a,b)=>b['dateandtime'].toString().toLowerCase().compareTo(a['dateandtime'].toString().toLowerCase()));
+                         setState(() {
 
-                        });
-                      });
+                         });
+                       });
+
+
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(
+                           backgroundColor: Color(0xff0000FF),
+                           content: Text(' Sorted by Ascending Order'),
+                         ),
+                       );
+
+
+                     }
+
+
+                     else{
+                       timechanges=false;
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(
+                           backgroundColor: Color(0xff0000FF),
+                           content: Text(' Sorted by Descending Order'),
+                         ),
+                       );
+
+                       Future.delayed(Duration.zero,()async{
+                         tasks.sort((a,b)=>a['dateandtime'].toString().toLowerCase().compareTo(b['dateandtime'].toString().toLowerCase()));
+                         setState(() {
+
+                         });
+                       });
+                     }
+
                     },
+
                   ),
 
+                  //Description
                   PopupMenuItem(
                     child: Text("Sort by description"),
                     onTap: () async{
@@ -206,6 +247,13 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
 
                         });
                       });
+                    },
+                  ),
+                  //Selection from List to Delete the Task
+                  PopupMenuItem(
+                    child: Text("Multiple Delete"),
+                    onTap: () {
+                      mdeletion.value=!mdeletion.value;
                     },
                   ),
                 ],
@@ -323,7 +371,22 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                         isshow.value = !isshow.value;
                                       });
                                     },
-                                    icon: const Icon(Icons.more_vert),
+                                    icon: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.more_vert),
+
+
+                                          Obx(()=>Offstage(
+                                             offstage: mdeletion.value,
+                                             child: Icon(Icons.select_all)
+                                             ,
+                                           )),
+
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 Obx(() {
