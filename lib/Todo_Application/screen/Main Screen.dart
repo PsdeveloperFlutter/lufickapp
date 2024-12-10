@@ -25,7 +25,8 @@ Color setappbarcolor = Colors.black;
 
 
 TextEditingController tasksearchNameController = TextEditingController();
-
+TextEditingController startController=TextEditingController();
+TextEditingController endController=TextEditingController();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -258,23 +259,100 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text("Delete Tasks"),
-                            content: Text("Are you sure you want to delete the selected tasks?"),
+                            content: Text("Select Range of Tasks to Delete"),
                             actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                },
-                                child: Text("Cancel"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // Add your delete logic here
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
 
-                                  Navigator.of(context).pop(); // Close the dialog
-                                },
-                                child: Text("Delete"),
-                              ),
-                            ],
+
+                                  SizedBox(height: 10,),
+                                  TextField(
+                                    controller: startController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Start',
+                                      hintText: 'Enter start index',
+                                      prefixIcon: Icon(Icons.format_list_numbered)
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  TextField(
+                                    controller: endController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'End',
+                                      hintText: 'Enter end index',
+                                      prefixIcon: Icon(Icons.format_list_numbered)
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+
+
+                                  TextButton(
+                                    onPressed: () async{
+                                      int start = int.parse(startController.text);
+                                      int end = int.parse(endController.text);
+                                      if(start<tasks.length && end<tasks.length){
+                                        List<dynamic> templist=[];
+                                        for(int i=start;i<=end;i++){
+                                          await DatabaseHelper.deleteItem(tasks[i]['id']);
+
+                                        }
+
+                                        setState(() {
+
+                                        });
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Color(0xff0000FF),
+                                            content: Text('Tasks Deleted'),
+                                          ),
+                                        );
+                                        Navigator.of(context).pop(); // Close the dialog
+                                      }
+                                      else{
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Color(0xff0000FF),
+                                            content: Text('Enter valid index'),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Text("Delete"),
+                                  ),
+
+
+
+                                  SizedBox(height: 10,),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(); // Close the dialog
+                                          },
+                                          child: Text("Cancel"),
+                                        ),
+
+                                        TextButton(
+                                          onPressed: () {
+                                            // Add your delete logic here
+
+                                            Navigator.of(context).pop(); // Close the dialog
+                                          },
+                                          child: Text("Delete"),
+                                        ),
+
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                               ],
                           );
                         },
                       );
