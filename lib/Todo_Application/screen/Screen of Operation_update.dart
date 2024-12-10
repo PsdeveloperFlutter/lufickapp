@@ -1,17 +1,30 @@
 //This is the Main Part of the Updation of Our Flutter Applications
 //This is the Main Part of Our Flutter Applications
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../Backend/Database of Application.dart';
+import 'Main Screen.dart';
 XFile ? imagefilestoreS;
 XFile ? videofilestoreS;
 
-TextEditingController taskNameController = TextEditingController();
-TextEditingController taskDescriptionController = TextEditingController();
-TextEditingController dateTimeController = TextEditingController();
+TextEditingController taskNameControllerupdate = TextEditingController();
+TextEditingController taskDescriptionControllerupdate = TextEditingController();
+TextEditingController dateTimeControllerupdate = TextEditingController();
 
 class Mainpart extends StatefulWidget {
+
+  final int id;
+
+
+      Mainpart(
+        {Key? key,
+        required this.id}
+       );
 
   @override
   State<Mainpart> createState() => _MainpartState();
@@ -21,9 +34,9 @@ final Rx<DateTime> selectedDate = DateTime.now().obs;
 class _MainpartState extends State<Mainpart> {
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    dateTimeController.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
+    dateTimeControllerupdate.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
   }
 
   Widget build(BuildContext context) {
@@ -46,7 +59,7 @@ class _MainpartState extends State<Mainpart> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: TextField(
-                controller: taskNameController,
+                controller: taskNameControllerupdate,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.list_alt_rounded),
                   border: OutlineInputBorder(),
@@ -58,7 +71,7 @@ class _MainpartState extends State<Mainpart> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: TextField(
-                controller: dateTimeController,
+                controller: dateTimeControllerupdate,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey),
                   hintText: "Date and Time",
@@ -75,7 +88,7 @@ class _MainpartState extends State<Mainpart> {
                   );
                   if (picked != null) {
                     selectedDate.value = picked;
-                    dateTimeController.text = "${picked.day}-${picked.month}-${picked.year}";
+                    dateTimeControllerupdate.text = "${picked.day}-${picked.month}-${picked.year}";
                   }
                 },
               ),
@@ -84,7 +97,7 @@ class _MainpartState extends State<Mainpart> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: TextField(
-                controller: taskDescriptionController,
+                controller: taskDescriptionControllerupdate,
                 maxLines: 5,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.description),
@@ -298,13 +311,86 @@ class _MainpartState extends State<Mainpart> {
 
 
             ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, elevation: 4),
-                child: Text(
-                  "Update",
-                  style: TextStyle(color: Colors.white),
-                ))
+              onPressed: () async {
+                if (taskNameControllerupdate.text.isNotEmpty &&
+                    taskDescriptionControllerupdate.text.isNotEmpty) {
+                  try {
+                    // Show a loader while updating
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    );
+
+                    // Update the database
+                    await DatabaseHelper.updateItem(
+                      4,
+                      taskNameControllerupdate.text.toString(),
+                      taskDescriptionControllerupdate.text.toString(),
+                      dateTimeControllerupdate.text.toString()
+    );
+
+                    // Close the loader
+                    Navigator.of(context).pop();
+
+                    // Show success feedback
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Task successfully updated!"),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Timer(
+                      const Duration(microseconds: 1000),
+                          () {
+                        // Navigate to the MainScreen after task update
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Mainscreen(),
+                          ),
+                        );
+                      },
+                    );
+
+                  } catch (e) {
+                    // Close the loader if there's an error
+                    Navigator.of(context).pop();
+
+                    // Show error feedback
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Error updating task: $e"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    print("Error updating task with id ${widget.id}: $e");
+                  }
+                } else {
+                  // Show feedback if fields are empty
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Please fill all fields"),
+                      backgroundColor: Colors.orange,
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                elevation: 4,
+              ),
+              child: Text(
+                "Update",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+
+
 
           ],
         ),

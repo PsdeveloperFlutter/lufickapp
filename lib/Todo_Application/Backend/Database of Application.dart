@@ -67,13 +67,23 @@ class DatabaseHelper {
   }
 
   /// Update an item in the database
-  static Future<int> updateItem(Map<String, dynamic> item) async {
+  static Future<int> updateItem(
+      int id,
+      String name,
+      String description,
+      String dateAndTime, // Optional parameter
+      ) async {
     final db = await database;
+
     return await db.update(
       tableName,
-      item,
-      where: '$taskId = ?',
-      whereArgs: [item[taskId]],
+      {
+        'name': name, // Correct column name
+        'description': description,
+        'dateandtime': dateAndTime, // Update dateandtime with the provided or current value
+      },
+      where: 'id = ?', // Correct column for where clause
+      whereArgs: [id],
     );
   }
 

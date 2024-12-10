@@ -387,7 +387,10 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     title: const Text("Update"),
                     onTap: ()  {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return Mainpart();
+
+                        //This is Pass Id TO ANOTHER SCREEN FOR UPDATION
+                        return Mainpart(id:store["id"]);
+
                       }));
                     },
                   ),
@@ -447,6 +450,33 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
 
                   ),
                 ),
+
+
+
+
+
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading:  Icon(Icons.surround_sound, color: Colors.deepPurple),
+                    title:  Text("Archive Task"),
+                    //This Function and Button IS Responsible for the Text to Speech
+                    onTap: ()async {
+                      FlutterTts flutterTts = FlutterTts();
+                      await flutterTts.setLanguage("en-US");
+                      await flutterTts.setSpeechRate(0.5);
+                      await flutterTts.setPitch(1.0);
+                      await flutterTts.speak("${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
+                    },
+                    //This Function AND BODY END HERE
+
+                  ),
+                ),
+
+
+
+
+
 
               ],
             ),
