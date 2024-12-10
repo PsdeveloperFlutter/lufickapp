@@ -39,7 +39,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   RxList<dynamic> tasks = [].obs;
   List<dynamic> storelist = [];
   late TabController _tabController;
-  Offset draggablePosition = const Offset(290, 480); // Initial position of FAB
+  Offset draggablePosition = const Offset(260, 440); // Initial position of FAB
 
   @override
   void initState() {
@@ -366,7 +366,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
       children: [
         SingleChildScrollView(
           child: Container(
-            height: 550,
+            height: 500,
             child: Column(
               children: [
                 Card(
@@ -441,7 +441,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     //This Function and Button IS Responsible for the Text to Speech
                     onTap: ()async {
                       FlutterTts flutterTts = FlutterTts();
-                      await flutterTts.setLanguage("en-US");
+                      await flutterTts.setLanguage("hi-IN");
                       await flutterTts.setSpeechRate(0.5);
                       await flutterTts.setPitch(1.0);
                       await flutterTts.speak("${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
