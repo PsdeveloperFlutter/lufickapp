@@ -253,7 +253,37 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   PopupMenuItem(
                     child: Text("Multiple Delete"),
                     onTap: () {
-                      mdeletion.value=!mdeletion.value;
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Delete Tasks"),
+                            content: Text("Are you sure you want to delete the selected tasks?"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Add your delete logic here
+
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: Text("Delete"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+
+
+
+
+
                     },
                   ),
                 ],
@@ -371,22 +401,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                         isshow.value = !isshow.value;
                                       });
                                     },
-                                    icon: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.more_vert),
-
-
-                                          Obx(()=>Offstage(
-                                             offstage: mdeletion.value,
-                                             child: Icon(Icons.select_all)
-                                             ,
-                                           )),
-
-                                        ],
-                                      ),
-                                    ),
+                                    icon: const Icon(Icons.more_vert),
                                   ),
                                 ),
                                 Obx(() {
