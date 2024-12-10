@@ -94,109 +94,100 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             ? setappbarcolor = Colors.black
             : setappbarcolor = Colors.blue.shade700,
         title: InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context){
-              return  MyApp();
-            }));
-          },
-          child: InkWell(
-             onTap:(){
-               Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp ()));
-             },
-            child: Text(
-              "ToDo App ",
-              style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
-            ),
+           onTap:(){
+             Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp ()));
+           },
+          child: Text(
+            "ToDo App ",
+            style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
           ),
         ),
         actions: [
+          // GestureDetector on CircleAvatar for PopupMenuButton
           GestureDetector(
             onTap: () {
-              showDialog(
+              // Show PopupMenu when CircleAvatar is tapped
+              showMenu(
                 context: context,
-                builder: (ctx) => AlertDialog(
-                  title: const Text("Profile Image"),
-                  actions: <Widget>[
+                position: RelativeRect.fromLTRB(100, 100, 0, 0), // Position of the menu
+                items: [
+                  PopupMenuItem(
+                    child: Text("Change Image"),
+                    onTap: () {
+                      // Show dialog to select image source
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext ctx) {
+                          return AlertDialog(
+                            title: Text("Select Image Source"),
+                            actions: <Widget>[
 
-
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: Column(
-                        children: [
-                          if (imageFile != null)
-                            Container(
-                              width: 200,
-                              height: 300,
-                              child: Image.file(
-                                File(imageFile!.path),
-                                fit: BoxFit.fill,
+                              ElevatedButton(
+                                onPressed: () async {
+                                  // Pick image from Gallery
+                                  ImagePicker picker = ImagePicker();
+                                  XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                                  if (image != null) {
+                                    setState(() {
+                                      imageFile = image; // No changes to how XFile is handled
+                                    });
+                                  }
+                                },
+                                child: Text("Pick from Gallery"),
                               ),
-                            )
-                          else
-                            Center(
-                              child: Image.asset(
-                                height: 160,
-                                width: 200,
-                                "assets/images/IMG20240302171902.jpg"),
-                            )
-                        ],
-                      ),
-                    ),
-                    Center(
-
-                      child: ElevatedButton(onPressed: ()async{
-
-                        ImagePicker picker=ImagePicker();
-                        XFile? image=await picker.pickImage(
-                            source: ImageSource.gallery);
-                        if(image!=null){
-                          setState(() {
-                            imageFile=image;
-                          });
-                        }
-                      }, child: Text("Upload Image")),
-                    )
-                    ,
-                    Center(
-
-                      child: ElevatedButton(onPressed: ()async{
-
-                        ImagePicker picker=ImagePicker();
-                        XFile? image=await picker.pickImage(
-                            source: ImageSource.camera);
-                        if(image!=null){
-                          setState(() {
-                            imageFile=image;
-                          });
-                        }
-                      }, child: Text("Take Picture ")),
-                    )
-                  ],
-                ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  // Pick image from Camera
+                                  ImagePicker picker = ImagePicker();
+                                  XFile? image = await picker.pickImage(source: ImageSource.camera);
+                                  if (image != null) {
+                                    setState(() {
+                                      imageFile = image; // No changes to how XFile is handled
+                                    });
+                                  }
+                                },
+                                child: Text("Pick from Camera"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(ctx).pop();
+                                },
+                                child: Text("Cancel"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  PopupMenuItem(
+                    child: Text("Sort Items"),
+                    onTap: () {
+                      // Sort items functionality
+                      _sortItems();
+                    },
+                  ),
+                ],
               );
             },
             child: Padding(
-              padding: const EdgeInsets.only(right:12.0),
+              padding: const EdgeInsets.only(right: 12.0),
               child: CircleAvatar(
                 radius: 20,
                 child: ClipOval(
                   child: imageFile != null
-                      ? Image(
-                    fit: BoxFit.cover, // Ensure the image fully covers the CircleAvatar
-                    image: FileImage(File(imageFile!.path)),
+                      ? Image.file(
+                    File(imageFile!.path),
+                    fit: BoxFit.cover, // Ensures the image fills the CircleAvatar
                   )
-                      :   Center(
-                    child: Image.asset(
-                        fit: BoxFit.fill,
-                        "assets/images/IMG20240302171902.jpg"),
+                      : Image.asset(
+                    "assets/images/IMG20240302171902.jpg",
+                    fit: BoxFit.cover, // Default image if none selected
                   ),
-                  ),
+                ),
               ),
-            )
-
-          )
+            ),
+          ),
         ],
       ),
       body: Stack(
@@ -482,4 +473,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
       ],
     );
   }
+
+  void _sortItems() {}
 }
