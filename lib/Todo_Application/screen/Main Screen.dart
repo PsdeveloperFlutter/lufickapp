@@ -39,7 +39,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   RxList<dynamic> tasks = [].obs;
   List<dynamic> storelist = [];
   late TabController _tabController;
-  Offset draggablePosition = const Offset(220, 430); // Initial position of FAB
+  Offset draggablePosition = const Offset(290, 480); // Initial position of FAB
 
   @override
   void initState() {
@@ -458,15 +458,11 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading:  Icon(Icons.surround_sound, color: Colors.deepPurple),
+                    leading:  Icon(Icons.archive, color: Colors.deepPurple),
                     title:  Text("Archive Task"),
                     //This Function and Button IS Responsible for the Text to Speech
                     onTap: ()async {
-                      FlutterTts flutterTts = FlutterTts();
-                      await flutterTts.setLanguage("en-US");
-                      await flutterTts.setSpeechRate(0.5);
-                      await flutterTts.setPitch(1.0);
-                      await flutterTts.speak("${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
+
                     },
                     //This Function AND BODY END HERE
 
