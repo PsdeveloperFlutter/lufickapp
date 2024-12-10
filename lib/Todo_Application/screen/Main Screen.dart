@@ -297,7 +297,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                       if(start<tasks.length && end<tasks.length){
                                         List<dynamic> templist=[];
                                         for(int i=start;i<=end;i++){
-                                          await DatabaseHelper.deleteItem(tasks[i]['id']);
+                                          await DatabaseHelper.deleteItem(tasks[i]);
 
                                         }
 
