@@ -570,29 +570,31 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 // Show Image
                 Card(
                   elevation: 5,
-                  child: ExpansionTile(
-                    title: Row(
+                  child: SingleChildScrollView(
+                    child: ExpansionTile(
+                      title: Row(
+                        children: [
+                          Icon(Icons.image, color: Colors.deepPurple),
+                          SizedBox(width: 12),
+                          Text("Show Image"),
+                        ],
+                      ),
                       children: [
-                        Icon(Icons.image, color: Colors.deepPurple),
-                        SizedBox(width: 12),
-                        Text("Show Image"),
-                      ],
-                    ),
-                    children: [
-                      store["imagePath"] == null
-                          ? const Text("No Image")
-                          : ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Card(
-                          elevation: 5,
-                          child: Container(
-                            width: 300,
-                            height: 300, // Limit the size of the image
-                            child: Image.file(File(store["imagePath"] ?? " ")),
+                        store["imagePath"] == null
+                            ? const Text("No Image")
+                            : ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Card(
+                            elevation: 5,
+                            child: Container(
+                              width: 300,
+                              height: 300, // Limit the size of the image
+                              child: Image.file(File(store["imagePath"] ?? " ")),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 
