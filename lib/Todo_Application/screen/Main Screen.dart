@@ -464,7 +464,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                               }
                             }
                           },
-                          child: const Icon(Icons.search),
+                          child: const Icon(Icons.search,color: Colors.green,),
                         ),
                         hintText: "Search Your Task",
                         hintStyle: const TextStyle(
