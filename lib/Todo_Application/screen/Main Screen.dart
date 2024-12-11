@@ -132,44 +132,52 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                         context: context,
                         builder: (BuildContext ctx) {
                           return AlertDialog(
-                            title: Text("Select Image Source"),
+                            backgroundColor: setcolor == false
+                                ? setappbarcolor = Colors.black: setappbarcolor = Colors.blue.shade700,
+                            title: Text("Select Image Source",style: TextStyle(color: Colors.white),),
                             actions: <Widget>[
-                              ElevatedButton(
-                                onPressed: () async {
-                                  // Pick image from Gallery
-                                  ImagePicker picker = ImagePicker();
-                                  XFile? image = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  if (image != null) {
-                                    setState(() {
-                                      imageFile =
-                                          image; // No changes to how XFile is handled
-                                    });
-                                  }
-                                },
-                                child: Text("Pick from Gallery"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  // Pick image from Camera
-                                  ImagePicker picker = ImagePicker();
-                                  XFile? image = await picker.pickImage(
-                                      source: ImageSource.camera);
-                                  if (image != null) {
-                                    setState(() {
-                                      imageFile =
-                                          image; // No changes to how XFile is handled
-                                    });
-                                  }
-                                },
-                                child: Text("Pick from Camera"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(ctx).pop();
-                                },
-                                child: Text("Cancel"),
-                              ),
+                             Column(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               crossAxisAlignment: CrossAxisAlignment.center,
+                               children: [
+                                 ElevatedButton(
+                                   onPressed: () async {
+                                     // Pick image from Gallery
+                                     ImagePicker picker = ImagePicker();
+                                     XFile? image = await picker.pickImage(
+                                         source: ImageSource.gallery);
+                                     if (image != null) {
+                                       setState(() {
+                                         imageFile =
+                                             image; // No changes to how XFile is handled
+                                       });
+                                     }
+                                   },
+                                   child: Text("Pick from Gallery"),
+                                 ),
+                                 ElevatedButton(
+                                   onPressed: () async {
+                                     // Pick image from Camera
+                                     ImagePicker picker = ImagePicker();
+                                     XFile? image = await picker.pickImage(
+                                         source: ImageSource.camera);
+                                     if (image != null) {
+                                       setState(() {
+                                         imageFile =
+                                             image; // No changes to how XFile is handled
+                                       });
+                                     }
+                                   },
+                                   child: Text("Pick from Camera"),
+                                 ),
+                                 ElevatedButton(
+                                   onPressed: () {
+                                     Navigator.of(ctx).pop();
+                                   },
+                                   child: Text("Cancel"),
+                                 ),
+                               ],
+                             )
                             ],
                           );
                         },
@@ -266,8 +274,10 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Delete Tasks"),
-                            content: Text("Select Range of Tasks to Delete"),
+                            backgroundColor: setcolor == false
+                                ? Colors.black:Colors.blue.shade700,
+                            title: Text("Delete Tasks",style: TextStyle(color: Colors.white),),
+                            content: Text("Select Range of Tasks to Delete",style: TextStyle(color: Colors.white),),
                             actions: <Widget>[
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -279,11 +289,16 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                   TextField(
                                     controller: startController,
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
+                                       fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
                                         labelText: 'Start',
+                                        labelStyle: TextStyle(color: Colors.white),
                                         hintText: 'Enter start index',
+                                        hintStyle: TextStyle(color: Colors.white),
                                         prefixIcon:
-                                            Icon(Icons.format_list_numbered)),
+                                            Icon(Icons.format_list_numbered,color: Colors.white,)),
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -291,61 +306,16 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                   TextField(
                                     controller: endController,
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
+                                        border: OutlineInputBorder(
+
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
                                         labelText: 'End',
+                                        labelStyle: TextStyle(color: Colors.white),
                                         hintText: 'Enter end index',
+                                        hintStyle: TextStyle(color: Colors.white),
                                         prefixIcon:
-                                            Icon(Icons.format_list_numbered)),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      int start =int.parse(startController.text);
-                                      int end = int.parse(endController.text);
-                                      start=start-1;
-                                      end=end-1;
-                                      if (start < tasks.length && end < tasks.length &&  start <= end) {
-                                        List<dynamic> tasksToDelete =
-                                            tasks.sublist(start,
-                                                end + 1); // Sublist to delete
-
-                                        for (var task in tasksToDelete) {
-                                          // Assuming task contains an `id` or relevant property
-                                          await DatabaseHelper.deleteTask(task[
-                                              'id']); // Replace 'id' with the correct key
-                                        }
-
-                                        setState(() {
-                                          tasks.removeRange(
-                                              start,
-                                              end +
-                                                  1); // Safely remove tasks in range
-                                          loadtasks(); // Reload tasks to refresh the UI
-                                        });
-
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Color(0xff0000FF),
-                                            content: Text('Tasks Deleted'),
-                                          ),
-                                        );
-
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Color(0xff0000FF),
-                                            content: Text('Enter valid index'),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: Text("Delete"),
+                                            Icon(Icons.format_list_numbered,color: Colors.white,)),
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -359,16 +329,54 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                             Navigator.of(context)
                                                 .pop(); // Close the dialog
                                           },
-                                          child: Text("Cancel"),
+                                          child: Text("Cancel",style: TextStyle(color: Colors.white),),
                                         ),
                                         TextButton(
-                                          onPressed: () {
-                                            // Add your delete logic here
+                                          onPressed: () async {
+                                            int start =int.parse(startController.text);
+                                            int end = int.parse(endController.text);
+                                            start=start-1;
+                                            end=end-1;
+                                            if (start < tasks.length && end < tasks.length &&  start <= end) {
+                                              List<dynamic> tasksToDelete =
+                                              tasks.sublist(start,
+                                                  end + 1); // Sublist to delete
 
-                                            Navigator.of(context)
-                                                .pop(); // Close the dialog
+                                              for (var task in tasksToDelete) {
+                                                // Assuming task contains an `id` or relevant property
+                                                await DatabaseHelper.deleteTask(task[
+                                                'id']); // Replace 'id' with the correct key
+                                              }
+
+                                              setState(() {
+                                                tasks.removeRange(
+                                                    start,
+                                                    end +
+                                                        1); // Safely remove tasks in range
+                                                loadtasks(); // Reload tasks to refresh the UI
+                                              });
+
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor: Color(0xff0000FF),
+                                                  content: Text('Tasks Deleted'),
+                                                ),
+                                              );
+
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor: Color(0xff0000FF),
+                                                  content: Text('Enter valid index'),
+                                                ),
+                                              );
+                                            }
                                           },
-                                          child: Text("Delete"),
+                                          child: Text("Delete",style: TextStyle(color: Colors.white),),
                                         ),
                                       ],
                                     ),
@@ -467,8 +475,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                           child: const Icon(Icons.search,color: Colors.green,),
                         ),
                         hintText: "Search Your Task",
-                        hintStyle: const TextStyle(
-                          color: Colors.grey,
+                        hintStyle:  TextStyle(
+                          color: Colors.black,
                         ),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -485,6 +493,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                           : ListView.separated(
                               itemCount: tasks.length,
                               itemBuilder: (context, index) {
+                               var indexstore=index+1;
                                 var store = tasks[index];
                                 return Card(
                                   elevation: 4,
@@ -492,8 +501,11 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
+
                                       const SizedBox(height: 10),
                                       ListTile(
+
+                                        leading: Text(indexstore.toString()),
                                         title: Text(store["name"] ?? "No Name"),
                                         subtitle: Text(store["description"] ??
                                             "No Description"),
