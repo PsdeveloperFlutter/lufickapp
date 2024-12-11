@@ -503,13 +503,15 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                               isshow.value = !isshow.value;
                                             });
                                           },
-                                          icon: const Icon(Icons.more_vert),
+                                          icon: const Icon(Icons.more_vert,color: Colors.green),
                                         ),
                                       ),
                                       Obx(() {
                                         return Offstage(
                                           offstage: isshow.value,
-                                          child: functionality(store, index),
+                                          child: SingleChildScrollView(
+
+                                              child: functionality(store, index)),
                                         );
                                       }),
                                     ],
@@ -519,7 +521,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                               separatorBuilder:
                                   (BuildContext context, int index) {
                                 return Divider(
-                                  color: Colors.deepOrangeAccent.withAlpha(20),
+                                  color: Colors.blue.withAlpha(30),
                                   thickness: 10,
                                 );
                               },
