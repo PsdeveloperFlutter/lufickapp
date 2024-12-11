@@ -39,7 +39,8 @@ class _MainpartState extends State<Mainpart> {
     dateTimeControllerupdate.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
     taskDescriptionControllerupdate.text=widget.tasks[widget.index]['description'];
     taskNameControllerupdate.text=widget.tasks[widget.index]['name'];
-
+    imagefilestoreS=widget.tasks[widget.index]['image']??null;
+    videofilestoreS=widget.tasks[widget.index]['video']??null;
   }
 
   Widget build(BuildContext context) {
@@ -328,7 +329,6 @@ class _MainpartState extends State<Mainpart> {
                         );
                       },
                     );
-
                     // Update the database
                     await DatabaseHelper.updateTask(
                       widget.id,
@@ -336,10 +336,11 @@ class _MainpartState extends State<Mainpart> {
                         'name': taskNameControllerupdate.text,
                         'description': taskDescriptionControllerupdate.text,
                         'dateandtime': dateTimeControllerupdate.text,
-                        'image': imagefilestoreS?.path,
-                        'video': videofilestoreS?.path,
+                        'imagePath': imagefilestoreS?.path,
+                        'videoPath': videofilestoreS?.path,
                       },
                     );
+
 
                     // Close the loader
                     Navigator.of(context).pop();
