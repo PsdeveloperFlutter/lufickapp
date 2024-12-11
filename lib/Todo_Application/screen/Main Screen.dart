@@ -548,58 +548,55 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   }
 
   Widget functionality(dynamic store, int index) {
-    return ExpansionTile(
-      title: Row(
+    return SingleChildScrollView(
+      child: ExpansionTile(
+        title: Row(
+          children: [
+            Icon(
+              Icons.more_vert,
+              color: Colors.deepPurple,
+            ),
+            const Text(
+              "Options",
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
+        ),
         children: [
-          Icon(
-            Icons.more_vert,
-            color: Colors.deepPurple,
-          ),
-          const Text(
-            "Options",
-            style: TextStyle(color: Colors.black),
-          ),
-        ],
-      ),
-      children: [
-        SingleChildScrollView(
-          child: Container(
-            height: 640,
+          Container(
+            height: 640, // Set height to make the scrollable area manageable
             child: Column(
               children: [
-         //Show Image
+                // Show Image
                 Card(
                   elevation: 5,
-                  child:ExpansionTile(
-                   title: Row(
-
-                     children: [
-                       Icon(Icons.image, color: Colors.deepPurple,),
-                        SizedBox(width: 12,),
-                       Text("Show Image"),
-                     ],
-                   ),
-               children: [
-                 store["imagePath"] == null ? const Text("No Image") :
-                 ClipRRect(
-                   borderRadius: BorderRadius.circular(20),
-                   child: Card(
-                     elevation: 5,
-                     child: SingleChildScrollView(
-                       child: Container(
+                  child: ExpansionTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.image, color: Colors.deepPurple),
+                        SizedBox(width: 12),
+                        Text("Show Image"),
+                      ],
+                    ),
+                    children: [
+                      store["imagePath"] == null
+                          ? const Text("No Image")
+                          : ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Card(
+                          elevation: 5,
+                          child: Container(
                             width: 300,
-                            height: 300,
-                           child: Image.file(File(store["imagePath"]?? " "))),
-                     ),
-                   ),
-                 ),
-            ],
-          ),
+                            height: 300, // Limit the size of the image
+                            child: Image.file(File(store["imagePath"] ?? " ")),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
-
-
-    //Done Option
+                // Done Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -610,14 +607,15 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       tasks.removeAt(index);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            backgroundColor: Color(0xff4796ff),
-                            content: Text('Task Done')),
+                          backgroundColor: Color(0xff4796ff),
+                          content: Text('Task Done'),
+                        ),
                       );
                     },
                   ),
                 ),
 
-                //Share Option
+                // Share Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -629,23 +627,22 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
-                //Update Option
+
+                // Update Option
                 Card(
                   elevation: 5,
                   child: ListTile(
                     leading: const Icon(Icons.update, color: Colors.deepPurple),
                     title: const Text("Update"),
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        //This is Pass Id TO ANOTHER SCREEN FOR UPDATION
-                        return Mainpart(
-                            id: store["id"], index: index, tasks: tasks);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return Mainpart(id: store["id"], index: index, tasks: tasks);
                       }));
                     },
                   ),
                 ),
-                //Delete Option
+
+                // Delete Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -662,18 +659,18 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
-                //Copy and Paste
+
+                // Copy and Paste
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading:
-                        const Icon(Icons.copy_all, color: Colors.deepPurple),
+                    leading: const Icon(Icons.copy_all, color: Colors.deepPurple),
                     title: const Text("Copy and Paste"),
                     onTap: () {
                       Clipboard.setData(
                         ClipboardData(
                           text:
-                              "Task: ${store["name"]}\nDescription: ${store["description"]}",
+                          "Task: ${store["name"]}\nDescription: ${store["description"]}",
                         ),
                       ).then((value) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -685,14 +682,13 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
+
                 // Speak task
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading:
-                        Icon(Icons.surround_sound, color: Colors.deepPurple),
+                    leading: Icon(Icons.surround_sound, color: Colors.deepPurple),
                     title: Text("Speak Task"),
-                    //This Function and Button IS Responsible for the Text to Speech
                     onTap: () async {
                       FlutterTts flutterTts = FlutterTts();
                       await flutterTts.setLanguage("hi-IN");
@@ -701,67 +697,38 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       await flutterTts.speak(
                           "${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
                     },
-                    //This Function AND BODY END HERE
                   ),
                 ),
-                //Archive task
+
+                // Archive task
                 Card(
                   elevation: 5,
                   child: ListTile(
                     leading: Icon(Icons.archive, color: Colors.deepPurple),
                     title: Text("Archive Task"),
-                    //This Function and Button IS Responsible for the Text to Speech
                     onTap: () async {},
-                    //This Function AND BODY END HERE
                   ),
                 ),
 
-                //Pdf task
+                // Pdf task
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading:
-                        Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
+                    leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
                     title: Text("Pdf Task"),
-                    //This Function and Button IS Responsible for the Text to Speech
                     onTap: () async {},
-                    //This Function AND BODY END HERE
                   ),
                 ),
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
 
-  Widget _buildImage(dynamic imagePath) {
-    if (imagePath != null) {
-      if (imagePath is String && imagePath.isNotEmpty) {
-        // If imagePath is a String, load it as a file
-        File imageFile = File(imagePath);
-        if (imageFile.existsSync()) {
-          return Image.file(imageFile);  // Display the image if file exists
-        } else {
-          return Text("Image file not found at $imagePath");
-        }
-      } else if (imagePath is int) {
-        // If imagePath is an int, convert it to String and load it as a file
-        String imagePathStr = imagePath.toString();
-        File imageFile = File(imagePathStr);
-        if (imageFile.existsSync()) {
-          return Image.file(imageFile);  // Display the image if file exists
-        } else {
-          return Text("Image file not found at $imagePathStr");
-        }
-      } else {
-        return Text("Invalid image path format");
-      }
-    } else {
-      return Text("No image selected");
-    }
-  }
+
+
 
 }
