@@ -38,14 +38,16 @@ class _createState extends State<create> {
 
     try {
       await DatabaseHelper.insertTask({
-        'name': taskNameController.text,
-        'description': taskDescriptionController.text,
-        'dateandtime': dateTimeController.text,
-        'imagePath': imagefilestore?.path ?? null, // Set to null if no file is selected
-        'videoPath': videofilestore?.path ?? null, // Set to null if no file is selected
-      });
+      'name': taskNameController.text,
+      'description': taskDescriptionController.text,
+      'dateandtime': dateTimeController.text,
+      'imagePath': imagefilestore?.path.toString() ?? '',  // Use an empty string if the image is not selected
+      'videoPath': videofilestore?.path ?? '',
+    });
 
-      print("Task Added");
+
+
+    print("Task Added");
       // Navigate to the MainScreen after task creation
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Mainscreen()));
     } catch (e) {

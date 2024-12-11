@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -566,18 +567,39 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             height: 640,
             child: Column(
               children: [
+         //Show Image
+                Card(
+                  elevation: 5,
+                  child:ExpansionTile(
+                   title: Row(
 
-                ExpansionTile(title: Text("Image"),
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: store[index]['imagePath'] != null
-                          ? Image.file(File(store[index]['imagePath'].toString()))
-                          : Text("Image not Selected by User"),
-                    ),
-                  )
-                ]),
-                //Done Option
+                     children: [
+                       Icon(Icons.image, color: Colors.deepPurple,),
+                        SizedBox(width: 12,),
+                       Text("Show Image"),
+                     ],
+                   ),
+               children: [
+                 store["imagePath"] == null ? const Text("No Image") :
+                 ClipRRect(
+                   borderRadius: BorderRadius.circular(20),
+                   child: Card(
+                     elevation: 5,
+                     child: SingleChildScrollView(
+                       child: Container(
+                            width: 300,
+                            height: 300,
+                           child: Image.file(File(store["imagePath"]?? " "))),
+                     ),
+                   ),
+                 ),
+            ],
+          ),
+                ),
+
+
+
+    //Done Option
                 Card(
                   elevation: 5,
                   child: ListTile(
@@ -712,6 +734,34 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
         ),
       ],
     );
+  }
+
+
+  Widget _buildImage(dynamic imagePath) {
+    if (imagePath != null) {
+      if (imagePath is String && imagePath.isNotEmpty) {
+        // If imagePath is a String, load it as a file
+        File imageFile = File(imagePath);
+        if (imageFile.existsSync()) {
+          return Image.file(imageFile);  // Display the image if file exists
+        } else {
+          return Text("Image file not found at $imagePath");
+        }
+      } else if (imagePath is int) {
+        // If imagePath is an int, convert it to String and load it as a file
+        String imagePathStr = imagePath.toString();
+        File imageFile = File(imagePathStr);
+        if (imageFile.existsSync()) {
+          return Image.file(imageFile);  // Display the image if file exists
+        } else {
+          return Text("Image file not found at $imagePathStr");
+        }
+      } else {
+        return Text("Invalid image path format");
+      }
+    } else {
+      return Text("No image selected");
+    }
   }
 
 }
