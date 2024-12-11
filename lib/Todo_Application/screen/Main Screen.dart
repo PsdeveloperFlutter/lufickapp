@@ -7,11 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:video_player/video_player.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Screen of Operation_update.dart';
 import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'Videoplayer.dart';
 
 bool changes = false;
 bool timechanges = false;
@@ -113,13 +116,16 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             onTap: () {
               // Show PopupMenu when CircleAvatar is tapped
               showMenu(
+                color: setcolor == false
+                    ? setappbarcolor = Colors.black: setappbarcolor = Colors.blue.shade700,
                 context: context,
                 position: RelativeRect.fromLTRB(
                     100, 100, 0, 0), // Position of the menu
                 items: [
                   //Change Image
                   PopupMenuItem(
-                    child: Text("Change Image"),
+
+                    child: Text("Change Image",style: TextStyle(color: Colors.white),),
                     onTap: () {
                       // Show dialog to select image source
                       showDialog(
@@ -171,9 +177,11 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
 
+
                   //Time
                   PopupMenuItem(
-                    child: Text("Sort by time"),
+
+                    child: Text("Sort by time",style: TextStyle(color: Colors.white),),
                     onTap: () async {
                       if (timechanges == false) {
                         timechanges = true;
@@ -215,7 +223,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
 
                   //Description
                   PopupMenuItem(
-                    child: Text("Sort by description"),
+                    child: Text("Sort by description",style: TextStyle(color: Colors.white),),
                     onTap: () async {
                       Future.delayed(Duration.zero, () async {
                         if (changes == false) {
@@ -252,7 +260,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   ),
                   //Selection from List to Delete the Task
                   PopupMenuItem(
-                    child: Text("Multiple Delete"),
+                    child: Text("Multiple Delete",style: TextStyle(color: Colors.white),),
                     onTap: () {
                       showDialog(
                         context: context,
@@ -547,7 +555,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
     );
   }
 
+
+
+  //THIS IS THE OPTIONS FUNCTION
+
   Widget functionality(dynamic store, int index) {
+    late VideoPlayerController _videoPlayerController;
+    bool _isVideoPlayerInitialized = false;
+
     return SingleChildScrollView(
       child: ExpansionTile(
         title: Row(
@@ -566,7 +581,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
           SingleChildScrollView(
             child: Container(
               height: 640, // Set height to make the scrollable area manageable
-              child: Column(
+              child: ListView(
                 children: [
                   // Show Image
                   Card(
@@ -596,7 +611,21 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-            
+
+                   // Video Option
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: const Icon(Icons.video_call, color: Colors.deepPurple),
+                      title: const Text("Show Video"),
+                      onTap: () {
+                        Get.to(VideoPlayerWidget(videoPath: store["videoPath"] ?? " "));
+                      },
+                    ),
+                  ),
+
+
+
                   // Done Option
                   Card(
                     elevation: 5,
@@ -615,7 +644,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            
+
                   // Share Option
                   Card(
                     elevation: 5,
@@ -628,7 +657,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            
+
                   // Update Option
                   Card(
                     elevation: 5,
@@ -642,7 +671,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            
+
                   // Delete Option
                   Card(
                     elevation: 5,
@@ -660,7 +689,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            
+
                   // Copy and Paste
                   Card(
                     elevation: 5,
@@ -683,7 +712,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            
+
                   // Speak task
                   Card(
                     elevation: 5,
@@ -700,7 +729,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            
+
                   // Archive task
                   Card(
                     elevation: 5,
@@ -710,7 +739,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       onTap: () async {},
                     ),
                   ),
-            
+
                   // Pdf task
                   Card(
                     elevation: 5,
