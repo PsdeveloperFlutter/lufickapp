@@ -563,14 +563,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
           ],
         ),
         children: [
-          Container(
-            height: 640, // Set height to make the scrollable area manageable
-            child: Column(
-              children: [
-                // Show Image
-                Card(
-                  elevation: 5,
-                  child: SingleChildScrollView(
+          SingleChildScrollView(
+            child: Container(
+              height: 640, // Set height to make the scrollable area manageable
+              child: Column(
+                children: [
+                  // Show Image
+                  Card(
+                    elevation: 5,
                     child: ExpansionTile(
                       title: Row(
                         children: [
@@ -596,132 +596,132 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                ),
-
-                // Done Option
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: const Icon(Icons.done, color: Colors.deepPurple),
-                    title: const Text("Done"),
-                    onTap: () async {
-                      await DatabaseHelper.deleteTask(store["id"]);
-                      tasks.removeAt(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          backgroundColor: Color(0xff4796ff),
-                          content: Text('Task Done'),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-
-                // Share Option
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: const Icon(Icons.share, color: Colors.deepPurple),
-                    title: const Text("Share"),
-                    onTap: () {
-                      Share.share(
-                          "Task: ${store["name"]}\nDescription: ${store["description"]}");
-                    },
-                  ),
-                ),
-
-                // Update Option
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: const Icon(Icons.update, color: Colors.deepPurple),
-                    title: const Text("Update"),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Mainpart(id: store["id"], index: index, tasks: tasks);
-                      }));
-                    },
-                  ),
-                ),
-
-                // Delete Option
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: const Icon(Icons.delete, color: Colors.deepPurple),
-                    title: const Text("Delete"),
-                    onTap: () async {
-                      await DatabaseHelper.deleteTask(store["id"]);
-                      tasks.removeAt(index);
-                      Get.snackbar(
-                        "Task Deleted",
-                        "The task '${store["name"]}' has been deleted successfully!",
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    },
-                  ),
-                ),
-
-                // Copy and Paste
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: const Icon(Icons.copy_all, color: Colors.deepPurple),
-                    title: const Text("Copy and Paste"),
-                    onTap: () {
-                      Clipboard.setData(
-                        ClipboardData(
-                          text:
-                          "Task: ${store["name"]}\nDescription: ${store["description"]}",
-                        ),
-                      ).then((value) {
+            
+                  // Done Option
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: const Icon(Icons.done, color: Colors.deepPurple),
+                      title: const Text("Done"),
+                      onTap: () async {
+                        await DatabaseHelper.deleteTask(store["id"]);
+                        tasks.removeAt(index);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Copied to clipboard'),
+                            backgroundColor: Color(0xff4796ff),
+                            content: Text('Task Done'),
                           ),
                         );
-                      });
-                    },
+                      },
+                    ),
                   ),
-                ),
-
-                // Speak task
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: Icon(Icons.surround_sound, color: Colors.deepPurple),
-                    title: Text("Speak Task"),
-                    onTap: () async {
-                      FlutterTts flutterTts = FlutterTts();
-                      await flutterTts.setLanguage("hi-IN");
-                      await flutterTts.setSpeechRate(0.5);
-                      await flutterTts.setPitch(1.0);
-                      await flutterTts.speak(
-                          "${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
-                    },
+            
+                  // Share Option
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: const Icon(Icons.share, color: Colors.deepPurple),
+                      title: const Text("Share"),
+                      onTap: () {
+                        Share.share(
+                            "Task: ${store["name"]}\nDescription: ${store["description"]}");
+                      },
+                    ),
                   ),
-                ),
-
-                // Archive task
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: Icon(Icons.archive, color: Colors.deepPurple),
-                    title: Text("Archive Task"),
-                    onTap: () async {},
+            
+                  // Update Option
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: const Icon(Icons.update, color: Colors.deepPurple),
+                      title: const Text("Update"),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return Mainpart(id: store["id"], index: index, tasks: tasks);
+                        }));
+                      },
+                    ),
                   ),
-                ),
-
-                // Pdf task
-                Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
-                    title: Text("Pdf Task"),
-                    onTap: () async {},
+            
+                  // Delete Option
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: const Icon(Icons.delete, color: Colors.deepPurple),
+                      title: const Text("Delete"),
+                      onTap: () async {
+                        await DatabaseHelper.deleteTask(store["id"]);
+                        tasks.removeAt(index);
+                        Get.snackbar(
+                          "Task Deleted",
+                          "The task '${store["name"]}' has been deleted successfully!",
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+            
+                  // Copy and Paste
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: const Icon(Icons.copy_all, color: Colors.deepPurple),
+                      title: const Text("Copy and Paste"),
+                      onTap: () {
+                        Clipboard.setData(
+                          ClipboardData(
+                            text:
+                            "Task: ${store["name"]}\nDescription: ${store["description"]}",
+                          ),
+                        ).then((value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Copied to clipboard'),
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                  ),
+            
+                  // Speak task
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: Icon(Icons.surround_sound, color: Colors.deepPurple),
+                      title: Text("Speak Task"),
+                      onTap: () async {
+                        FlutterTts flutterTts = FlutterTts();
+                        await flutterTts.setLanguage("hi-IN");
+                        await flutterTts.setSpeechRate(0.5);
+                        await flutterTts.setPitch(1.0);
+                        await flutterTts.speak(
+                            "${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
+                      },
+                    ),
+                  ),
+            
+                  // Archive task
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: Icon(Icons.archive, color: Colors.deepPurple),
+                      title: Text("Archive Task"),
+                      onTap: () async {},
+                    ),
+                  ),
+            
+                  // Pdf task
+                  Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
+                      title: Text("Pdf Task"),
+                      onTap: () async {},
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
