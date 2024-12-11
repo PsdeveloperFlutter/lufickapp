@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   // Singleton instance
-  static final DatabaseHelper _instance =   DatabaseHelper._internal();
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
 
   // Private constructor
   DatabaseHelper._internal();
@@ -19,12 +19,13 @@ class DatabaseHelper {
   static const String taskId = 'id';
   static const String taskName = 'name';
   static const String taskDescription = 'description';
-  static const dynamic taskdateandtime='dateandtime';
+  static const String taskDateAndTime = 'dateandtime';
+  static const String taskImagePath = 'imagePath';
+  static const String taskVideoPath = 'videoPath';
 
-  /// Initialize or retrieve the database instance
+  /// Retrieve or initialize the database instance
   static Future<Database> get database async {
-    if (_database != null)
-      return _database!;
+    if (_database != null) return _database!;
 
     _database = await _initDatabase();
     return _database!;
@@ -32,63 +33,65 @@ class DatabaseHelper {
 
   /// Initialize the database
   static Future<Database> _initDatabase() async {
+    // Define the path to the database file
     String path = join(await getDatabasesPath(), 'todoapplicationdatabase.db');
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // Increment the version whenever schema changes
       onCreate: (db, version) async {
+        // Create the initial table structure
         await db.execute('''
           CREATE TABLE $tableName (
             $taskId INTEGER PRIMARY KEY AUTOINCREMENT,
             $taskName TEXT NOT NULL,
-            $taskDescription TEXT  ,
-            $taskdateandtime TEXT
+            $taskDescription TEXT,
+            $taskDateAndTime TEXT,
+            $taskImagePath TEXT,
+            $taskVideoPath TEXT
           )
-        ''');
+        '''
+        );
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        // Handle database upgrades if schema changes
+        if (oldVersion < 2) {
+          await db.execute('ALTER TABLE $tableName ADD COLUMN $taskImagePath TEXT');
+          await db.execute('ALTER TABLE $tableName ADD COLUMN $taskVideoPath TEXT');
+        }
       },
     );
   }
 
-  /// Create a new item in the database
-  static Future<int> insertItem(Map<String, dynamic> item) async {
+  /// Insert a new task into the database
+  static Future<int> insertTask(Map<String, dynamic> task) async {
     final db = await database;
     return await db.insert(
       tableName,
-      item,
+      task,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  /// Retrieve all items from the database
-  static Future<List<Map<String, dynamic>>> getItems() async {
+  /// Retrieve all tasks from the database
+  static Future<List<Map<String, dynamic>>> getTasks() async {
     final db = await database;
     return await db.query(tableName);
   }
 
-  /// Update an item in the database
-  static Future<int> updateItem(
-      int id,
-      String name,
-      String description,
-      String dateAndTime, // Optional parameter
-      ) async {
+  /// Update an existing task in the database
+  static Future<dynamic> updateTask(int id, Map<String, dynamic> updatedTask) async {
     final db = await database;
-
     return await db.update(
       tableName,
-      {
-        'name': name, // Correct column name
-        'description': description,
-        'dateandtime': dateAndTime, // Update dateandtime with the provided or current value
-      },
-      where: 'id = ?', // Correct column for where clause
+      updatedTask,
+      where: '$taskId = ?',
       whereArgs: [id],
     );
   }
 
-  /// Delete an item from the database
-  static Future<int> deleteItem(int id) async {
+  /// Delete a task from the database by its ID
+  static Future<int> deleteTask(int id) async {
     final db = await database;
     return await db.delete(
       tableName,
@@ -107,82 +110,28 @@ class DatabaseHelper {
 }
 
 /*
-Explanation of the `DatabaseHelper` Class and CRUD Operations:
+### Instructions in Code Comments
 
-### Overview
-This class provides a structured way to manage SQLite database operations in a Flutter application. It uses the singleton pattern to ensure only one instance of the database is active at any time. The database is initialized with a table named `items` having three columns: `id`, `name`, and `description`.
+1. **Singleton Pattern**:
+   - Ensures only one instance of `DatabaseHelper` is active at any time.
 
----
+2. **Database Initialization**:
+   - `_initDatabase()` defines the path to the database file and sets the schema.
+   - The `onCreate` callback creates the initial table structure.
 
-### Key Methods
+3. **Version Management**:
+   - `version: 2` specifies the current database version.
+   - `onUpgrade` handles schema changes (e.g., adding `imagePath` and `videoPath` columns in version 2).
 
-#### 1. **`insertItem(Map<String, dynamic> item)`**
-   - **Purpose**: Adds a new record to the `items` table.
-   - **Parameters**:
-     - `item`: A map containing the key-value pairs for column names and values to be inserted.
-   - **Functionality**:
-     - Retrieves the database instance.
-     - Inserts the `item` map into the table.
-     - Uses `ConflictAlgorithm.replace` to overwrite an existing row with the same ID.
-   - **Example**:
-     ```dart
-     await DatabaseHelper.insertItem({'name': 'Sample Item', 'description': 'A description'});
-     ```
+4. **CRUD Operations**:
+   - `insertTask`: Adds a new task to the table. Supports optional fields (`imagePath`, `videoPath`).
+   - `getTasks`: Fetches all tasks.
+   - `updateTask`: Updates task details by ID.
+   - `deleteTask`: Deletes a task by ID.
 
-#### 2. **`getItems()`**
-   - **Purpose**: Fetches all rows from the `items` table.
-   - **Parameters**: None.
-   - **Functionality**:
-     - Retrieves the database instance.
-     - Queries the table to get all rows.
-   - **Example**:
-     ```dart
-     List<Map<String, dynamic>> items = await DatabaseHelper.getItems();
-     ```
+5. **Schema Flexibility**:
+   - Optional fields (`imagePath`, `videoPath`) allow tasks to store images and videos or remain null.
 
-#### 3. **`updateItem(Map<String, dynamic> item)`**
-   - **Purpose**: Updates an existing record in the `items` table.
-   - **Parameters**:
-     - `item`: A map containing the updated values, including the `id` of the item to be updated.
-   - **Functionality**:
-     - Retrieves the database instance.
-     - Updates the row matching the provided ID with the new values in the map.
-   - **Example**:
-     ```dart
-     await DatabaseHelper.updateItem({'id': 1, 'name': 'Updated Item', 'description': 'Updated description'});
-     ```
-
-#### 4. **`deleteItem(int id)`**
-   - **Purpose**: Deletes a specific record from the `items` table by ID.
-   - **Parameters**:
-     - `id`: The ID of the item to delete.
-   - **Functionality**:
-     - Retrieves the database instance.
-     - Deletes the row where the `id` matches the provided value.
-   - **Example**:
-     ```dart
-     await DatabaseHelper.deleteItem(1);
-     ```
-
-#### 5. **`closeDatabase()`**
-   - **Purpose**: Closes the database connection.
-   - **Parameters**: None.
-   - **Functionality**:
-     - Ensures the database is closed to release resources.
-
----
-
-### Workflow Summary
-1. **Initialization**:
-   - The database is lazily initialized when accessed for the first time using the `database` getter.
-   - The database file is created in the device's app-specific storage, ensuring data persistence.
-
-2. **Table Structure**:
-   - The `items` table is created with columns for:
-     - `id` (primary key, auto-incremented)
-     - `name` (non-null text field)
-     - `description` (optional text field)
-
-3. **CRUD Operations**:
-   - Each operation (Create, Read, Update, Delete) is encapsulated in a static method for easy reuse.
+6. **Data Safety**:
+   - Incremental schema updates preserve existing user data.
 */

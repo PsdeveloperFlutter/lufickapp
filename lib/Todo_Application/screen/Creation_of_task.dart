@@ -37,11 +37,14 @@ class _createState extends State<create> {
     }
 
     try {
-      await DatabaseHelper.insertItem({
+      await DatabaseHelper.insertTask({
         'name': taskNameController.text,
         'description': taskDescriptionController.text,
         'dateandtime': dateTimeController.text,
+        'imagePath': imagefilestore?.path ?? null, // Set to null if no file is selected
+        'videoPath': videofilestore?.path ?? null, // Set to null if no file is selected
       });
+
       print("Task Added");
       // Navigate to the MainScreen after task creation
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Mainscreen()));

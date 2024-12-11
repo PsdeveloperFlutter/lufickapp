@@ -12,21 +12,18 @@ import 'Screen of Operation_update.dart';
 import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-
-bool changes=false;
-bool timechanges=false;
+bool changes = false;
+bool timechanges = false;
 RxBool isshow = true.obs;
-RxBool mdeletion=false.obs;
-XFile ?imageFile;
+RxBool mdeletion = false.obs;
+XFile? imageFile;
 
 bool setcolor = false;
 Color setappbarcolor = Colors.black;
 
-
 TextEditingController tasksearchNameController = TextEditingController();
-TextEditingController startController=TextEditingController();
-TextEditingController endController=TextEditingController();
+TextEditingController startController = TextEditingController();
+TextEditingController endController = TextEditingController();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,8 +52,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
   }
 
   void loadtasks() async {
-
-    final task = await DatabaseHelper.getItems();
+    final task = await DatabaseHelper.getTasks();
 
     storelist = List.from(task);
     setState(() {
@@ -100,12 +96,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             ? setappbarcolor = Colors.black
             : setappbarcolor = Colors.blue.shade700,
         title: InkWell(
-           onTap:(){
-             Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp ()));
-           },
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MyApp()));
+          },
           child: Text(
             "ToDo App ",
-            style: TextStyle(color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+            style: TextStyle(
+                color: Colors.white, fontFamily: 'Itim', fontSize: 25),
           ),
         ),
         actions: [
@@ -115,9 +113,9 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
               // Show PopupMenu when CircleAvatar is tapped
               showMenu(
                 context: context,
-                position: RelativeRect.fromLTRB(100, 100, 0, 0), // Position of the menu
+                position: RelativeRect.fromLTRB(
+                    100, 100, 0, 0), // Position of the menu
                 items: [
-
                   //Change Image
                   PopupMenuItem(
                     child: Text("Change Image"),
@@ -129,15 +127,16 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                           return AlertDialog(
                             title: Text("Select Image Source"),
                             actions: <Widget>[
-
                               ElevatedButton(
                                 onPressed: () async {
                                   // Pick image from Gallery
                                   ImagePicker picker = ImagePicker();
-                                  XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                                  XFile? image = await picker.pickImage(
+                                      source: ImageSource.gallery);
                                   if (image != null) {
                                     setState(() {
-                                      imageFile = image; // No changes to how XFile is handled
+                                      imageFile =
+                                          image; // No changes to how XFile is handled
                                     });
                                   }
                                 },
@@ -147,10 +146,12 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                 onPressed: () async {
                                   // Pick image from Camera
                                   ImagePicker picker = ImagePicker();
-                                  XFile? image = await picker.pickImage(source: ImageSource.camera);
+                                  XFile? image = await picker.pickImage(
+                                      source: ImageSource.camera);
                                   if (image != null) {
                                     setState(() {
-                                      imageFile = image; // No changes to how XFile is handled
+                                      imageFile =
+                                          image; // No changes to how XFile is handled
                                     });
                                   }
                                 },
@@ -172,81 +173,79 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   //Time
                   PopupMenuItem(
                     child: Text("Sort by time"),
-                    onTap: () async{
-                     if(timechanges==false){
-                       timechanges=true;
-                       Future.delayed(Duration.zero,()async{
-                         tasks.sort((a,b)=>b['dateandtime'].toString().toLowerCase().compareTo(a['dateandtime'].toString().toLowerCase()));
-                         setState(() {
+                    onTap: () async {
+                      if (timechanges == false) {
+                        timechanges = true;
+                        Future.delayed(Duration.zero, () async {
+                          tasks.sort((a, b) => b['dateandtime']
+                              .toString()
+                              .toLowerCase()
+                              .compareTo(
+                                  a['dateandtime'].toString().toLowerCase()));
+                          setState(() {});
+                        });
 
-                         });
-                       });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Color(0xff0000FF),
+                            content: Text(' Sorted by Ascending Order'),
+                          ),
+                        );
+                      } else {
+                        timechanges = false;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Color(0xff0000FF),
+                            content: Text(' Sorted by Descending Order'),
+                          ),
+                        );
 
-
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(
-                           backgroundColor: Color(0xff0000FF),
-                           content: Text(' Sorted by Ascending Order'),
-                         ),
-                       );
-
-
-                     }
-
-
-                     else{
-                       timechanges=false;
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(
-                           backgroundColor: Color(0xff0000FF),
-                           content: Text(' Sorted by Descending Order'),
-                         ),
-                       );
-
-                       Future.delayed(Duration.zero,()async{
-                         tasks.sort((a,b)=>a['dateandtime'].toString().toLowerCase().compareTo(b['dateandtime'].toString().toLowerCase()));
-                         setState(() {
-
-                         });
-                       });
-                     }
-
+                        Future.delayed(Duration.zero, () async {
+                          tasks.sort((a, b) => a['dateandtime']
+                              .toString()
+                              .toLowerCase()
+                              .compareTo(
+                                  b['dateandtime'].toString().toLowerCase()));
+                          setState(() {});
+                        });
+                      }
                     },
-
                   ),
 
                   //Description
                   PopupMenuItem(
                     child: Text("Sort by description"),
-                    onTap: () async{
-                      Future.delayed(Duration.zero,()async{
-                        if(changes==false){
-                          tasks.sort((a,b)=>b['description'].toString().toLowerCase().compareTo(a['description'].toString().toLowerCase()));
-                             changes=true;
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(
-                           backgroundColor: Color(0xff0000FF),
-                           content: Text(' Sorted by Descending Order'),
-                         ),
-                       );
-                        }
-                        else{
-                          tasks.sort((a,b)=>a['description'].toString().toLowerCase().compareTo(b['description'].toString().toLowerCase()));
-                          changes=false;
+                    onTap: () async {
+                      Future.delayed(Duration.zero, () async {
+                        if (changes == false) {
+                          tasks.sort((a, b) => b['description']
+                              .toString()
+                              .toLowerCase()
+                              .compareTo(
+                                  a['description'].toString().toLowerCase()));
+                          changes = true;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color(0xff0000FF),
+                              content: Text(' Sorted by Descending Order'),
+                            ),
+                          );
+                        } else {
+                          tasks.sort((a, b) => a['description']
+                              .toString()
+                              .toLowerCase()
+                              .compareTo(
+                                  b['description'].toString().toLowerCase()));
+                          changes = false;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Color(0xff0000FF),
                               content: Text(' Sorted by Ascending Order'),
                             ),
                           );
-
-
                         }
 
-
-                        setState(() {
-
-                        });
+                        setState(() {});
                       });
                     },
                   ),
@@ -265,55 +264,71 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-
-
-                                  SizedBox(height: 10,),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   TextField(
                                     controller: startController,
                                     decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Start',
-                                      hintText: 'Enter start index',
-                                      prefixIcon: Icon(Icons.format_list_numbered)
-                                    ),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Start',
+                                        hintText: 'Enter start index',
+                                        prefixIcon:
+                                            Icon(Icons.format_list_numbered)),
                                   ),
-                                  SizedBox(height: 10,),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   TextField(
                                     controller: endController,
                                     decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'End',
-                                      hintText: 'Enter end index',
-                                      prefixIcon: Icon(Icons.format_list_numbered)
-                                    ),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'End',
+                                        hintText: 'Enter end index',
+                                        prefixIcon:
+                                            Icon(Icons.format_list_numbered)),
                                   ),
-                                  SizedBox(height: 10,),
-
-
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   TextButton(
-                                    onPressed: () async{
-                                      int start = int.parse(startController.text);
+                                    onPressed: () async {
+                                      int start =int.parse(startController.text);
                                       int end = int.parse(endController.text);
-                                      if(start<tasks.length && end<tasks.length){
-                                        List<dynamic> templist=[];
-                                        for(int i=start;i<=end;i++){
-                                          await DatabaseHelper.deleteItem(tasks[i]);
+                                      start=start-1;
+                                      end=end-1;
+                                      if (start < tasks.length && end < tasks.length &&  start <= end) {
+                                        List<dynamic> tasksToDelete =
+                                            tasks.sublist(start,
+                                                end + 1); // Sublist to delete
 
+                                        for (var task in tasksToDelete) {
+                                          // Assuming task contains an `id` or relevant property
+                                          await DatabaseHelper.deleteTask(task[
+                                              'id']); // Replace 'id' with the correct key
                                         }
 
                                         setState(() {
-                                        loadtasks();
+                                          tasks.removeRange(
+                                              start,
+                                              end +
+                                                  1); // Safely remove tasks in range
+                                          loadtasks(); // Reload tasks to refresh the UI
                                         });
-                                        ScaffoldMessenger.of(context).showSnackBar(
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           SnackBar(
                                             backgroundColor: Color(0xff0000FF),
                                             content: Text('Tasks Deleted'),
                                           ),
                                         );
-                                        Navigator.of(context).pop(); // Close the dialog
-                                      }
-                                      else{
-                                        ScaffoldMessenger.of(context).showSnackBar(
+
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           SnackBar(
                                             backgroundColor: Color(0xff0000FF),
                                             content: Text('Enter valid index'),
@@ -323,45 +338,38 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                     },
                                     child: Text("Delete"),
                                   ),
-
-
-
-                                  SizedBox(height: 10,),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.of(context).pop(); // Close the dialog
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
                                           },
                                           child: Text("Cancel"),
                                         ),
-
                                         TextButton(
                                           onPressed: () {
                                             // Add your delete logic here
 
-                                            Navigator.of(context).pop(); // Close the dialog
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
                                           },
                                           child: Text("Delete"),
                                         ),
-
                                       ],
                                     ),
                                   )
                                 ],
                               )
-                               ],
+                            ],
                           );
                         },
                       );
-
-
-
-
-
-
                     },
                   ),
                 ],
@@ -374,13 +382,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 child: ClipOval(
                   child: imageFile != null
                       ? Image.file(
-                    File(imageFile!.path),
-                    fit: BoxFit.cover, // Ensures the image fills the CircleAvatar
-                  )
+                          File(imageFile!.path),
+                          fit: BoxFit
+                              .cover, // Ensures the image fills the CircleAvatar
+                        )
                       : Image.asset(
-                    "assets/images/IMG20240302171902.jpg",
-                    fit: BoxFit.cover, // Default image if none selected
-                  ),
+                          "assets/images/IMG20240302171902.jpg",
+                          fit: BoxFit.cover, // Default image if none selected
+                        ),
                 ),
               ),
             ),
@@ -395,14 +404,12 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
               Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: TextField(
                       controller: tasksearchNameController,
                       decoration: InputDecoration(
-                        suffixIcon:
-
-
-                        InkWell(
+                        suffixIcon: InkWell(
                           onTap: () {
                             if (tasks.isEmpty) {
                               // If the tasks list is empty
@@ -411,24 +418,36 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                               );
                             } else if (tasksearchNameController.text.isEmpty) {
                               // If the search field is empty, restore the original list
-                              tasks.assignAll(storelist); // Restore from the original backup
+                              tasks.assignAll(
+                                  storelist); // Restore from the original backup
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Search field is empty')),
+                                const SnackBar(
+                                    content: Text('Search field is empty')),
                               );
                             } else {
                               // Perform the search
                               final searchResults = tasks.where((element) {
-                                final lowerCaseElement = (element['name'] ?? '').toLowerCase();
-                                final lowerCaseElementdescription=(element['description'] ?? '').toLowerCase();
-                                final lowerCaseSearchTerm = tasksearchNameController.text.toLowerCase();
-                                return lowerCaseElement.contains(lowerCaseSearchTerm)  || lowerCaseElementdescription.contains(lowerCaseSearchTerm);
+                                final lowerCaseElement =
+                                    (element['name'] ?? '').toLowerCase();
+                                final lowerCaseElementdescription =
+                                    (element['description'] ?? '')
+                                        .toLowerCase();
+                                final lowerCaseSearchTerm =
+                                    tasksearchNameController.text.toLowerCase();
+                                return lowerCaseElement
+                                        .contains(lowerCaseSearchTerm) ||
+                                    lowerCaseElementdescription
+                                        .contains(lowerCaseSearchTerm);
                               }).toList();
 
                               if (searchResults.isEmpty) {
                                 // If no matches are found, restore the original list
-                                tasks.assignAll(storelist); // Restore from the backup
+                                tasks.assignAll(
+                                    storelist); // Restore from the backup
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('No tasks match your search')),
+                                  const SnackBar(
+                                      content:
+                                          Text('No tasks match your search')),
                                 );
                               } else {
                                 // Update tasks with the search results
@@ -438,11 +457,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                           },
                           child: const Icon(Icons.search),
                         ),
-
-
-
-
-
                         hintText: "Search Your Task",
                         hintStyle: const TextStyle(
                           color: Colors.grey,
@@ -460,45 +474,47 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       return tasks.isEmpty
                           ? const Center(child: Text("No Tasks"))
                           : ListView.separated(
-                        itemCount: tasks.length,
-                        itemBuilder: (context, index) {
-                          var store = tasks[index];
-                          return Card(
-                            elevation: 4,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                const SizedBox(height: 10),
-                                ListTile(
-                                  title: Text(store["name"] ?? "No Name"),
-                                  subtitle: Text(
-                                      store["description"] ?? "No Description"),
-                                  trailing: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        isshow.value = !isshow.value;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.more_vert),
+                              itemCount: tasks.length,
+                              itemBuilder: (context, index) {
+                                var store = tasks[index];
+                                return Card(
+                                  elevation: 4,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      const SizedBox(height: 10),
+                                      ListTile(
+                                        title: Text(store["name"] ?? "No Name"),
+                                        subtitle: Text(store["description"] ??
+                                            "No Description"),
+                                        trailing: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isshow.value = !isshow.value;
+                                            });
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                        ),
+                                      ),
+                                      Obx(() {
+                                        return Offstage(
+                                          offstage: isshow.value,
+                                          child: functionality(store, index),
+                                        );
+                                      }),
+                                    ],
                                   ),
-                                ),
-                                Obx(() {
-                                  return Offstage(
-                                    offstage: isshow.value,
-                                    child: functionality(store, index),
-                                  );
-                                }),
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return Divider(
-                            color: Colors.deepOrangeAccent.withAlpha(20),
-                            thickness: 10,
-                          );
-                        },
-                      );
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return Divider(
+                                  color: Colors.deepOrangeAccent.withAlpha(20),
+                                  thickness: 10,
+                                );
+                              },
+                            );
                     }),
                   ),
                 ],
@@ -513,9 +529,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
               onPressed: () {
                 setState(() {
                   setcolor = !setcolor;
-                  setappbarcolor = setcolor == false
-                      ? Colors.black
-                      : Colors.blue.shade700;
+                  setappbarcolor =
+                      setcolor == false ? Colors.black : Colors.blue.shade700;
                 });
               },
               backgroundColor: setappbarcolor,
@@ -530,12 +545,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
       ),
     );
   }
-
-
-
-
-
-
 
   Widget functionality(dynamic store, int index) {
     return ExpansionTile(
@@ -554,17 +563,28 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
       children: [
         SingleChildScrollView(
           child: Container(
-            height: 500,
+            height: 640,
             child: Column(
               children: [
+
+                ExpansionTile(title: Text("Image"),
+                children: [
+                  Expanded(
+                    child: Container(
+                      child: store[index]['imagePath'] != null
+                          ? Image.file(File(store[index]['imagePath'].toString()))
+                          : Text("Image not Selected by User"),
+                    ),
+                  )
+                ]),
                 //Done Option
                 Card(
                   elevation: 5,
                   child: ListTile(
                     leading: const Icon(Icons.done, color: Colors.deepPurple),
                     title: const Text("Done"),
-                    onTap: ()async {
-                      await DatabaseHelper.deleteItem(store["id"]);
+                    onTap: () async {
+                      await DatabaseHelper.deleteTask(store["id"]);
                       tasks.removeAt(index);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -574,7 +594,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     },
                   ),
                 ),
-
 
                 //Share Option
                 Card(
@@ -594,23 +613,24 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                   child: ListTile(
                     leading: const Icon(Icons.update, color: Colors.deepPurple),
                     title: const Text("Update"),
-                    onTap: ()  {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         //This is Pass Id TO ANOTHER SCREEN FOR UPDATION
-                        return Mainpart(id:store["id"],index:index,tasks:tasks);
-
+                        return Mainpart(
+                            id: store["id"], index: index, tasks: tasks);
                       }));
                     },
                   ),
                 ),
-               //Delete Option
+                //Delete Option
                 Card(
                   elevation: 5,
                   child: ListTile(
                     leading: const Icon(Icons.delete, color: Colors.deepPurple),
                     title: const Text("Delete"),
                     onTap: () async {
-                      await DatabaseHelper.deleteItem(store["id"]);
+                      await DatabaseHelper.deleteTask(store["id"]);
                       tasks.removeAt(index);
                       Get.snackbar(
                         "Task Deleted",
@@ -624,13 +644,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading: const Icon(Icons.copy_all, color: Colors.deepPurple),
+                    leading:
+                        const Icon(Icons.copy_all, color: Colors.deepPurple),
                     title: const Text("Copy and Paste"),
                     onTap: () {
                       Clipboard.setData(
                         ClipboardData(
                           text:
-                          "Task: ${store["name"]}\nDescription: ${store["description"]}",
+                              "Task: ${store["name"]}\nDescription: ${store["description"]}",
                         ),
                       ).then((value) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -646,48 +667,51 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading:  Icon(Icons.surround_sound, color: Colors.deepPurple),
-                    title:  Text("Speak Task"),
+                    leading:
+                        Icon(Icons.surround_sound, color: Colors.deepPurple),
+                    title: Text("Speak Task"),
                     //This Function and Button IS Responsible for the Text to Speech
-                    onTap: ()async {
+                    onTap: () async {
                       FlutterTts flutterTts = FlutterTts();
                       await flutterTts.setLanguage("hi-IN");
                       await flutterTts.setSpeechRate(0.5);
                       await flutterTts.setPitch(1.0);
-                      await flutterTts.speak("${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
+                      await flutterTts.speak(
+                          "${store["name"]} \n${store["description"]}\n${store["dateandtime"]}");
                     },
                     //This Function AND BODY END HERE
-
                   ),
                 ),
                 //Archive task
                 Card(
                   elevation: 5,
                   child: ListTile(
-                    leading:  Icon(Icons.archive, color: Colors.deepPurple),
-                    title:  Text("Archive Task"),
+                    leading: Icon(Icons.archive, color: Colors.deepPurple),
+                    title: Text("Archive Task"),
                     //This Function and Button IS Responsible for the Text to Speech
-                    onTap: ()async {
-
-                    },
+                    onTap: () async {},
                     //This Function AND BODY END HERE
-
                   ),
                 ),
 
-
-
-
-
-
+                //Pdf task
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading:
+                        Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
+                    title: Text("Pdf Task"),
+                    //This Function and Button IS Responsible for the Text to Speech
+                    onTap: () async {},
+                    //This Function AND BODY END HERE
+                  ),
+                ),
               ],
             ),
-
           ),
         ),
       ],
     );
   }
 
-  void _sortItems() {}
 }

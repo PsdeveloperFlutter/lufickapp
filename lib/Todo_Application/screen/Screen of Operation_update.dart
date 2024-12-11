@@ -330,12 +330,16 @@ class _MainpartState extends State<Mainpart> {
                     );
 
                     // Update the database
-                    await DatabaseHelper.updateItem(
+                    await DatabaseHelper.updateTask(
                       widget.id,
-                      taskNameControllerupdate.text.toString(),
-                      taskDescriptionControllerupdate.text.toString(),
-                      dateTimeControllerupdate.text.toString()
-    );
+                      {
+                        'name': taskNameControllerupdate.text,
+                        'description': taskDescriptionControllerupdate.text,
+                        'dateandtime': dateTimeControllerupdate.text,
+                        'image': imagefilestoreS?.path,
+                        'video': videofilestoreS?.path,
+                      },
+                    );
 
                     // Close the loader
                     Navigator.of(context).pop();
