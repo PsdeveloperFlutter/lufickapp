@@ -15,8 +15,17 @@ class generatepdf {
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
-          return pw.Text("Task :- $texts\nDescription :- $description\nDate :- $date ", style: pw.TextStyle(fontSize: 40));
-        },
+
+
+          return
+            pw.Column(
+              children: [
+            pw.Text("Task :- $texts\nDescription :- $description\nDate :- $date ",
+              style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold,fontStyle: pw.FontStyle.italic),)
+
+          ]
+            );
+          },
       ),
     );
 
