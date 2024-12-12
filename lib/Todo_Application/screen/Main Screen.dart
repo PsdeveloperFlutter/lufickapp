@@ -778,7 +778,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
 
                         //This code is for the Generating the Pdf of the Task According to Index
                         //And send the name ,description and dateandtime to another screen according to index
-                      Get.to(generatepdf.generateAndOpenPDF(store["name"], store["description"], store["dateandtime"]));
+                      Get.to(generatepdf.generateAndOpenPDF(store["name"], store["description"], store["dateandtime"],store["name"]));
 
 
                       },

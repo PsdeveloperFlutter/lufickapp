@@ -8,7 +8,7 @@ import 'package:open_file/open_file.dart';
 
 
 class generatepdf {
- static Future<void> generateAndOpenPDF(dynamic texts ,dynamic description , dynamic date) async {
+ static Future<void> generateAndOpenPDF(dynamic texts ,dynamic description , dynamic date,dynamic title) async {
     final pdf = pw.Document(); // Create a new PDF document
 
     // Add a page with some content
@@ -25,7 +25,7 @@ class generatepdf {
 
     // Save the generated PDF to the device
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/example.pdf');
+    final file = File('${directory.path}/$title.pdf');
     await file.writeAsBytes(pdfBytes);
 
     print('PDF saved at: ${file.path}');
