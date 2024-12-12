@@ -98,9 +98,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
           ],
         )
-            : CircularProgressIndicator(
-          color: Colors.deepPurple,
-        ), // Show a loading indicator while the video initializes
+            :Text("No Video Selected"), // Show a loading indicator while the video initializes
       ),
     );
   }
