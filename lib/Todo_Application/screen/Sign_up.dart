@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +32,10 @@ class _HomePageState extends State<HomePagesignup>
   late Animation<double> _opacity;
   late Animation<double> _transform;
 
+
+  TextEditingController signupemailController = TextEditingController();
+  TextEditingController signuppasswordController = TextEditingController();
+  TextEditingController signupnameController = TextEditingController();
   @override
   void initState() {
     _controller = AnimationController(
@@ -122,17 +127,36 @@ class _HomePageState extends State<HomePagesignup>
                         ),
                         SizedBox(),
                         component1(Icons.account_circle_outlined,
-                            'User name...', false, false),
+                            'User name...', false, false ,signupnameController),
                         component1(
-                            Icons.email_outlined, 'Email...', false, true),
+                            Icons.email_outlined, 'Email...', false, true,signupemailController),
                         component1(
-                            Icons.lock_outline, 'Password...', true, false),
+                            Icons.lock_outline, 'Password...', true, false,signuppasswordController),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(width: size.width / 25),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                               try{
+                                 FirebaseAuth signupauth = FirebaseAuth.instance;
+                                 if(signupnameController.text.isNotEmpty && signupemailController.text.isNotEmpty && signuppasswordController.text.isNotEmpty){
+                                   await signupauth.createUserWithEmailAndPassword(
+                                       email:signupemailController.text.trim()
+                                       , password:signuppasswordController.text.trim()
+                                   );
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                     SnackBar(content: Text("Sign Up Successfully")),
+                                   );
+                                 }
+                                 else{
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                     SnackBar(content: Text("Please Enter Email and Password")),);
+                                 }
+                               }catch(e){
+                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid Email or Password")));
+                               }
+                              },
                               child: Text(
                                 "SignUp",
                                 style: TextStyle(color: Colors.white),
@@ -156,7 +180,7 @@ class _HomePageState extends State<HomePagesignup>
   }
 
   Widget component1(
-      IconData icon, String hintText, bool isPassword, bool isEmail) {
+      IconData icon, String hintText, bool isPassword, bool isEmail , TextEditingController allcontroller) {
     Size size = MediaQuery.of(context).size;
     return Container(
       height: size.width / 8,
@@ -168,6 +192,7 @@ class _HomePageState extends State<HomePagesignup>
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
+        controller:allcontroller,
         style: TextStyle(color: Colors.black.withOpacity(.8)),
         obscureText: isPassword,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,

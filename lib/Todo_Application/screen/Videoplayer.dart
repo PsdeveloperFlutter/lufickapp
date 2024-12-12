@@ -56,7 +56,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade700,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Video Player',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.deepPurple,
@@ -89,7 +89,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 IconButton(
                   icon: Icon(
                     _isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.white,
+                    color: Colors.black,
                     size: 40,
                   ),
                   onPressed: _togglePlayPause,

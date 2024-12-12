@@ -9,8 +9,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../Backend/Database of Application.dart';
 import 'Main Screen.dart';
-XFile ? imagefilestoreS;
-XFile ? videofilestoreS;
+dynamic  imagefilestoreS;
+dynamic  videofilestoreS;
 
 TextEditingController taskNameControllerupdate = TextEditingController();
 TextEditingController taskDescriptionControllerupdate = TextEditingController();
@@ -34,13 +34,26 @@ final Rx<DateTime> selectedDate = DateTime.now().obs;
 class _MainpartState extends State<Mainpart> {
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    dateTimeControllerupdate.text = "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
-    taskDescriptionControllerupdate.text=widget.tasks[widget.index]['description'];
-    taskNameControllerupdate.text=widget.tasks[widget.index]['name'];
-    imagefilestoreS=widget.tasks[widget.index]['image']??null;
-    videofilestoreS=widget.tasks[widget.index]['video']??null;
+    dateTimeControllerupdate.text =
+    "${selectedDate.value.day}-${selectedDate.value.month}-${selectedDate.value.year}";
+    taskDescriptionControllerupdate.text = widget.tasks[widget.index]['description'];
+    taskNameControllerupdate.text = widget.tasks[widget.index]['name'];
+
+    // Initialize image file if path exists
+    if (widget.tasks[widget.index]['imagePath'] != null) {
+      imagefilestoreS = XFile(widget.tasks[widget.index]['imagePath']);
+    } else {
+      imagefilestoreS = null;
+    }
+
+    // Initialize video file if path exists
+    if (widget.tasks[widget.index]['videoPath'] != null) {
+      videofilestoreS = XFile(widget.tasks[widget.index]['videoPath']);
+    } else {
+      videofilestoreS = null;
+    }
   }
 
   Widget build(BuildContext context) {
@@ -319,16 +332,6 @@ class _MainpartState extends State<Mainpart> {
                 if (taskNameControllerupdate.text.isNotEmpty &&
                     taskDescriptionControllerupdate.text.isNotEmpty) {
                   try {
-                    // Show a loader while updating
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    );
                     // Update the database
                     await DatabaseHelper.updateTask(
                       widget.id,
@@ -352,7 +355,7 @@ class _MainpartState extends State<Mainpart> {
                         backgroundColor: Colors.green,
                       ),
                     );
-                    /*Timer(
+                    Timer(
                       const Duration(microseconds: 1000),
                           () {
                         // Navigate to the MainScreen after task update
@@ -363,7 +366,7 @@ class _MainpartState extends State<Mainpart> {
                           ),
                         );
                       },
-                    );*/
+                    );
 
                   } catch (e) {
                     // Close the loader if there's an error

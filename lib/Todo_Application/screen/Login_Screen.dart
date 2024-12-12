@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
@@ -25,7 +26,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   int activeIndex = 0;
-
+ FirebaseAuth auth = FirebaseAuth.instance;
   @override
   void initState() {
     Timer.periodic(Duration(seconds: 5), (timer) {
@@ -37,6 +38,28 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     super.initState();
+  }
+  TextEditingController logincontroller=TextEditingController();
+  TextEditingController  passwordcontroller=TextEditingController();
+  Future<void> login() async {
+      try {
+       if(logincontroller.text.isEmpty || passwordcontroller.text.isEmpty){
+         ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text("Please Enter Email and Password")),);
+       }
+       else{
+        await auth.signInWithEmailAndPassword(
+             email: logincontroller.text, password: passwordcontroller.text);
+         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Mainscreen()));
+       }
+      }
+
+      catch(e){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Invalid Email or Password")),);
+        print(e);
+      }
+
   }
 
   @override
@@ -121,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 40,
             ),
             TextField(
+              controller: logincontroller,
               cursorColor: Colors.black,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(0.0),
@@ -158,6 +182,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             TextField(
+              controller: passwordcontroller,
               cursorColor: Colors.black,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(0.0),
@@ -196,8 +221,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             MaterialButton(
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Mainscreen()));
+              //For login Purpose in firebase
+                login();
               },
               height: 45,
               color: Colors.black,

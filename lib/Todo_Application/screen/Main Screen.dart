@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 import '../Backend/Database of Application.dart';
@@ -100,16 +101,10 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
         backgroundColor: setcolor == false
             ? setappbarcolor = Colors.black
             : setappbarcolor = Colors.blue.shade700,
-        title: InkWell(
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyApp()));
-          },
-          child: Text(
-            "ToDo App ",
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Itim', fontSize: 25),
-          ),
+        title: Text(
+          "ToDo App ",
+          style: TextStyle(
+              color: Colors.white, fontFamily: 'Itim', fontSize: 25),
         ),
         actions: [
           // GestureDetector on CircleAvatar for PopupMenuButton
@@ -418,134 +413,179 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
         children: [
           TabBarView(
             controller: _tabController,
-            children: [
-              Column(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    child: TextField(
-                      controller: tasksearchNameController,
-                      decoration: InputDecoration(
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            if (tasks.isEmpty) {
-                              // If the tasks list is empty
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('No Task')),
-                              );
-                            } else if (tasksearchNameController.text.isEmpty) {
-                              // If the search field is empty, restore the original list
-                              tasks.assignAll(
-                                  storelist); // Restore from the original backup
+            children: [Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: TextField(
+                    controller: tasksearchNameController,
+                    decoration: InputDecoration(
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          if (tasks.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('No Task')),
+                            );
+                          } else if (tasksearchNameController.text.isEmpty) {
+                            tasks.assignAll(storelist);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Search field is empty')),
+                            );
+                          } else {
+                            final searchResults = tasks.where((element) {
+                              final lowerCaseElement = (element['name'] ?? '').toLowerCase();
+                              final lowerCaseElementdescription =
+                              (element['description'] ?? '').toLowerCase();
+                              final lowerCaseSearchTerm =
+                              tasksearchNameController.text.toLowerCase();
+                              return lowerCaseElement.contains(lowerCaseSearchTerm) ||
+                                  lowerCaseElementdescription
+                                      .contains(lowerCaseSearchTerm);
+                            }).toList();
+
+                            if (searchResults.isEmpty) {
+                              tasks.assignAll(storelist);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text('Search field is empty')),
+                                    content: Text('No tasks match your search')),
                               );
                             } else {
-                              // Perform the search
-                              final searchResults = tasks.where((element) {
-                                final lowerCaseElement =
-                                    (element['name'] ?? '').toLowerCase();
-                                final lowerCaseElementdescription =
-                                    (element['description'] ?? '')
-                                        .toLowerCase();
-                                final lowerCaseSearchTerm =
-                                    tasksearchNameController.text.toLowerCase();
-                                return lowerCaseElement
-                                        .contains(lowerCaseSearchTerm) ||
-                                    lowerCaseElementdescription
-                                        .contains(lowerCaseSearchTerm);
-                              }).toList();
-
-                              if (searchResults.isEmpty) {
-                                // If no matches are found, restore the original list
-                                tasks.assignAll(
-                                    storelist); // Restore from the backup
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content:
-                                          Text('No tasks match your search')),
-                                );
-                              } else {
-                                // Update tasks with the search results
-                                tasks.assignAll(searchResults);
-                              }
+                              tasks.assignAll(searchResults);
                             }
-                          },
-                          child: const Icon(Icons.search,color: Colors.green,),
-                        ),
-                        hintText: "Search Your Task",
-                        hintStyle:  TextStyle(
-                          color: Colors.black,
-                        ),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
+                          }
+                        },
+                        child: const Icon(Icons.search, color: Colors.green),
+                      ),
+                      hintText: "Search Your Task",
+                      hintStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
                         ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Obx(() {
-                      return tasks.isEmpty
-                          ? const Center(child: Text("No Tasks"))
-                          : ListView.separated(
-                              itemCount: tasks.length,
-                              itemBuilder: (context, index) {
-                               var indexstore=index+1;
-                                var store = tasks[index];
-                                return Card(
-                                  elevation: 10,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
+                ),
+                Expanded(
+                  child: Obx(() {
+                    return tasks.isEmpty
+                        ? const Center(child: Text("No Tasks"))
+                        : ListView.separated(
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        var indexstore = index + 1;
+                        var store = tasks[index];
 
-                                        const SizedBox(height: 10),
-                                        ListTile(
-                                          leading: Text(indexstore.toString(), style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
-                                          ),
-                                          title: Text(store["name"] ?? "No Name",style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
-                                          subtitle: Text(store["description"] ??
-                                              "No Description"),
-                                          trailing: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                isshow.value = !isshow.value;
-                                              });
-                                            },
-                                            icon: const Icon(Icons.more_vert,color: Colors.green),
-                                          ),
-                                        ),
-                                        Obx(() {
-                                          return Offstage(
-                                            offstage: isshow.value,
-                                            child: SingleChildScrollView(
 
-                                                child: functionality(store, index)),
-                                          );
-                                        }),
-                                      ],
+
+                        // Highlighted text configuration
+                        final String searchText =
+                        tasksearchNameController.text.toLowerCase();
+                        final Map<String, HighlightedWord> highlightWords = {
+                          searchText: HighlightedWord(
+                            onTap: () {},
+                            textStyle: const TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        };
+
+                        return Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const SizedBox(height: 10),
+                                ListTile(
+                                  leading: Text(
+                                    indexstore.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return Divider(
-                                  thickness: 5,
-                                  color: Color(0xFFB6FFF0),
-                                );
-                              },
-                            );
-                    }),
-                  ),
-                ],
-              ),
+                                  title: TextHighlight(
+                                    text: store["name"] ?? "No Name",
+                                    words: highlightWords,
+                                    textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                  subtitle: TextHighlight(
+                                    text: store["description"] ?? "No Description",
+                                    words: highlightWords,
+                                    textStyle: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      isshow.value = !isshow.value;
+                                    },
+                                    icon: const Icon(Icons.more_vert,
+                                        color: Colors.green),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Created Date",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      store["dateandtime"] ?? "No Date",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Obx(() {
+                                  return Offstage(
+                                    offstage: isshow.value,
+                                    child: SingleChildScrollView(
+                                      child: functionality(store, index),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider(
+                          thickness: 5,
+                          color: Color(0xFFB6FFF0),
+                        );
+                      },
+                    );
+                  }),
+                ),
+              ],
+            )
+,
               create(),
             ],
           ),
@@ -657,9 +697,9 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                         await DatabaseHelper.deleteTask(store["id"]);
                         tasks.removeAt(index);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                             SnackBar(
                             backgroundColor: Color(0xff4796ff),
-                            content: Text('Task Done'),
+                            content: Text('Task Done on ${DateTime.now().toString().split(' ')[0]}'),
                           ),
                         );
                       },
@@ -756,16 +796,6 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     ),
                   ),
 
-                  // Archive task
-                  Card(
-                    elevation: 5,
-                    child: ListTile(
-                      leading: Icon(Icons.archive, color: Colors.deepPurple),
-                      title: Text("Archive Task", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () async {},
-                    ),
-                  ),
 
                   // Pdf task
                   Card(
