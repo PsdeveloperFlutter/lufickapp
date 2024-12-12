@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
+import 'Generate_PDF.dart';
 import 'Screen of Operation_update.dart';
 import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
@@ -773,7 +774,14 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                       leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
                       title: Text("Pdf Task", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
                       ),
-                      onTap: () async {},
+                      onTap: () async {
+
+                        //This code is for the Generating the Pdf of the Task According to Index
+                        //And send the name ,description and dateandtime to another screen according to index
+                      Get.to(generatepdf.generateAndOpenPDF(store["name"], store["description"], store["dateandtime"]));
+
+
+                      },
                     ),
                   ),
                 ],
