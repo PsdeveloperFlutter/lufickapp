@@ -496,45 +496,48 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                                var indexstore=index+1;
                                 var store = tasks[index];
                                 return Card(
-                                  elevation: 4,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
+                                  elevation: 10,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
 
-                                      const SizedBox(height: 10),
-                                      ListTile(
-
-                                        leading: Text(indexstore.toString()),
-                                        title: Text(store["name"] ?? "No Name"),
-                                        subtitle: Text(store["description"] ??
-                                            "No Description"),
-                                        trailing: IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              isshow.value = !isshow.value;
-                                            });
-                                          },
-                                          icon: const Icon(Icons.more_vert,color: Colors.green),
+                                        const SizedBox(height: 10),
+                                        ListTile(
+                                          leading: Text(indexstore.toString(), style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                                          ),
+                                          title: Text(store["name"] ?? "No Name",style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
+                                          subtitle: Text(store["description"] ??
+                                              "No Description"),
+                                          trailing: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isshow.value = !isshow.value;
+                                              });
+                                            },
+                                            icon: const Icon(Icons.more_vert,color: Colors.green),
+                                          ),
                                         ),
-                                      ),
-                                      Obx(() {
-                                        return Offstage(
-                                          offstage: isshow.value,
-                                          child: SingleChildScrollView(
+                                        Obx(() {
+                                          return Offstage(
+                                            offstage: isshow.value,
+                                            child: SingleChildScrollView(
 
-                                              child: functionality(store, index)),
-                                        );
-                                      }),
-                                    ],
+                                                child: functionality(store, index)),
+                                          );
+                                        }),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
                               separatorBuilder:
                                   (BuildContext context, int index) {
                                 return Divider(
-                                  color: Colors.blue.withAlpha(30),
-                                  thickness: 10,
+                                  thickness: 5,
+                                  color: Color(0xFFB6FFF0),
                                 );
                               },
                             );
@@ -587,7 +590,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
             ),
             const Text(
               "Options",
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -605,7 +608,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                         children: [
                           Icon(Icons.image, color: Colors.deepPurple),
                           SizedBox(width: 12),
-                          Text("Show Image"),
+                          Text("Show Image", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                       children: [
@@ -631,7 +635,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: const Icon(Icons.video_call, color: Colors.deepPurple),
-                      title: const Text("Show Video"),
+                      title: const Text("Show Video", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         Get.to(VideoPlayerWidget(videoPath: store["videoPath"] ?? " "));
                       },
@@ -645,7 +650,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: const Icon(Icons.done, color: Colors.deepPurple),
-                      title: const Text("Done"),
+                      title: const Text("Done", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {
                         await DatabaseHelper.deleteTask(store["id"]);
                         tasks.removeAt(index);
@@ -664,7 +670,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: const Icon(Icons.share, color: Colors.deepPurple),
-                      title: const Text("Share"),
+                      title: const Text("Share", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         Share.share(
                             "Task: ${store["name"]}\nDescription: ${store["description"]}");
@@ -677,7 +684,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: const Icon(Icons.update, color: Colors.deepPurple),
-                      title: const Text("Update"),
+                      title: const Text("Update", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return Mainpart(id: store["id"], index: index, tasks: tasks);
@@ -691,7 +699,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: const Icon(Icons.delete, color: Colors.deepPurple),
-                      title: const Text("Delete"),
+                      title: const Text("Delete", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {
                         await DatabaseHelper.deleteTask(store["id"]);
                         tasks.removeAt(index);
@@ -709,7 +718,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: const Icon(Icons.copy_all, color: Colors.deepPurple),
-                      title: const Text("Copy and Paste"),
+                      title: const Text("Copy and Paste", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         Clipboard.setData(
                           ClipboardData(
@@ -732,7 +742,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: Icon(Icons.surround_sound, color: Colors.deepPurple),
-                      title: Text("Speak Task"),
+                      title: Text("Speak Task", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {
                         FlutterTts flutterTts = FlutterTts();
                         await flutterTts.setLanguage("hi-IN");
@@ -749,7 +760,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: Icon(Icons.archive, color: Colors.deepPurple),
-                      title: Text("Archive Task"),
+                      title: Text("Archive Task", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {},
                     ),
                   ),
@@ -759,7 +771,8 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
                     elevation: 5,
                     child: ListTile(
                       leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
-                      title: Text("Pdf Task"),
+                      title: Text("Pdf Task", style: TextStyle(color: Colors.black,fontStyle: FontStyle.italic,fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                       onTap: () async {},
                     ),
                   ),

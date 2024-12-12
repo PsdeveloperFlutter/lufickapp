@@ -352,7 +352,7 @@ class _MainpartState extends State<Mainpart> {
                         backgroundColor: Colors.green,
                       ),
                     );
-                    Timer(
+                    /*Timer(
                       const Duration(microseconds: 1000),
                           () {
                         // Navigate to the MainScreen after task update
@@ -363,7 +363,7 @@ class _MainpartState extends State<Mainpart> {
                           ),
                         );
                       },
-                    );
+                    );*/
 
                   } catch (e) {
                     // Close the loader if there's an error

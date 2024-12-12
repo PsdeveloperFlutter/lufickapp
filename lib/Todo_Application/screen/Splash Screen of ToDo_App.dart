@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lufickapp/Todo_Application/Backend/Database%20of%20Application.dart';
@@ -7,12 +8,38 @@ import 'package:particles_flutter/component/particle/particle.dart';
 import 'package:particles_flutter/particles_engine.dart';
 
 import 'Login_Screen.dart';
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.database;
+
+  // Initialize the database
+  try {
+    await DatabaseHelper.database;
+  } catch (e) {
+    print('Database initialization error: $e');
+    // Optionally, handle the error if necessary (e.g., show a dialog or fallback)
+  }
+
+  // Initialize Firebase
+  try {
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "AIzaSyAbY4ZNAKoZEi600VFVbKSwej-fLwWLaT0",
+        appId: "1:927174904612:android:51df47f716d24d1b39c1b1",
+        messagingSenderId: "927174904612",
+        projectId: "lufickinternship-d0d28",
+        storageBucket: "lufickinternship-d0d28.firebasestorage.app",
+      ),
+    );
+  } catch (e) {
+    print('Firebase initialization error: $e');
+    // Optionally, handle the error if necessary
+  }
+
+  // Now run your app
   runApp(MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

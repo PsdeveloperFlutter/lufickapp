@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "927174904612",
+    "project_id": "lufickinternship-d0d28",
+    "storage_bucket": "lufickinternship-d0d28.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927174904612:android:51df47f716d24d1b39c1b1",
+        "android_client_info": {
+          "package_name": "com.example.lufickapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbY4ZNAKoZEi600VFVbKSwej-fLwWLaT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

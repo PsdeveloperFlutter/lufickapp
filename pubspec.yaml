@@ -37,6 +37,7 @@ dependencies:
   pdf: ^3.11.1
   open_file: ^3.3.2  # Or latest version, see pub.dev
   fl_chart: ^0.69.2
+  firebase_analytics: ^11.3.6
   flutter_flow_chart: ^3.2.1
   flutter_svg: ^2.0.5
   animate_do: ^3.3.4
@@ -94,6 +95,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - android/app/google-services.json
     - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
