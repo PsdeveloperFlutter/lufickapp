@@ -3,19 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
-  }
-}
+import 'User_Profile.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -30,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     PostScreen(),
     ProfileScreen(),
-    UpdatePostScreen(),
+    UserProfileScreen(),
   ];
 
   // Method to handle bottom navigation bar tap
@@ -61,8 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.update),
-            label: 'Update Post',
+            icon: Icon(Icons.perm_identity),
+            label: 'Create Profile',
           ),
         ],
       ),

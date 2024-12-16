@@ -68,10 +68,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF2196F3),
-        title: Text('Create Profile'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: ListView(

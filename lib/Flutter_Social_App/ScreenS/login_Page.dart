@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../Todo_Application/screen/Main Screen.dart';
 import '../Firebase_Related_Code/Google_Sign_In.dart';
+import 'Main_Page.dart';
 import 'User_Profile.dart';
 
 Future<void> main() async {
@@ -108,7 +109,7 @@ class LoginPages extends StatelessWidget {
           GestureDetector(
             onTap: (){
               print("Login with Mobile Number");
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>UserProfileScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
             },
             child: Card(
               elevation: 3,
