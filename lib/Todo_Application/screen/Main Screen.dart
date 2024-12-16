@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
+import '../../Flutter_Social_App/ScreenS/login_Page.dart';
 import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Generate_PDF.dart';
@@ -101,10 +104,18 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
         backgroundColor: setcolor == false
             ? setappbarcolor = Colors.black
             : setappbarcolor = Colors.blue.shade700,
-        title: Text(
-          "ToDo App ",
-          style: TextStyle(
-              color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+        title: InkWell(
+          onTap: ()async{
+            await GoogleSignIn().signOut();
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPages(),));
+            },
+
+          child: Text(
+            "ToDo App ",
+            style: TextStyle(
+                color: Colors.white, fontFamily: 'Itim', fontSize: 25),
+          ),
         ),
         actions: [
           // GestureDetector on CircleAvatar for PopupMenuButton

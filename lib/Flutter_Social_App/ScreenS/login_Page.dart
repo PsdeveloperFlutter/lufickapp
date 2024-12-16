@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import '../../Todo_Application/screen/Main Screen.dart';
+import '../Firebase_Related_Code/Google_Sign_In.dart';
+import 'User_Profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +28,27 @@ Future<void> main() async {
 
   // Now run your app
   runApp(MaterialApp(
-      home: LoginPages()));
+      debugShowCheckedModeBanner: false,
+      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: (context, snapshot) {
+        if(snapshot.connectionState==ConnectionState.waiting){
+          return CircularProgressIndicator();
+        }
+        else if(snapshot.connectionState==ConnectionState.active){
+            if(snapshot.data==null){
+              return LoginPages();
+            }
+            else{
+              return Mainscreen();
+            }
+        }
+
+        else if(snapshot.hasError){
+          return Text(snapshot.error.toString());
+        }
+        else{
+          return LoginPages();
+        }
+      })));
 }
 
 
@@ -38,6 +63,8 @@ class LoginPages extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             height: 300,
@@ -48,6 +75,63 @@ class LoginPages extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 10,),
+          GestureDetector(
+            onTap: (){
+           print("Login with Google");
+           gs  obj=new gs();
+           obj.Signwithgoogle();
+            },
+            child: Card(
+              elevation: 3,
+              child: Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.blue)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Login with Google",style: TextStyle(color: Colors.blue,fontSize: 15,fontWeight: FontWeight.bold),),
+                    SizedBox(width: 10,),
+                    Icon(Icons.login,color: Colors.blue,)
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 20,),
+          GestureDetector(
+            onTap: (){
+              print("Login with Mobile Number");
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>UserProfileScreen()));
+            },
+            child: Card(
+              elevation: 3,
+              child: Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.blue)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Login with Mobile",style: TextStyle(color: Colors.blue,fontSize: 15,fontWeight: FontWeight.bold),),
+                    SizedBox(width: 10,),
+                    Icon(Icons.login,color: Colors.blue,)
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
