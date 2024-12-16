@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'PostScreen.dart';
+import 'Profilescreen.dart';
 import 'User_Profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,51 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Screen 1: Post Screen
-class PostScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Post'),
-      ),
-      body: Center(
-        child: Text(
-          'This is the Post Screen',
-          style: TextStyle(
-            fontSize: screenHeight * 0.025, // Responsive font size
-          ),
-        ),
-      ),
-    );
-  }
-}
 
-// Screen 2: Profile Screen
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
-      body: Center(
-        child: Text(
-          'This is the Profile Screen',
-          style: TextStyle(
-            fontSize: screenHeight * 0.025, // Responsive font size
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 // Screen 3: Update Post Screen
 class UpdatePostScreen extends StatelessWidget {

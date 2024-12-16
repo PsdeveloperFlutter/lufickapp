@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import '../../Todo_Application/screen/Main Screen.dart';
 import '../Firebase_Related_Code/Google_Sign_In.dart';
 import 'Main_Page.dart';
-import 'User_Profile.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +37,7 @@ Future<void> main() async {
               return LoginPages();
             }
             else{
-              return Mainscreen();
+            return HomeScreen();
             }
         }
 
