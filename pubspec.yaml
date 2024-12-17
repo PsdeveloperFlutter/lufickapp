@@ -60,7 +60,7 @@ dependencies:
   firebase_storage: ^12.3.7
   particles_flutter: ^1.0.1
   #arcore_flutter_plugin: ^0.1.0
-  #fluttertoast: ^8.2.8
+  fluttertoast: ^8.2.8
   google_fonts: ^6.2.1
   font_awesome_flutter: ^10.5.0
   youtube_player_flutter: ^9.0.4

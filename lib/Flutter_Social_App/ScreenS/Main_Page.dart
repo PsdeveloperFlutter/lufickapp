@@ -43,16 +43,17 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.post_add),
+            icon: Icon(Icons.post_add,color: Colors.black),
             label: 'Post',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person,color: Colors.black),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity),
+            icon: Icon(Icons.perm_identity ,color: Colors.black,),
             label: 'Create Profile',
+
           ),
         ],
       ),
