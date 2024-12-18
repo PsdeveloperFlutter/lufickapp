@@ -90,7 +90,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 elevation: 5,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.yellowAccent.withOpacity(0.2),
+              //      color: Colors.cyanAccent.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(15)
                   ),
                   padding: const EdgeInsets.all(16.0),

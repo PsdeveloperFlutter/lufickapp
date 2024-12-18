@@ -9,6 +9,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 RxList<dynamic>  imagelist = [
+  "assets/images/nature1..jpg",
+  "assets/images/nature2.jpg",
+  "assets/images/nature3.jpg" ,
+  "assets/images/nature4.jpg",
+].obs;
+
+RxList<dynamic>  imagelist1 = [
   "assets/images/fluttersocial.jpg",
   "assets/images/ToDoLogo.jpg",
   "assets/images/ToDoLogo (2).jpg" ,
@@ -248,7 +255,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Icon(Icons.collections, size: 25, color: Colors.black45),
-                      Icon(Icons.video_call, size: 25, color: Colors.black45),
+                      GestureDetector(
+                          onTap: (){
+                            for(var value in imagelist1){
+                              imagelist.add(value);
+                            }
+                          },
+                          child: Icon(Icons.video_call, size: 25, color: Colors.black45)),
                       Icon(Icons.perm_identity, size: 25, color: Colors.black45),
                     ],
                   ),

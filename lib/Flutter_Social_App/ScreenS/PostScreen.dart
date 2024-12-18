@@ -1,121 +1,142 @@
-
-
-// Screen 1: Post Screen
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 
-
-
-RxList<dynamic>  imagelist = [
-"assets/images/fluttersocial.jpg",
- "assets/images/ToDoLogo.jpg",
- "assets/images/ToDoLogo (2).jpg" ,
-  "assets/images/ToDoLogo.jpg",
+RxList<dynamic> imagelist = [
+  "assets/images/nature1..jpg",
+  "assets/images/nature2.jpg",
+  "assets/images/nature3.jpg",
+  "assets/images/nature4.jpg",
 ].obs;
 
-RxList<dynamic>likeanddislike=[].obs;
-
+RxList<dynamic> likeanddislike = RxList<int>();
+RxList<dynamic> isPostVisible = RxList<bool>();
+RxList<dynamic> postTimes = RxList<String>();
 
 class PostScreen extends StatefulWidget {
-
   @override
   State<PostScreen> createState() => _PostScreenState();
 }
 
-class _PostScreenState extends State<PostScreen> with TickerProviderStateMixin{
-
-
-  void initState(){
-    super.initState();
-    //This is the logic for the list like and dislike purpose
-    for(var value in imagelist){
-      likeanddislike.add(0);
-    }
-
-
-  }
-
-
+class _PostScreenState extends State<PostScreen> {
   @override
-  void dispose(){
-    super.dispose();
-   }
-
+  void initState() {
+    super.initState();
+    // Initialize the logic for like/dislike, visibility, and timestamps
+    for (var value in imagelist) {
+      likeanddislike.add(0);
+      isPostVisible.add(true);
+      postTimes.add("Posted ${DateTime.now().hour}:${DateTime.now().minute}"); // Example timestamp
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         toolbarHeight: 40,
-        backgroundColor: Colors.deepPurple.withOpacity(0.5),
-        title: Text('Post'),
+        backgroundColor: Colors.deepPurple.withOpacity(0.7),
+        title: const Text('Post'),
       ),
-      body: Obx(() => ListView.builder(itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 5,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: screenHeight * 0.25,
+      body: Obx(() {
+        return ListView.builder(
+          itemCount: imagelist.length,
+          itemBuilder: (BuildContext context, int index) {
+            // Check if the post is visible
+            if (!isPostVisible[index]) return const SizedBox.shrink();
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Post Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.asset(
+                        imagelist[index],
                         width: screenWidth,
-                        margin: EdgeInsets.all(screenWidth * 0.025),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(screenWidth * 0.05),
-                        )
-                      ,child: Image.asset(imagelist[index]),
+                        height: screenHeight * 0.3,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 4.0,bottom: 4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          // Toggle between like and dislike
-                          likeanddislike[index] =  likeanddislike[index] == 0 ? 1 : 0;
-                        },
-                        child:Obx(
-                                () => GestureDetector(
-                              onTap: () {
-                                likeanddislike[index] = likeanddislike[index] == 0 ? 1 : 0; // Toggle like state
-                              },
-                              child:
-                                   Icon(
-                                    Icons.favorite,
-                                    color: likeanddislike[index] == 0 ? Colors.blue : Colors.red,
-                                  ),
+                    const SizedBox(height: 8),
+                    // Post Timestamp
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            postTimes[index],
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
                             ),
-                            )
-                        ),
-                    ],
-                  ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              isPostVisible[index] = false; // Hide the post
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Like/Dislike Buttons
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              likeanddislike[index] =
+                              likeanddislike[index] == 0 ? 1 : 0; // Toggle like state
+                            },
+                            child: Obx(
+                                  () => Icon(
+                                likeanddislike[index] == 0
+                                    ? Icons.thumb_down
+                                    : Icons.thumb_up,
+                                color: likeanddislike[index] == 0
+                                    ? Colors.blue
+                                    : Colors.red,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            likeanddislike[index] == 0 ? "Disliked" : "Liked",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: likeanddislike[index] == 0
+                                  ? Colors.blue
+                                  : Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-
-
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
-      },itemCount: imagelist.length,),
-    ),);
+      }),
+    );
   }
 }
