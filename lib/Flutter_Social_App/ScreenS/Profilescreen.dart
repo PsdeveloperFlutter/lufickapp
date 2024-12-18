@@ -1,10 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
+
+RxList<dynamic>  imagelist = [
+  "assets/images/fluttersocial.jpg",
+  "assets/images/ToDoLogo.jpg",
+  "assets/images/ToDoLogo (2).jpg" ,
+  "assets/images/ToDoLogo.jpg",
+].obs;
+
+
 
 class _ProfileScreenState extends State<ProfileScreen> {
   // Fetching and showing the data in the console
@@ -56,186 +67,217 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else {
             final docs = snapshot.data!.docs;
 
-            return ListView.builder(
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                final datadocs = docs[index].data() as Map<String, dynamic>;
-
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Stack(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: Image.asset('assets/images/fluttersocial.jpg').image,
-                                radius: 45,
-                              ),
-                              Positioned(
-                                top: 60,
-                                left: 60,
-                                child: Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade500,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Icon(Icons.add,color: Colors.white,size: 20,)),
-                              )
-                            ],
-                          )
-                         ,
-                          SizedBox(width: 18,),
-                          Column(
-                            children: [
-                              Text("3"),
-                              SizedBox(height: 5,),
-                              Text("posts")
-                            ],
-                          ),
-                          SizedBox(width: 18,),
-                          Column(
-                            children: [
-                              Text("263"),
-                              SizedBox(height: 5,),
-                              Text("followers")
-                            ],
-                          ),
-                          SizedBox(width: 18,),
-                          Column(
-                            children: [
-                              Text("204"),
-                              SizedBox(height: 5,),
-                              Text("following")
-                            ],
-                          ),
-                          SizedBox(width: 10,),
-
-
-                        ],
-                      ),
-                    ),
-
-
-
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.only(left:8.0),
-                      child: Text(datadocs['name'],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                    ),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.only(left:8.0),
-                      child: Text(datadocs['bio'],style: TextStyle(fontWeight: FontWeight.w600,fontSize: 12),),
-                    ),
-
-                    SizedBox(height: 20,),
-                    Center(
-                      child: Container(
-                        width: 300,
-                        height: 65,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF5F5F5) // 50% transparency
-                          ,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space out the children
-                          crossAxisAlignment: CrossAxisAlignment.center, // Align children vertically
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Stack(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10), // Add some padding to the text
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center, // Center text vertically
-                                crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
-                                children: [
-                                  Text(
-                                    "Professional dashboard",
-                                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-                                  ),
-                                  Text(
-                                    "New tools are now available",
-                                    style: TextStyle(fontWeight: FontWeight.w100, fontSize: 11),
-                                  ),
-                                ],
-                              ),
+                            CircleAvatar(
+                              backgroundImage: Image.asset('assets/images/fluttersocial.jpg').image,
+                              radius: 45,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20, left: 10), // Space to the right
-                              child: Text(
-                                ".",
-                                style: TextStyle(fontSize: 60, color: Colors.blue),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-,
-        SizedBox(height: 12,),
-
-
-                    Padding(
-                      padding: const EdgeInsets.only(left:18.0),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Card(
-                              elevation: 1,
+                            Positioned(
+                              top: 60,
+                              left: 60,
                               child: Container(
-                                color:  Color(0xFFF5F5F5),
-                                height: 40,
-                                width: 120,
-                                child: Center(child: Text("Edit Profile",style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.w400),)),
-                              ),
-                            ),
-                            SizedBox(width: 20,),
-                            Card(
-                              elevation: 1,
-                              child: Container(
-                                color:  Color(0xFFF5F5F5),
-                                height: 40,
-                                width: 120,
-                                child: Center(child: Text("Share Profile",style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.w400),)),
-                              ),
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.shade500,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Icon(Icons.add, color: Colors.white, size: 20)),
                             )
                           ],
                         ),
+                        SizedBox(width: 18),
+                        Column(
+                          children: [
+                            Text("3"),
+                            SizedBox(height: 5),
+                            Text("posts"),
+                          ],
+                        ),
+                        SizedBox(width: 18),
+                        Column(
+                          children: [
+                            Text("263"),
+                            SizedBox(height: 5),
+                            Text("followers"),
+                          ],
+                        ),
+                        SizedBox(width: 18),
+                        Column(
+                          children: [
+                            Text("204"),
+                            SizedBox(height: 5),
+                            Text("following"),
+                          ],
+                        ),
+                        SizedBox(width: 10),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      docs[0]['name'],
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      docs[0]['bio'],
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: Container(
+                      width: 300,
+                      height: 65,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Professional dashboard",
+                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                                ),
+                                Text(
+                                  "New tools are now available",
+                                  style: TextStyle(fontWeight: FontWeight.w100, fontSize: 11),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20, left: 10),
+                            child: Text(
+                              ".",
+                              style: TextStyle(fontSize: 60, color: Colors.blue),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-
-
-                    SizedBox(height: 12,),
-                   Column(
-                     children: [
-                       Padding(
-                         padding: const EdgeInsets.all(8.0),
-                         child: Container(
-                           width: 82,
-                           height: 82,
-                           decoration: BoxDecoration(
-                             borderRadius: BorderRadius.circular(45),
-                             border: Border.all(color: Colors.black),
-                           ),
-                           child: Icon(Icons.add,size:50,color: Colors.black,),
-                         ),
-                       ),
-                       SizedBox(height: 5,),
-                       Text("New Post",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 12),)
-                     ],
-                   )
-
-
-
-                  ],
-                );
-              },
+                  ),
+                  SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0),
+                    child: Row(
+                      children: [
+                        Card(
+                          elevation: 1,
+                          child: Container(
+                            color: Color(0xFFF5F5F5),
+                            height: 40,
+                            width: 120,
+                            child: Center(
+                                child: Text(
+                                  "Edit Profile",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                )),
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Card(
+                          elevation: 1,
+                          child: Container(
+                            color: Color(0xFFF5F5F5),
+                            height: 40,
+                            width: 120,
+                            child: Center(
+                                child: Text(
+                                  "Share Profile",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 82,
+                          height: 82,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(45),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            size: 50,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "New Post",
+                        style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(Icons.collections, size: 25, color: Colors.black45),
+                      Icon(Icons.video_call, size: 25, color: Colors.black45),
+                      Icon(Icons.perm_identity, size: 25, color: Colors.black45),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Obx(
+                        () => SizedBox(
+                      height: 300, // Constrain height to avoid render errors
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                        ),
+                        itemCount: imagelist.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.grey.shade200,
+                            ),
+                            alignment: Alignment.center,
+                            child: Image.asset(imagelist[index]),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           }
         },
