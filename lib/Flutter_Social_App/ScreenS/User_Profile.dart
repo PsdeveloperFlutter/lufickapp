@@ -74,7 +74,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         centerTitle: true,
         toolbarHeight: 40,
         backgroundColor: Colors.deepPurple.withOpacity(0.5),
-        title: Text("Create Profile",style: TextStyle(color: Colors.black45),),
+        title: Text("Create Profile",style: TextStyle(color: Colors.black),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
