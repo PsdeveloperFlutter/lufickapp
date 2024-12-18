@@ -3,11 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../Firebase_Related_Code/Google_Sign_In.dart';
 import 'Main_Page.dart';
+import 'User_Profile.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
 
   // Initialize Firebase
   try {
@@ -56,8 +56,8 @@ Future<void> main() async {
 //It is the Screen of Login
 
 class LoginPages extends StatelessWidget {
-  const LoginPages({super.key});
-
+  dynamic email,name;
+  List<dynamic> value=[];
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -76,10 +76,15 @@ class LoginPages extends StatelessWidget {
           ),
           SizedBox(height: 10,),
           GestureDetector(
-            onTap: (){
+            onTap: ()async{
            print("Login with Google");
            gs  obj=new gs();
-           obj.Signwithgoogle();
+           await obj.Signwithgoogle();
+           email=gs.email;
+           name=gs.name;
+           if(email!=null   && name!=null){
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserProfileScreen(username: name,email: email,)));
+           }
             },
             child: Card(
               elevation: 3,

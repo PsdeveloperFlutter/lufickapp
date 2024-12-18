@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import 'login_Page.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -52,6 +56,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async{
+              // Perform logout action
+             await GoogleSignIn().signOut();
+             await FirebaseAuth.instance.signOut();
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("users").snapshots(),

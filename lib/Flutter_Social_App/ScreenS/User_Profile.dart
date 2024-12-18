@@ -1,9 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'Main_Page.dart';
+
 class UserProfileScreen extends StatefulWidget {
+
+  final String username;
+  final String email;
+  UserProfileScreen({required this.username,required this.email});
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
@@ -15,8 +23,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final TextEditingController _bioController = TextEditingController();
   File? _profileImage;
 
+  void initState() {
+    super.initState();
+    _nameController.text = widget.username.toString();
+    _emailController.text = widget.email.toString();
+  }
   final ImagePicker _picker = ImagePicker();
-
+void dispose() {
+  super.dispose();
+  _nameController.dispose();
+  _emailController.dispose();
+  _phoneController.dispose();
+  _bioController.dispose();
+}
   // Function to pick an image from gallery
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -43,6 +62,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             content: Text(
                 "Please complete all fields and upload a profile picture")),
       );
+
     } else {
       Future<void> addprofileinfsb() async {
         final firestore = await FirebaseFirestore.instance;
@@ -64,6 +84,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
 
       addprofileinfsb();
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+      });
     }
   }
 

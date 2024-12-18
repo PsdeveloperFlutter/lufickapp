@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lufickapp/Flutter_Social_App/ScreenS/login_Page.dart';
 
 RxList<dynamic> imagelist = [
   "assets/images/nature1..jpg",
@@ -39,7 +42,13 @@ class _PostScreenState extends State<PostScreen> {
         centerTitle: true,
         toolbarHeight: 40,
         backgroundColor: Colors.deepPurple.withOpacity(0.7),
-        title: const Text('Post'),
+        title: GestureDetector(
+            onTap: ()async{
+              await GoogleSignIn().signOut();
+              FirebaseAuth.instance.signOut();
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
+            },
+            child: Text('Post')),
       ),
       body: Obx(() {
         return ListView.builder(

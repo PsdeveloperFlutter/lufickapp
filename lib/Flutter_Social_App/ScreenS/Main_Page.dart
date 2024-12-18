@@ -3,10 +3,9 @@
 
 import 'package:flutter/material.dart';
 
+import 'Otp_Screen/Add friend list.dart';
 import 'PostScreen.dart';
 import 'Profilescreen.dart';
-import 'User_Profile.dart';
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -20,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     PostScreen(),
     ProfileScreen(),
-    UserProfileScreen(),
+    friendlist(),
   ];
 
   // Method to handle bottom navigation bar tap
@@ -51,9 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity ,color: Colors.black,),
-            label: 'Create Profile',
-
+            icon: Icon(Icons.person,color: Colors.black),
+            label: 'Friends List',
           ),
         ],
       ),
@@ -64,26 +62,3 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-
-// Screen 3: Update Post Screen
-class UpdatePostScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Update Post'),
-      ),
-      body: Center(
-        child: Text(
-          'This is the Update Post Screen',
-          style: TextStyle(
-            fontSize: screenHeight * 0.025, // Responsive font size
-          ),
-        ),
-      ),
-    );
-  }
-}
