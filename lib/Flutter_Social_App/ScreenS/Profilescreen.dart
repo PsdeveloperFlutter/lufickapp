@@ -285,7 +285,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   SizedBox(height: 12),
-                     Text(docs[0]['post'][0],style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),),
                SizedBox(
                  height: 300, // Constrain height to avoid render errors
                  child: snapshot.hasData && snapshot.data!.docs.isNotEmpty

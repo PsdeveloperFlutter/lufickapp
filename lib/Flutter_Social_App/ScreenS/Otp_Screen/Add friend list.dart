@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lufickapp/Flutter_Social_App/ScreenS/Friends_Profile.dart';
 
 class friendlist extends StatefulWidget {
   @override
@@ -30,120 +31,128 @@ class _friendlistState extends State<friendlist> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   var user = snapshot.data!.docs[index];
-                  return Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        )
-                      ],
-                    ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Profile Section
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  child: Text(
-                                    user['name']
-                                        .toString()
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: const TextStyle(fontSize: 18),
+                  return GestureDetector(
+
+                    onTap: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                        return friendProfileScreen(name:user['name'].toString() , email:user['email'].toString() , phone:user['phone'].toString(), bio:user['bio'].toString() ,   posts: user['post'], follower: user['follower'].toString(), following: user['following'].toString());
+                      }));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          )
+                        ],
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Profile Section
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: CircleAvatar(
+                                    radius: 26,
+                                    child: Text(
+                                      user['name']
+                                          .toString()
+                                          .substring(0, 1)
+                                          .toUpperCase(),
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                    backgroundColor: Colors.deepPurple.shade50,
                                   ),
-                                  backgroundColor: Colors.deepPurple.shade50,
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                user['name']
-                                    .toString()
-                                    .toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(width: 10),
+                                Text(
+                                  user['name']
+                                      .toString()
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 5),
-                            ],
-                          ),
-                          // Followers and Following
-                          SizedBox(width: 20,),
-                          Column(
-                            children: [
-                              Text(
-                                user['follower'].toString(),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(height: 5),
+                              ],
+                            ),
+                            // Followers and Following
+                            SizedBox(width: 20,),
+                            Column(
+                              children: [
+                                Text(
+                                  user['follower'].toString(),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              const Text(
-                                "Followers",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 17,),
-                          Column(
-                            children: [
-                              Text(
-                                user['following'].toString(),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
+                                const Text(
+                                  "Followers",
+                                  style: TextStyle(fontSize: 12),
                                 ),
-                              ),
-                              const Text(
-                                "Following",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 5,),
-                          // Add Button
-                          GestureDetector(
-                            onTap: () async {
-                              FirebaseFirestore.instance
-                                  .collection("users")
-                                  .doc(user['email'].toString())
-                                  .update({"following": FieldValue.increment(1)}).then((_) {
+                              ],
+                            ),
+                            SizedBox(width: 17,),
+                            Column(
+                              children: [
+                                Text(
+                                  user['following'].toString(),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Text(
+                                  "Following",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 5,),
+                            // Add Button
+                            GestureDetector(
+                              onTap: () async {
                                 FirebaseFirestore.instance
                                     .collection("users")
                                     .doc(user['email'].toString())
-                                    .update({"follower": FieldValue.increment(1)});
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                color: Colors.deepPurple.shade100,
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(color: Colors.deepPurple, width: 1),
-                              ),
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.deepPurple,
-                                size: 24,
+                                    .update({"following": FieldValue.increment(1)}).then((_) {
+                                  FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(user['email'].toString())
+                                      .update({"follower": FieldValue.increment(1)});
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.deepPurple.shade100,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(color: Colors.deepPurple, width: 1),
+                                ),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.deepPurple,
+                                  size: 24,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );

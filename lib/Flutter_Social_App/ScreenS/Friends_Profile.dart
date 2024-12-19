@@ -7,16 +7,35 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'login_Page.dart';
 
-class ProfileScreen extends StatefulWidget {
+class friendProfileScreen extends StatefulWidget {
+
+  final String name;
+  final String email;
+  final String phone;
+  final String bio;
+  List<dynamic> posts=[];
+  final String follower;
+  final String following;
+
+  friendProfileScreen({
+    Key? key,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.bio,
+    this.posts = const [],
+    required this.follower,
+    required this.following,
+  }) : super(key: key);
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<friendProfileScreen> createState() => _ProfileScreenState();
 }
 
 
 
 
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<friendProfileScreen> {
   // Fetching and showing the data in the console
   Future<void> fetchProfile() async {
     final firestore = FirebaseFirestore.instance;
