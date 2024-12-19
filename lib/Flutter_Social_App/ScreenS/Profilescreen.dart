@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart';
 
 import 'login_Page.dart';
 
@@ -14,10 +13,11 @@ class ProfileScreen extends StatefulWidget {
 
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  TextEditingController postcontroller=TextEditingController();
   // Fetching and showing the data in the console
   Future<void> fetchProfile() async {
     final firestore = FirebaseFirestore.instance;
-
     try {
       QuerySnapshot snapshot = await firestore.collection("users").get();
 
@@ -94,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(width: 18),
                         Column(
                           children: [
-                            Text("3"),
+                            Text("${snapshot.data!.docs[0]['post'].length} "),
                             SizedBox(height: 5),
                             Text("posts"),
                           ],
@@ -252,19 +252,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 12),
                   Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 82,
-                          height: 82,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(45),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            size: 50,
-                            color: Colors.black,
+                      GestureDetector(
+                        onTap: (){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Expanded(
+                                child: AlertDialog(
+                                  title: Text('Add Post'),
+                                  content: Text('Are you sure you want to add a new post?',style: TextStyle(fontSize: 10),),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                      TextField(
+                                        controller:postcontroller,
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide(color: Colors.blue),
+
+                                          ),
+                                          labelText: 'Post',
+                                        ),
+                                      ),
+                                      ],
+                                    ),
+                                    SingleChildScrollView(
+                               scrollDirection: Axis.horizontal,
+                               child: Row(
+                                 children: [
+                                   TextButton(
+                                     onPressed: () {
+                                       Navigator.of(context).pop();
+                                     },
+                                     child: Text('CANCEL'),
+                                   ),
+                                   SizedBox(width: 12,),
+                                   TextButton(
+                                     onPressed: () async{
+                                       FirebaseFirestore instance = FirebaseFirestore.instance;
+
+                                       await instance.collection("users").doc(docs[0]['email']).update(
+
+                                           {"post":FieldValue.arrayUnion(["${postcontroller.text.toString().trim()}"]) });
+                                       Navigator.of(context).pop();
+                                     },
+                                     child: Text('ACCEPT'),
+                                   ),
+                                 ],
+                               ),
+                             )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+
+
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 72,
+                            height: 72,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(45),
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              size: 50,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -289,28 +348,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                  height: 300, // Constrain height to avoid render errors
                  child: snapshot.hasData && snapshot.data!.docs.isNotEmpty
                      ? GridView.builder(
-                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                     crossAxisCount: 3,
                      crossAxisSpacing: 8.0,
                      mainAxisSpacing: 8.0,
                    ),
                    itemCount: docs[0]['post'].length,
                    itemBuilder: (context, index) {
                      final post = docs[0]['post'][index];
-                     return Container(
-                       decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(15),
-                         color: Colors.grey.shade200,
+                     final createdAt =snapshot.data!.docs[0]['createdat']; // Assuming createdat is stored per post
+                     DateTime? createdDate;
+
+                     // Convert timestamp to DateTime if it's a valid type
+                     if (createdAt is Timestamp) {
+                       createdDate = createdAt.toDate();
+                     } else if (createdAt is String) {
+                       try {
+                         createdDate = DateTime.parse(createdAt);
+                       } catch (e) {
+                         createdDate = null;
+                       }
+                     }
+
+                     final formattedDate = createdDate != null
+                         ? "${createdDate.day}-${createdDate.month}-${createdDate.year} \n Hours ${createdDate.hour} \n Minutes ${createdDate.minute}"
+                         : "Invalid date";
+
+                     return SingleChildScrollView(
+                       child: Column(
+                         children: [
+                           Container(
+                             padding: const EdgeInsets.all(4.0),
+                             decoration: BoxDecoration(
+                               borderRadius: BorderRadius.circular(15),
+                               color: Colors.grey.shade200,
+                             ),
+                             alignment: Alignment.center,
+                             child: Column(
+                               children: [
+                                 Text(
+                                   post is String && post.isNotEmpty ? post : 'N/A',
+                                   textAlign: TextAlign.center,
+                                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                 ),
+                                 const SizedBox(height: 5),
+                                 Text(
+                                   formattedDate,
+                                   style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                 ),
+                               ],
+                             ),
+                           ),
+                       
+                         ],
                        ),
-                       alignment: Alignment.center,
-                       child: Text(
-                         post is String && post.isNotEmpty
-                             ? post[0] // Display first character
-                             : 'N/A', // Default fallback
-                      ),
                      );
                    },
                  )
+
                      : Center(child: Text('No data available')),
                )
 

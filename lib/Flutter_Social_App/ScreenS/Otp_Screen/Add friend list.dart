@@ -37,6 +37,7 @@ class _friendlistState extends State<friendlist> {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                         return friendProfileScreen(name:user['name'].toString() , email:user['email'].toString() , phone:user['phone'].toString(), bio:user['bio'].toString() ,   posts: user['post'], follower: user['follower'].toString(), following: user['following'].toString());
                       }));
+                      print("Go to next Page ${user['name'].toString()}");
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10.0),
