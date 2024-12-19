@@ -371,7 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                      }
 
                      final formattedDate = createdDate != null
-                         ? "${createdDate.day}-${createdDate.month}-${createdDate.year} \n Hours ${createdDate.hour} \n Minutes ${createdDate.minute}"
+                         ? "${createdDate.day}-${createdDate.month}-${createdDate.year} \n Hours ${DateTime.now().hour} \n Minutes ${DateTime.now().minute}"
                          : "Invalid date";
 
                      return SingleChildScrollView(
