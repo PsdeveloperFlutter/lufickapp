@@ -15,6 +15,15 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   TextEditingController postcontroller=TextEditingController();
+
+
+  void dispose(){
+    super.dispose();
+    postcontroller.dispose();
+  }
+
+
+
   // Fetching and showing the data in the console
   Future<void> fetchProfile() async {
     final firestore = FirebaseFirestore.instance;
@@ -349,9 +358,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                  child: snapshot.hasData && snapshot.data!.docs.isNotEmpty
                      ? GridView.builder(
                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                     crossAxisCount: 3,
-                     crossAxisSpacing: 8.0,
-                     mainAxisSpacing: 8.0,
+                     crossAxisCount: 2,
+                     crossAxisSpacing: 5.0,
+                     mainAxisSpacing: 5.0,
                    ),
                    itemCount: docs[0]['post'].length,
                    itemBuilder: (context, index) {
@@ -378,10 +387,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        child: Column(
                          children: [
                            Container(
+                             height: 150,
                              padding: const EdgeInsets.all(4.0),
                              decoration: BoxDecoration(
                                borderRadius: BorderRadius.circular(15),
-                               color: Colors.grey.shade200,
+                               color: Colors.white,
                              ),
                              alignment: Alignment.center,
                              child: Column(
@@ -396,6 +406,162 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                    formattedDate,
                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                                  ),
+
+                                 SizedBox(height: 20,),
+                                 Row(
+                                   crossAxisAlignment: CrossAxisAlignment.center,
+                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                   children: [
+
+
+
+                                     GestureDetector(
+                                         onTap: (){
+                                           showDialog(
+                                             context: context,
+                                             builder: (BuildContext context) {
+                                               return Expanded(
+                                                 child: AlertDialog(
+                                                   title: Text('Add Post'),
+                                                   content: Text('Are you sure you want to Update your post?',style: TextStyle(fontSize: 10),),
+                                                   actions: [
+                                                     Column(
+                                                       children: [
+                                                         TextField(
+                                                           controller:postcontroller,
+                                                           decoration: InputDecoration(
+                                                             border: OutlineInputBorder(
+                                                               borderRadius: BorderRadius.circular(12),
+                                                               borderSide: BorderSide(color: Colors.blue),
+
+                                                             ),
+                                                             labelText: 'Post',
+                                                           ),
+                                                         ),
+                                                       ],
+                                                     ),
+                                                     SingleChildScrollView(
+                                                       scrollDirection: Axis.horizontal,
+                                                       child: Row(
+                                                         children: [
+                                                           TextButton(
+                                                             onPressed: () {
+                                                               Navigator.of(context).pop();
+                                                             },
+                                                             child: Text('CANCEL'),
+                                                           ),
+                                                           SizedBox(width: 12,),
+                                                           TextButton(
+                                                             onPressed: () async {
+                                                               try {
+                                                                 // Create an instance of FirebaseFirestore
+                                                                 FirebaseFirestore instance = FirebaseFirestore.instance;
+
+                                                                 // Retrieve the document
+                                                                 DocumentSnapshot docSnapshot = await instance.collection("users").doc(docs[0]['email']).get();
+
+                                                                 if (docSnapshot.exists) {
+                                                                   // Get the current 'post' array
+                                                                   List<dynamic> postArray = docSnapshot.get("post");
+
+                                                                   // Specify the index to update and the new value
+                                                                   int indexToUpdate = index; // Replace with the desired index
+                                                                   String newValue = postcontroller.text.trim();
+
+                                                                   // Check if the index is within bounds
+                                                                   if (indexToUpdate >= 0 && indexToUpdate < postArray.length) {
+                                                                     // Update the specific index
+                                                                     postArray[indexToUpdate] = newValue;
+
+                                                                     // Write the updated array back to Firestore
+                                                                     await instance.collection("users").doc(docs[0]['email']).update({
+                                                                       "post": postArray,
+                                                                     });
+
+                                                                     // Close the dialog or navigate away
+                                                                     Navigator.of(context).pop();
+
+                                                                     // Show a success message
+                                                                     ScaffoldMessenger.of(context).showSnackBar(
+                                                                       SnackBar(content: Text("Post updated successfully!")),
+                                                                     );
+                                                                   } else {
+                                                                     // Handle invalid index
+                                                                     ScaffoldMessenger.of(context).showSnackBar(
+                                                                       SnackBar(content: Text("Invalid index. Please try again.")),
+                                                                     );
+                                                                   }
+                                                                 } else {
+                                                                   // Handle document not found
+                                                                   ScaffoldMessenger.of(context).showSnackBar(
+                                                                     SnackBar(content: Text("User document not found.")),
+                                                                   );
+                                                                 }
+                                                               } catch (e) {
+                                                                 // Handle any errors
+                                                                 print("Error updating post array: $e");
+                                                                 ScaffoldMessenger.of(context).showSnackBar(
+                                                                   SnackBar(content: Text("Failed to update post. Please try again.")),
+                                                                 );
+                                                               }
+                                                             },
+                                                             child: const Text('ACCEPT'),
+                                                           ),
+
+
+                                                         ],
+                                                       ),
+                                                     )
+                                                   ],
+                                                 ),
+                                               );
+                                             },
+                                           );
+
+
+                                         },
+                                         child: Icon(Icons.update,color: Colors.red.shade400,size: 25,)),
+
+
+
+
+
+
+                                     GestureDetector(
+                                         onTap: (){
+
+
+                                           showDialog(
+                                             context: context,
+                                             builder: (BuildContext context) {
+                                               return Expanded(
+                                                 child: AlertDialog(
+                                                   title: Text('Delete'),
+                                                   content: Text('Are you Sure you want to Delete Post'),
+                                                   actions: [
+                                                    TextButton(
+                                                       onPressed: () {
+                                                         Navigator.pop(context);
+                                                       },
+                                                       child: Text('CANCEL'),
+                                                     ),
+                                                     TextButton(
+                                                       onPressed: () {
+                                                         FirebaseFirestore.instance.collection("users").doc(docs[0]['email']).update(
+                                                             {"post":FieldValue.arrayRemove([post])});
+                                                       },
+                                                       child: Text('ACCEPT'),
+                                                     ),
+                                                   ],
+                                                 ),
+                                               );
+                                             },
+                                           );
+
+                                         },
+                                         child: Icon(Icons.delete,color: Colors.blue.shade400,size: 25,)),
+                                   ],
+                                 )
                                ],
                              ),
                            ),
@@ -406,7 +572,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                    },
                  )
 
-                     : Center(child: Text('No data available')),
+                     : Center(child: Text('No data available',style: TextStyle(color: Colors.black),)),
                )
 
 
