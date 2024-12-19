@@ -56,17 +56,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () async{
-              // Perform logout action
-             await GoogleSignIn().signOut();
-             await FirebaseAuth.instance.signOut();
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
-            },
-          ),
-        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("users").snapshots(),
@@ -128,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(width: 18),
                         Column(
                           children: [
-                            Text("263"),
+                            Text("${docs[0]['follower']}"),
                             SizedBox(height: 5),
                             Text("followers"),
                           ],
@@ -136,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(width: 18),
                         Column(
                           children: [
-                            Text("204"),
+                            Text("${docs[0]['following']}"),
                             SizedBox(height: 5),
                             Text("following"),
                           ],
@@ -203,40 +192,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 18.0),
-                    child: Row(
-                      children: [
-                        Card(
-                          elevation: 1,
-                          child: Container(
-                            color: Color(0xFFF5F5F5),
-                            height: 40,
-                            width: 120,
-                            child: Center(
-                                child: Text(
-                                  "Edit Profile",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                                )),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 18.0),
+                      child: Row(
+                        children: [
+                          Card(
+                            elevation: 1,
+                            child: Container(
+                              color: Color(0xFFF5F5F5),
+                              height: 40,
+                              width: 120,
+                              child: Center(
+                                  child: Text(
+                                    "Edit Profile",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                  )),
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 20),
-                        Card(
-                          elevation: 1,
-                          child: Container(
-                            color: Color(0xFFF5F5F5),
-                            height: 40,
-                            width: 120,
-                            child: Center(
-                                child: Text(
-                                  "Share Profile",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                                )),
+                          SizedBox(width: 20),
+                          Card(
+                            elevation: 1,
+                            child: Container(
+                              color: Color(0xFFF5F5F5),
+                              height: 40,
+                              width: 120,
+                              child: Center(
+                                  child: Text(
+                                    "Share Profile",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                  )),
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: ()async{
+                              try{
+
+                                FirebaseFirestore instance = FirebaseFirestore.instance;
+                                await instance.collection("users").doc(docs[0]['email']).delete();
+
+
+                                // Perform logout action
+                                await GoogleSignIn().signOut();
+                                await FirebaseAuth.instance.signOut();
+                                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
+                              }
+                              catch(e){
+                                print("Error Occur :- $e");
+                              }
+                            },
+                            child: Card(
+                              elevation: 1,
+                              child: Container(
+                                color: Color(0xFFF5F5F5),
+                                height: 40,
+                                width: 120,
+                                child: Center(
+                                    child: Text(
+                                      "logo Out",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 12),

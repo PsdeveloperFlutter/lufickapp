@@ -11,9 +11,9 @@ RxList<dynamic> imagelist = [
   "assets/images/nature4.jpg",
 ].obs;
 
-RxList<dynamic> likeanddislike = RxList<int>();
-RxList<dynamic> isPostVisible = RxList<bool>();
-RxList<dynamic> postTimes = RxList<String>();
+RxList<int> likeanddislike = RxList<int>();
+RxList<bool> isPostVisible = RxList<bool>();
+RxList<String> postTimes = RxList<String>();
 
 class PostScreen extends StatefulWidget {
   @override
@@ -43,12 +43,13 @@ class _PostScreenState extends State<PostScreen> {
         toolbarHeight: 40,
         backgroundColor: Colors.deepPurple.withOpacity(0.7),
         title: GestureDetector(
-            onTap: ()async{
-              await GoogleSignIn().signOut();
-              FirebaseAuth.instance.signOut();
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
-            },
-            child: Text('Post')),
+          onTap: () async {
+            await GoogleSignIn().signOut();
+            FirebaseAuth.instance.signOut();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPages()));
+          },
+          child: Text('Post'),
+        ),
       ),
       body: Obx(() {
         return ListView.builder(
@@ -109,21 +110,18 @@ class _PostScreenState extends State<PostScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
+                          GestureDetector(
                             onTap: () {
                               likeanddislike[index] =
                               likeanddislike[index] == 0 ? 1 : 0; // Toggle like state
+                              likeanddislike.refresh(); // Refresh the list to trigger update
                             },
-                            child: Obx(
-                                  () => Icon(
-                                likeanddislike[index] == 0
-                                    ? Icons.thumb_down
-                                    : Icons.thumb_up,
-                                color: likeanddislike[index] == 0
-                                    ? Colors.blue
-                                    : Colors.red,
-                                size: 30,
-                              ),
+                            child: Icon(
+                              likeanddislike[index] == 0
+                                  ? Icons.thumb_down
+                                  : Icons.thumb_up,
+                              color: likeanddislike[index] == 0 ? Colors.blue : Colors.red,
+                              size: 30,
                             ),
                           ),
                           Text(
@@ -131,9 +129,7 @@ class _PostScreenState extends State<PostScreen> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: likeanddislike[index] == 0
-                                  ? Colors.blue
-                                  : Colors.red,
+                              color: likeanddislike[index] == 0 ? Colors.blue : Colors.red,
                             ),
                           ),
                         ],

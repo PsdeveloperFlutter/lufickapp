@@ -75,7 +75,9 @@ void dispose() {
               "phone": phone,
               "bio": bio,
               "image": _profileImage?.path,
-              "createdat": FieldValue.serverTimestamp()
+              "createdat": FieldValue.serverTimestamp(),
+               "follower":0,
+               "following":0
             })
             .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Profile saved successfully!"))))

@@ -12,6 +12,11 @@ class _friendlistState extends State<friendlist> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Add Friend"),
+        toolbarHeight: 30,
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
@@ -21,11 +26,11 @@ class _friendlistState extends State<friendlist> {
               itemBuilder: (context, index) {
                 return SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Column(
                       children: [
                         Container(
-                          width: 290,
+                          width: 300,
                           height: 100,
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -33,7 +38,7 @@ class _friendlistState extends State<friendlist> {
                           ),
                           child:
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -52,10 +57,32 @@ class _friendlistState extends State<friendlist> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("Followers :- ${snapshot.data!.docs[index]['follower'].toString()}"),
-                                Text("Following :- ${snapshot.data!.docs[index]['following'].toString()}"),
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10.0),
+                                  child: Text("${snapshot.data!.docs[index]['follower'].toString()}"),
+                                ),
+                                Text("Followers",style: TextStyle(fontSize: 12),),
                               ],
                             ),
+
+
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text("${snapshot.data!.docs[index]['follower'].toString()}"),
+                                ),
+                                Text("Following",style: TextStyle(fontSize: 12),),
+                              ],
+                            ),
+
+
+                            CircleAvatar(
+                                radius: 20,
+                                child: Icon(Icons.add,color: Colors.blue,size: 30,))
                           ],
                         ),
 
@@ -68,7 +95,9 @@ class _friendlistState extends State<friendlist> {
             },
             );
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator(
+              color: Colors.blue.shade500,
+            ));
       }
     }),
 
