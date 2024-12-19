@@ -13,6 +13,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 
+
+
+
 class _ProfileScreenState extends State<ProfileScreen> {
   // Fetching and showing the data in the console
   Future<void> fetchProfile() async {
@@ -285,38 +288,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   SizedBox(height: 12),
-                     Text(docs[0]['post'][0],style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),),
-               SizedBox(
-                 height: 300, // Constrain height to avoid render errors
-                 child: snapshot.hasData && snapshot.data!.docs.isNotEmpty
-                     ? GridView.builder(
-                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                     crossAxisSpacing: 8.0,
-                     mainAxisSpacing: 8.0,
-                   ),
-                   itemCount: docs[0]['post'].length,
-                   itemBuilder: (context, index) {
-                     final post = docs[0]['post'][index];
-                     return Container(
-                       decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(15),
-                         color: Colors.grey.shade200,
-                       ),
-                       alignment: Alignment.center,
-                       child: Text(
-                         post is String && post.isNotEmpty
-                             ? post[0] // Display first character
-                             : 'N/A', // Default fallback
+                  Text(docs[0]['post'][0],style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),),
+                  SizedBox(
+                    height: 300, // Constrain height to avoid render errors
+                    child: snapshot.hasData && snapshot.data!.docs.isNotEmpty
+                        ? GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
                       ),
-                     );
-                   },
-                 )
-                     : Center(child: Text('No data available')),
-               )
+                      itemCount: docs[0]['post'].length,
+                      itemBuilder: (context, index) {
+                        final post = docs[0]['post'][index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey.shade200,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            post is String && post.isNotEmpty
+                                ? post[0] // Display first character
+                                : 'N/A', // Default fallback
+                          ),
+                        );
+                      },
+                    )
+                        : Center(child: Text('No data available')),
+                  )
 
 
-               ],
+                ],
               ),
             );
           }

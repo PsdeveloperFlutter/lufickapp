@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +14,6 @@ import '../Backend/Database of Application.dart';
 import 'Creation_of_task.dart';
 import 'Generate_PDF.dart';
 import 'Screen of Operation_update.dart';
-import 'Splash Screen of ToDo_App.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'Videoplayer.dart';
@@ -108,7 +105,7 @@ class MainscreenState extends State<Mainscreen> with TickerProviderStateMixin {
           onTap: ()async{
             await GoogleSignIn().signOut();
             FirebaseAuth.instance.signOut();
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPages(),));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  LoginPages(),));
             },
 
           child: Text(
