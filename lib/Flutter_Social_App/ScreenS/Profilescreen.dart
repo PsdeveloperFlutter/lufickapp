@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 
@@ -299,12 +300,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                    SizedBox(width: 12,),
                                    TextButton(
                                      onPressed: () async{
-                                       FirebaseFirestore instance = FirebaseFirestore.instance;
 
-                                       await instance.collection("users").doc(docs[0]['email']).update(
+                                       try{
 
-                                           {"post":FieldValue.arrayUnion(["${postcontroller.text.toString().trim()}"]) });
-                                       Navigator.of(context).pop();
+                                         Map<dynamic,dynamic>newpost={
+                                           "posts":postcontroller.text.toString().trim(),
+                                           "like":0,
+                                           "Dislike":0,
+                                           "update":DateTime.now(),
+                                           "Comments":[],
+                                         };
+                                         FirebaseFirestore instance = FirebaseFirestore.instance;
+
+
+                                         await instance.collection("users").doc(docs[0]['email']).update(
+
+                                             {"post":FieldValue.arrayUnion([newpost]) });
+                                         Navigator.of(context).pop();
+                                       }
+                                       catch(e){
+                                         print("Error Occur :- $e");
+                                       }
                                      },
                                      child: Text('ACCEPT'),
                                    ),
@@ -353,227 +369,353 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   SizedBox(height: 12),
-               SizedBox(
-                 height: 300, // Constrain height to avoid render errors
-                 child: snapshot.hasData && snapshot.data!.docs.isNotEmpty
-                     ? GridView.builder(
-                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                     crossAxisCount: 2,
-                     crossAxisSpacing: 5.0,
-                     mainAxisSpacing: 5.0,
-                   ),
-                   itemCount: docs[0]['post'].length,
-                   itemBuilder: (context, index) {
-                     final post = docs[0]['post'][index];
-                     final createdAt =snapshot.data!.docs[0]['createdat']; // Assuming createdat is stored per post
-                     DateTime? createdDate;
 
-                     // Convert timestamp to DateTime if it's a valid type
-                     if (createdAt is Timestamp) {
-                       createdDate = createdAt.toDate();
-                     } else if (createdAt is String) {
-                       try {
-                         createdDate = DateTime.parse(createdAt);
-                       } catch (e) {
-                         createdDate = null;
-                       }
-                     }
+              StreamBuilder(stream: FirebaseFirestore.instance.collection("users").snapshots(), builder:(context,snapshot){
+                if(snapshot.hasError){
+                  return Center(child: Text("Error Occur :- ${snapshot.error}"));
+                }
+                else if(!snapshot.hasData || snapshot.data!.docs.isEmpty){
+                  return Center(child: Text("No data found"));
+                }
 
-                     final formattedDate = createdDate != null
-                         ? "${createdDate.day}-${createdDate.month}-${createdDate.year} \n Hours ${DateTime.now().hour} \n Minutes ${DateTime.now().minute}"
-                         : "Invalid date";
+                else {
+                  return
+                  SizedBox(
+                    height: 300, // Constrain height to avoid render errors
+                    child: snapshot.hasData && snapshot.data!.docs.isNotEmpty
+                        ? ListView.separated(
 
-                     return SingleChildScrollView(
-                       child: Column(
-                         children: [
-                           Container(
-                             height: 150,
-                             padding: const EdgeInsets.all(4.0),
-                             decoration: BoxDecoration(
-                               borderRadius: BorderRadius.circular(15),
-                               color: Colors.white,
-                             ),
-                             alignment: Alignment.center,
-                             child: Column(
-                               children: [
-                                 Text(
-                                   post is String && post.isNotEmpty ? post : 'N/A',
-                                   textAlign: TextAlign.center,
-                                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                 ),
-                                 const SizedBox(height: 5),
-                                 Text(
-                                   formattedDate,
-                                   style: const TextStyle(fontSize: 12, color: Colors.grey),
-                                 ),
+                      itemCount: docs[0]['post'].length,
+                      itemBuilder: (context, index) {
+                        var post = docs[0]['post'][index]['posts'].toString();
+                        dynamic like = docs[0]['post'][index]['like'].toString();
+                        var Dislike = docs[0]['post'][index]['Dislike'].toString();
 
-                                 SizedBox(height: 20,),
-                                 Row(
-                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                   children: [
+                        final createdAt =snapshot.data!.docs[0]['createdat']; // Assuming createdat is stored per post
+                        DateTime? createdDate;
 
+                        // Convert timestamp to DateTime if it's a valid type
+                        if (createdAt is Timestamp) {
+                          createdDate = createdAt.toDate();
+                        } else if (createdAt is String) {
+                          try {
+                            createdDate = DateTime.parse(createdAt);
+                          } catch (e) {
+                            createdDate = null;
+                          }
+                        }
 
+                        final formattedDate = createdDate != null
+                            ? "${createdDate.day}-${createdDate.month}-${createdDate.year} \n Hours ${DateTime.now().hour} \n Minutes ${DateTime.now().minute}"
+                            : "Invalid date";
 
-                                     GestureDetector(
-                                         onTap: (){
-                                           showDialog(
-                                             context: context,
-                                             builder: (BuildContext context) {
-                                               return Expanded(
-                                                 child: AlertDialog(
-                                                   title: Text('Add Post'),
-                                                   content: Text('Are you sure you want to Update your post?',style: TextStyle(fontSize: 10),),
-                                                   actions: [
-                                                     Column(
-                                                       children: [
-                                                         TextField(
-                                                           controller:postcontroller,
-                                                           decoration: InputDecoration(
-                                                             border: OutlineInputBorder(
-                                                               borderRadius: BorderRadius.circular(12),
-                                                               borderSide: BorderSide(color: Colors.blue),
-
-                                                             ),
-                                                             labelText: 'Post',
-                                                           ),
-                                                         ),
-                                                       ],
-                                                     ),
-                                                     SingleChildScrollView(
-                                                       scrollDirection: Axis.horizontal,
-                                                       child: Row(
-                                                         children: [
-                                                           TextButton(
-                                                             onPressed: () {
-                                                               Navigator.of(context).pop();
-                                                             },
-                                                             child: Text('CANCEL'),
-                                                           ),
-                                                           SizedBox(width: 12,),
-                                                           TextButton(
-                                                             onPressed: () async {
-                                                               try {
-                                                                 // Create an instance of FirebaseFirestore
-                                                                 FirebaseFirestore instance = FirebaseFirestore.instance;
-
-                                                                 // Retrieve the document
-                                                                 DocumentSnapshot docSnapshot = await instance.collection("users").doc(docs[0]['email']).get();
-
-                                                                 if (docSnapshot.exists) {
-                                                                   // Get the current 'post' array
-                                                                   List<dynamic> postArray = docSnapshot.get("post");
-
-                                                                   // Specify the index to update and the new value
-                                                                   int indexToUpdate = index; // Replace with the desired index
-                                                                   String newValue = postcontroller.text.trim();
-
-                                                                   // Check if the index is within bounds
-                                                                   if (indexToUpdate >= 0 && indexToUpdate < postArray.length) {
-                                                                     // Update the specific index
-                                                                     postArray[indexToUpdate] = newValue;
-
-                                                                     // Write the updated array back to Firestore
-                                                                     await instance.collection("users").doc(docs[0]['email']).update({
-                                                                       "post": postArray,
-                                                                     });
-
-                                                                     // Close the dialog or navigate away
-                                                                     Navigator.of(context).pop();
-
-                                                                     // Show a success message
-                                                                     ScaffoldMessenger.of(context).showSnackBar(
-                                                                       SnackBar(content: Text("Post updated successfully!")),
-                                                                     );
-                                                                   } else {
-                                                                     // Handle invalid index
-                                                                     ScaffoldMessenger.of(context).showSnackBar(
-                                                                       SnackBar(content: Text("Invalid index. Please try again.")),
-                                                                     );
-                                                                   }
-                                                                 } else {
-                                                                   // Handle document not found
-                                                                   ScaffoldMessenger.of(context).showSnackBar(
-                                                                     SnackBar(content: Text("User document not found.")),
-                                                                   );
-                                                                 }
-                                                               } catch (e) {
-                                                                 // Handle any errors
-                                                                 print("Error updating post array: $e");
-                                                                 ScaffoldMessenger.of(context).showSnackBar(
-                                                                   SnackBar(content: Text("Failed to update post. Please try again.")),
-                                                                 );
-                                                               }
-                                                             },
-                                                             child: const Text('ACCEPT'),
-                                                           ),
+                        return SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            post.isNotEmpty ? post : 'N/A',
+                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          formattedDate,
+                                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
 
 
-                                                         ],
-                                                       ),
-                                                     )
-                                                   ],
-                                                 ),
-                                               );
-                                             },
-                                           );
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center, // Aligns children vertically
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Distributes children evenly
+                                      children: [
+                                        // Like Column
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min, // Prevents unnecessary expansion
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                print("Document ID: ${docs[0]['post'].length}");
+                                                Future<void> updateLikeField(String docId, int postIndex) async {
+                                                  try {
+                                                    // Reference the document
+                                                    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+                                                        .collection("users")
+                                                        .doc(docId)
+                                                        .get();
+
+                                                    if (docSnapshot.exists) {
+                                                      // Fetch the current 'post' array
+                                                      List<dynamic> postArray = docSnapshot.get("post");
+
+                                                      // Check if the index is valid
+                                                      if (postIndex >= 0 && postIndex < postArray.length) {
+                                                        // Increment the 'like' value
+                                                        postArray[postIndex]["like"] = (postArray[postIndex]["like"] ?? 0) + 1;
+
+                                                        // Update the document in Firestore
+                                                        await FirebaseFirestore.instance
+                                                            .collection("users")
+                                                            .doc(docId)
+                                                            .update({"post": postArray});
+
+                                                        print("Like count updated successfully!");
+                                                      } else {
+                                                        print("Invalid post index.");
+                                                      }
+                                                    } else {
+                                                      print("Document does not exist.");
+                                                    }
+                                                  } catch (e) {
+                                                    print("Error updating like count: $e");
+                                                  }
+                                                }
+                                                print("Document ID: ${docs[0]['post'].length - 1}");
+
+                                                //Call of the functon
+                                                updateLikeField(snapshot.data!.docs[index].id, index);
+
+                                              },
+                                              icon: Icon(Icons.thumb_up, color: Colors.red),
+                                            ),
+
+                                            Text(
+                                              docs[0]['post'][index]['like'].toString(),
+                                              style: TextStyle(color: Colors.red),
+                                            ),
+
+                                          ],
+                                        ),
+                                        // Dislike Column
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                Future<void> updateDisLikeField(String docId, int postIndex) async {
+                                                  try {
+                                                    // Reference the document
+                                                    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+                                                        .collection("users")
+                                                        .doc(docId)
+                                                        .get();
+
+                                                    if (docSnapshot.exists) {
+                                                      // Fetch the current 'post' array
+                                                      List<dynamic> postArray = docSnapshot.get("post");
+
+                                                      // Check if the index is valid
+                                                      if (postIndex >= 0 && postIndex < postArray.length) {
+                                                        // Increment the 'like' value
+                                                        postArray[postIndex]["Dislike"] = (postArray[postIndex]["Dislike"] ?? 0) + 1;
+
+                                                        // Update the document in Firestore
+                                                        await FirebaseFirestore.instance
+                                                            .collection("users")
+                                                            .doc(docId)
+                                                            .update({"post": postArray});
+
+                                                        print("DisLike count updated successfully!");
+                                                      } else {
+                                                        print("Invalid post index.");
+                                                      }
+                                                    } else {
+                                                      print("Document does not exist.");
+                                                    }
+                                                  } catch (e) {
+                                                    print("Error updating like count: $e");
+                                                  }
+                                                }
 
 
-                                         },
-                                         child: Icon(Icons.update,color: Colors.red.shade400,size: 25,)),
+                                                //Call of the functon
+                                                updateDisLikeField(snapshot.data!.docs[index].id, index);
+                                              },
+                                              icon: Icon(Icons.thumb_down, color: Colors.blue),
+                                            ),
+                                            Text(
+                                              "${Dislike.toString()}",
+                                              style: TextStyle(color: Colors.blue),
+                                            ),
+                                          ],
+                                        ),
+                                        // Update Column
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text('Add Post'),
+                                                      content: Text(
+                                                        'Are you sure you want to Update your post?',
+                                                        style: TextStyle(fontSize: 10),
+                                                      ),
+                                                      actions: [
+                                                        TextField(
+                                                          controller: postcontroller,
+                                                          decoration: InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(12),
+                                                              borderSide: BorderSide(color: Colors.blue),
+                                                            ),
+                                                            labelText: 'Post',
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                          children: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(context).pop();
+                                                              },
+                                                              child: Text('CANCEL'),
+                                                            ),
+                                                            SizedBox(width: 12),
+                                                            TextButton(
+                                                              onPressed: () async {
+                                                                try {
+                                                                  FirebaseFirestore instance =
+                                                                      FirebaseFirestore.instance;
 
+                                                                  DocumentSnapshot docSnapshot = await instance
+                                                                      .collection("users")
+                                                                      .doc(docs[0]['email'])
+                                                                      .get();
 
+                                                                  if (docSnapshot.exists) {
+                                                                    List<dynamic> postArray =
+                                                                    docSnapshot.get("post");
+                                                                    int indexToUpdate = index;
+                                                                    String newValue =
+                                                                    postcontroller.text.trim();
 
+                                                                    if (indexToUpdate >= 0 &&
+                                                                        indexToUpdate < postArray.length) {
+                                                                      postArray[indexToUpdate] = newValue;
 
+                                                                      await instance
+                                                                          .collection("users")
+                                                                          .doc(docs[0]['email'])
+                                                                          .update({"post": postArray});
 
+                                                                      Navigator.of(context).pop();
+                                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                                        SnackBar(
+                                                                            content: Text("Post updated successfully!")),
+                                                                      );
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                                        SnackBar(
+                                                                            content: Text("Invalid index. Please try again.")),
+                                                                      );
+                                                                    }
+                                                                  } else {
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                                      SnackBar(
+                                                                          content: Text("User document not found.")),
+                                                                    );
+                                                                  }
+                                                                } catch (e) {
+                                                                  print("Error updating post array: $e");
+                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                    SnackBar(
+                                                                        content: Text("Failed to update post. Please try again.")),
+                                                                  );
+                                                                }
+                                                              },
+                                                              child: Text('ACCEPT'),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Icon(Icons.update, color: Colors.red.shade400, size: 25),
+                                            ),
+                                          ],
+                                        ),
+                                        // Delete Column
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text('Delete'),
+                                                      content: Text('Are you sure you want to Delete Post'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: Text('CANCEL'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            FirebaseFirestore.instance
+                                                                .collection("users")
+                                                                .doc(docs[0]['email'])
+                                                                .update(
+                                                                {"post": FieldValue.arrayRemove([post])});
+                                                          },
+                                                          child: Text('ACCEPT'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Icon(Icons.delete, color: Colors.blue.shade400, size: 25),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
 
-                                     GestureDetector(
-                                         onTap: (){
+                            ],
+                          ),
+                        );
+                      }, separatorBuilder: (BuildContext context, int index) {
+                     return   Divider();
+                    },
+                    )
 
+                        : Center(child: Text('No data available',style: TextStyle(color: Colors.black),)),
+                  );
 
-                                           showDialog(
-                                             context: context,
-                                             builder: (BuildContext context) {
-                                               return Expanded(
-                                                 child: AlertDialog(
-                                                   title: Text('Delete'),
-                                                   content: Text('Are you Sure you want to Delete Post'),
-                                                   actions: [
-                                                    TextButton(
-                                                       onPressed: () {
-                                                         Navigator.pop(context);
-                                                       },
-                                                       child: Text('CANCEL'),
-                                                     ),
-                                                     TextButton(
-                                                       onPressed: () {
-                                                         FirebaseFirestore.instance.collection("users").doc(docs[0]['email']).update(
-                                                             {"post":FieldValue.arrayRemove([post])});
-                                                       },
-                                                       child: Text('ACCEPT'),
-                                                     ),
-                                                   ],
-                                                 ),
-                                               );
-                                             },
-                                           );
-
-                                         },
-                                         child: Icon(Icons.delete,color: Colors.blue.shade400,size: 25,)),
-                                   ],
-                                 )
-                               ],
-                             ),
-                           ),
-                       
-                         ],
-                       ),
-                     );
-                   },
-                 )
-
-                     : Center(child: Text('No data available',style: TextStyle(color: Colors.black),)),
-               )
+                }
+              })
 
 
                ],
