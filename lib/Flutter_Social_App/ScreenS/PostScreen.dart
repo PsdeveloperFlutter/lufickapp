@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 class PostScreen extends StatefulWidget {
   @override
   State<PostScreen> createState() => _PostScreenState();
@@ -57,28 +57,31 @@ class _PostScreenState extends State<PostScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.cyanAccent.shade100,
-                            child: Text(
-                              userName[0].toUpperCase(),
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                userName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                      SingleChildScrollView(
+                       scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.cyanAccent.shade100,
+                              child: Text(
+                                userName[0].toUpperCase(),
+                                style: TextStyle(color: Colors.black),
                               ),
-                              Text(bio),
-                            ],
-                          )
-                        ],
+                            ),
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userName,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 18),
+                                ),
+                                Text(bio),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10),
                       Row(
@@ -104,6 +107,7 @@ class _PostScreenState extends State<PostScreen> {
                         itemBuilder: (context, postIndex) {
                           final post = posts[postIndex] as Map<String, dynamic>;
                           final postContent = post['posts'] ?? 'No Content';
+                          final createddate=post['createdat'];
                           final likes = post['like'] ?? 0;
                           final dislikes = post['dislike'] ?? 0;
                           final update =
@@ -123,9 +127,16 @@ class _PostScreenState extends State<PostScreen> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 5),
+                                Text(
+                                  "Created At: ${formatTimestamp(snapshot.data!.docs[userIndex]['createdat'])}",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                ),
+
+                                  SizedBox(height: 8),
                                   Text(
-                                    "Last Update: $update",
+                                    "Last Update: ${formatTimestamp(update)}",
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                   ),
@@ -180,5 +191,17 @@ class _PostScreenState extends State<PostScreen> {
         },
       ),
     );
+  }
+
+// Helper function to format the timestamp
+  String formatTimestamp(dynamic timestamp) {
+    if (timestamp is Timestamp) {
+      DateTime dateTime = timestamp.toDate();
+      return DateFormat('dd-MM-yyyy HH:mm').format(dateTime); // Example format: 20-12-2024 15:30
+    } else if (timestamp is DateTime) {
+      return DateFormat('dd-MM-yyyy HH:mm').format(timestamp);
+    } else {
+      return "Invalid date";
+    }
   }
 }
