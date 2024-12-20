@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,14 +25,7 @@ class _PostScreenState extends State<PostScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the logic for like/dislike, visibility, and timestamps
-    for (var value in imagelist) {
-      likeanddislike.add(0);
-      isPostVisible.add(true);
-      postTimes.add("Posted ${DateTime.now().hour}:${DateTime.now().minute}"); // Example timestamp
-    }
   }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -51,97 +45,30 @@ class _PostScreenState extends State<PostScreen> {
           child: Text('Post'),
         ),
       ),
-      body: Obx(() {
-        return ListView.builder(
-          itemCount: imagelist.length,
-          itemBuilder: (BuildContext context, int index) {
-            // Check if the post is visible
-            if (!isPostVisible[index]) return const SizedBox.shrink();
+      body: StreamBuilder(stream:FirebaseFirestore.instance.collection("users").snapshots() ,
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Post Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Image.asset(
-                        imagelist[index],
-                        width: screenWidth,
-                        height: screenHeight * 0.3,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // Post Timestamp
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            postTimes[index],
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              isPostVisible[index] = false; // Hide the post
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Like/Dislike Buttons
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              likeanddislike[index] =
-                              likeanddislike[index] == 0 ? 1 : 0; // Toggle like state
-                              likeanddislike.refresh(); // Refresh the list to trigger update
-                            },
-                            child: Icon(
-                              likeanddislike[index] == 0
-                                  ? Icons.thumb_down
-                                  : Icons.thumb_up,
-                              color: likeanddislike[index] == 0 ? Colors.blue : Colors.red,
-                              size: 30,
-                            ),
-                          ),
-                          Text(
-                            likeanddislike[index] == 0 ? "Disliked" : "Liked",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: likeanddislike[index] == 0 ? Colors.blue : Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      }),
+          builder: (context,index){
+
+            if(index.hasError){
+              return Center(child: Text("Error Occur :- ${index.error}"));
+            }
+
+            else if(!index.hasData || index.data!.docs.isEmpty){
+              return Center(child: Text("No data found"));
+            }
+
+
+
+            //This is the User Post List Of all Person Which Is Available on the App
+            else {
+              return ListView.builder(
+
+              )
+
+
+
+            }
+      })
     );
   }
 }
