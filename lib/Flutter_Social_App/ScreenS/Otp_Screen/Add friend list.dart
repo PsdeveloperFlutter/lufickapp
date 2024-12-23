@@ -13,10 +13,10 @@ class _friendlistState extends State<friendlist> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.deepPurple.shade100,
+        backgroundColor: Colors.deepPurple.withOpacity(0.7),
         title: const Text(
           "Add Friend",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         toolbarHeight: 50,
         elevation: 1,

@@ -627,7 +627,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           "Dislike": docs[0]['post'][index]['Dislike'],
                                                           "like": docs[0]['post'][index]['like'],
                                                           "posts": updateController.text,
-                                                          "update": DateTime.now().toString(),
+                                                          "update": DateTime.now(),
                                                         };
 
                                                         await FirebaseFirestore.instance

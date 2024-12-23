@@ -14,7 +14,7 @@ class _PostScreenState extends State<PostScreen> {
         centerTitle: true,
         toolbarHeight: 40,
         backgroundColor: Colors.deepPurple.withOpacity(0.7),
-        title: Text('User Posts'),
+        title: Text('Posts',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("users").snapshots(),
@@ -107,12 +107,11 @@ class _PostScreenState extends State<PostScreen> {
                         itemBuilder: (context, postIndex) {
                           final post = posts[postIndex] as Map<String, dynamic>;
                           final postContent = post['posts'] ?? 'No Content';
-                          final createddate=post['createdat'];
                           final likes = post['like'] ?? 0;
                           final dislikes = post['dislike'] ?? 0;
                           final update =
                               post['update'] ?? 'No update timestamp';
-
+                          final Comments=post['Comments'];
                           return Card(
                             elevation: 3,
                             margin: EdgeInsets.symmetric(vertical: 5),
@@ -127,6 +126,7 @@ class _PostScreenState extends State<PostScreen> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
+                                SizedBox(height: 12),
                                 Text(
                                   "Created At: ${formatTimestamp(snapshot.data!.docs[userIndex]['createdat'])}",
                                   style: TextStyle(
@@ -134,13 +134,13 @@ class _PostScreenState extends State<PostScreen> {
                                   ),
                                 ),
 
-                                  SizedBox(height: 8),
+                                  SizedBox(height: 12),
                                   Text(
                                     "Last Update: ${formatTimestamp(update)}",
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                   ),
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 12),
                                   Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -170,7 +170,169 @@ class _PostScreenState extends State<PostScreen> {
                                         ],
                                       ),
                                     ],
-                                  )
+                                  ),
+                                   SizedBox(height:12,),
+                                  //This is fetch the comments on specific post
+                                  ExpansionTile(title: Text("Comments"),
+                                  children: [
+                                    Comments.length==0?Text("No comments"):
+
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        itemBuilder: (context,index){
+                                       if(index==Comments.length){
+                                        return Text("No more comments");
+                                      }
+                                      else {
+                                        return
+
+                                          Card(
+                                            elevation: 5,
+                                            child: Container(
+                                              margin: EdgeInsets.all(8),
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10),
+                                                border: Border.all(width: 1,color: Colors.blue.shade700),
+                                                color: Colors.grey[200],
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(Comments[index].toString(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                      }
+                                    },itemCount: Comments.length,),
+                                    SizedBox(height: 12),
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                              title: Center(
+                                                child: Text(
+                                                  "Add Comment",
+                                                  style: TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ),
+                                              content: SingleChildScrollView(
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      // Instruction Text
+                                                      Text(
+                                                        "Please write your comment below:",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: Colors.grey[700],
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 10),
+
+                                                      // Multi-Line Comment Input Field
+                                                      TextField(
+                                                        maxLines: 5,
+                                                        decoration: InputDecoration(
+                                                          filled: true,
+                                                          fillColor: Colors.grey[200],
+                                                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(12),
+                                                            borderSide: BorderSide(color: Colors.blue, width: 1),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(12),
+                                                            borderSide: BorderSide(color: Colors.blue, width: 2),
+                                                          ),
+                                                          hintText: "Enter your comment...",
+                                                          hintStyle: TextStyle(color: Colors.grey[500]),
+                                                          prefixIcon: Icon(Icons.comment, color: Colors.blue),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 20),
+
+                                                      // Submit Button
+                                                      SizedBox(
+                                                        width: double.infinity,
+                                                        child: ElevatedButton.icon(
+                                                          style: ElevatedButton.styleFrom(
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(12),
+                                                            ),
+                                                            backgroundColor: Colors.blue,
+                                                            padding: EdgeInsets.symmetric(vertical: 14),
+                                                          ),
+                                                          onPressed: () {
+                                                            // Add the logic for submitting the comment
+                                                          },
+                                                          icon: Icon(Icons.send, color: Colors.white),
+                                                          label: Text(
+                                                            "Submit Comment",
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                      SizedBox(height: 10),
+
+                                                      // Cancel Button
+                                                      SizedBox(
+                                                        width: double.infinity,
+                                                        child: OutlinedButton(
+                                                          style: OutlinedButton.styleFrom(
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(12),
+                                                            ),
+                                                            side: BorderSide(color: Colors.blue, width: 1.5),
+                                                            padding: EdgeInsets.symmetric(vertical: 12),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop(); // Close dialog
+                                                          },
+                                                          child: Text(
+                                                            "Cancel",
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.blue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(Icons.comment, color: Colors.blue),
+                                    ),
+
+
+                                  ],)
+                                  ,
                                 ],
                               ),
                             ),
