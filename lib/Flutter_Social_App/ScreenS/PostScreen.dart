@@ -109,6 +109,7 @@ class _PostScreenState extends State<PostScreen> {
                           final postContent = post['posts'] ?? 'No Content';
                           final likes = post['like'] ?? 0;
                           final dislikes = post['dislike'] ?? 0;
+                          final createdpostdate=post['CreateDate'];
                           final update =
                               post['update'] ?? 'No update timestamp';
                           final Comments=post['Comments'];
@@ -128,7 +129,7 @@ class _PostScreenState extends State<PostScreen> {
                                   ),
                                 SizedBox(height: 12),
                                 Text(
-                                  "Created At: ${formatTimestamp(snapshot.data!.docs[userIndex]['createdat'])}",
+                                  "Created At: ${formatTimestamp(createdpostdate)}",
                                   style: TextStyle(
                                     fontSize: 12,
                                   ),
@@ -148,12 +149,51 @@ class _PostScreenState extends State<PostScreen> {
                                       Column(
                                         children: [
                                           IconButton(
-                                            onPressed: () {
-                                              // Increment likes logic
+                                            onPressed: () async {
+                                              try {
+                                                // Get the post data from the `users` list
+                                                final post = users[0]['post'][postIndex];
+
+                                                // Prepare the updated post data
+                                                final updatedPost = {
+                                                  'Comments': post['Comments'],
+                                                  'like': post['like'] + 1, // Increment the likes
+                                                  'Dislike': post['Dislike'],
+                                                  'posts': post['posts'],
+                                                  'update': DateTime.now(), // Update timestamp
+                                                  'CreateDate': post['CreateDate'],
+                                                };
+
+                                                // Update Firestore document
+                                                await FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(users[0]['email']) // Ensure the email is correct
+                                                    .update({
+                                                  'post': FieldValue.arrayRemove([post]), // Remove old post
+                                                });
+
+                                                await FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(users[0]['email']) // Add updated post
+                                                    .update({
+                                                  'post': FieldValue.arrayUnion([updatedPost]),
+                                                });
+
+                                                // Show success message
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text("Like added successfully!")),
+                                                );
+                                              } catch (e) {
+                                                // Handle errors and show the message
+                                                print("Error updating likes: $e");
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text("Error updating likes: $e")),
+                                                );
+                                              }
                                             },
-                                            icon: Icon(Icons.thumb_up,
-                                                color: Colors.red),
+                                            icon: Icon(Icons.thumb_up, color: Colors.red),
                                           ),
+
                                           Text("Likes: $likes"),
                                         ],
                                       ),
@@ -210,6 +250,8 @@ class _PostScreenState extends State<PostScreen> {
                                     SizedBox(height: 12),
                                     IconButton(
                                       onPressed: () {
+                                        TextEditingController commentController = TextEditingController();
+
                                         showDialog(
                                           context: context,
                                           builder: (context) {
@@ -247,6 +289,7 @@ class _PostScreenState extends State<PostScreen> {
 
                                                       // Multi-Line Comment Input Field
                                                       TextField(
+                                                        controller: commentController,
                                                         maxLines: 5,
                                                         decoration: InputDecoration(
                                                           filled: true,
@@ -278,8 +321,50 @@ class _PostScreenState extends State<PostScreen> {
                                                             backgroundColor: Colors.blue,
                                                             padding: EdgeInsets.symmetric(vertical: 14),
                                                           ),
-                                                          onPressed: () {
-                                                            // Add the logic for submitting the comment
+                                                          onPressed: () async {
+                                                            String newComment = commentController.text.toString().trim();
+
+                                                            if (newComment.isNotEmpty) {
+                                                              try {
+                                                                // Assuming `docs`, `index`, and Firestore collection are pre-defined
+                                                                final post = users[0]['post'][postIndex];
+                                                                final updatedComments = List<String>.from(post['Comments'] ?? []);
+                                                                updatedComments.add(newComment);
+
+                                                                // Update Firestore with the new comment
+                                                                await FirebaseFirestore.instance
+                                                                    .collection("users")
+                                                                    .doc(users[0]['email'])
+                                                                    .update({
+                                                                  "post": FieldValue.arrayRemove([post]),
+                                                                });
+
+                                                                final updatedPost = {
+                                                                  ...post,
+                                                                  "Comments": updatedComments,
+                                                                };
+
+                                                                await FirebaseFirestore.instance
+                                                                    .collection("users")
+                                                                    .doc(users[0]['email'])
+                                                                    .update({
+                                                                  "post": FieldValue.arrayUnion([updatedPost]),
+                                                                });
+
+                                                                Navigator.of(context).pop(); // Close dialog
+                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                  SnackBar(content: Text("Comment added successfully!")),
+                                                                );
+                                                              } catch (e) {
+                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                  SnackBar(content: Text("Error adding comment: $e")),
+                                                                );
+                                                              }
+                                                            } else {
+                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                SnackBar(content: Text("Comment cannot be empty!")),
+                                                              );
+                                                            }
                                                           },
                                                           icon: Icon(Icons.send, color: Colors.white),
                                                           label: Text(
@@ -329,6 +414,8 @@ class _PostScreenState extends State<PostScreen> {
                                       },
                                       icon: Icon(Icons.comment, color: Colors.blue),
                                     ),
+
+
 
 
                                   ],)

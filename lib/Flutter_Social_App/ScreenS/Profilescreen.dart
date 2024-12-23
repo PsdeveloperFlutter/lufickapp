@@ -450,6 +450,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            "Dislike":0,
                                            "update":DateTime.now(),
                                            "Comments":[],
+                                            "CreateDate":DateTime.now(),
                                          };
                                          FirebaseFirestore instance = FirebaseFirestore.instance;
 
@@ -528,7 +529,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         var post = docs[0]['post'][index]['posts'].toString();
 
                         // Extract `createdat` from the snapshot
-                        final createdAt = snapshot.data!.docs[0]['createdat'];
+                        final createdAt = snapshot.data!.docs[0]['post'][index]['CreateDate'];
                         DateTime? createdDate;
 
                         if (createdAt is Timestamp) {
@@ -623,11 +624,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       onPressed: () async {
                                                         // Update Firestore data
                                                         final updatedPost = {
-                                                          "comments": docs[0]['post'][index]['comments'],
+                                                          "Comments": docs[0]['post'][index]['Comments'],
                                                           "Dislike": docs[0]['post'][index]['Dislike'],
                                                           "like": docs[0]['post'][index]['like'],
                                                           "posts": updateController.text,
                                                           "update": DateTime.now(),
+                                                          "CreateDate":docs[0]['post'][index]['CreateDate'],
                                                         };
 
                                                         await FirebaseFirestore.instance
