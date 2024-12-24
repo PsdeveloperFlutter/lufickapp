@@ -112,7 +112,7 @@ class LoginPages extends StatelessWidget {
           GestureDetector(
             onTap: (){
               print("Login with Mobile Number");
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
             },
             child: Card(
               elevation: 3,

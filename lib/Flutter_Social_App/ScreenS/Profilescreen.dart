@@ -57,6 +57,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        actions: [
+          IconButton(onPressed: () {
+
+
+            //This is for the Logoout functionality Dialog box for it and Delete the data from firebase
+            showDialog(context: context, builder: (BuildContext context){
+              return    SimpleDialog(
+                title:const Text('Delete Profile and Data',style: TextStyle(color: Colors.blue),),
+                children: <Widget>[
+                  SimpleDialogOption(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child:const Text('Cancel'),
+                  ),
+                  SimpleDialogOption(
+                    onPressed: () async{
+                      try{
+
+
+                        //Firebase Deletion part
+                        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).delete();
+                        // Perform logout action
+                        await GoogleSignIn().signOut();
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
+                      }
+                      catch(e){
+                        print("Error Occur :- $e");
+                      }
+                    },
+                    child: const Text('Logo Out'),
+                  ),
+                ],
+              );
+            });
+          }, icon: Icon(Icons.more_vert),)
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("users").snapshots(),
@@ -364,8 +402,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                      onPressed: () async{
                                        try{
 
-                                         FirebaseFirestore instance = FirebaseFirestore.instance;
-                                         await instance.collection("users").doc(docs[0]['email']).delete();
+
                                          // Perform logout action
                                          await GoogleSignIn().signOut();
                                          await FirebaseAuth.instance.signOut();

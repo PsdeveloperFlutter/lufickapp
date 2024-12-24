@@ -78,7 +78,7 @@ void dispose() {
               "createdat": FieldValue.serverTimestamp(),
                "follower":0,
                "following":0,
-                "post":["Nothing"],
+                "post":<dynamic>[],
             })
             .then((value) => ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Profile saved successfully!"))))
