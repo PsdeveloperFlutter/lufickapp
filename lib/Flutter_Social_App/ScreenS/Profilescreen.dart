@@ -450,6 +450,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            "Dislike":0,
                                            "update":DateTime.now(),
                                            "Comments":[],
+                                           "Followers":[],
+                                           "Followings":[],
                                             "CreateDate":DateTime.now(),
                                          };
                                          FirebaseFirestore instance = FirebaseFirestore.instance;
@@ -627,6 +629,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           "Comments": docs[0]['post'][index]['Comments'],
                                                           "Dislike": docs[0]['post'][index]['Dislike'],
                                                           "like": docs[0]['post'][index]['like'],
+                                                          "Followers":docs[0]['post'][index]['Followers'],
+                                                          "Followings":docs[0]['post'][index]['Followings'],
                                                           "posts": updateController.text,
                                                           "update": DateTime.now(),
                                                           "CreateDate":docs[0]['post'][index]['CreateDate'],
