@@ -490,6 +490,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            "Followers":[],
                                            "Followings":[],
                                             "CreateDate":DateTime.now(),
+                                            "postsetting":0
                                          };
                                          FirebaseFirestore instance = FirebaseFirestore.instance;
 
@@ -671,6 +672,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           "posts": updateController.text,
                                                           "update": DateTime.now(),
                                                           "CreateDate":docs[0]['post'][index]['CreateDate'],
+                                                          "postsetting":docs[0]['post'][index]['postsetting']
                                                         };
 
                                                         await FirebaseFirestore.instance
@@ -742,6 +744,106 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       ],
                                     ),
+                                    //This is for the set post private or public
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                            onTap:(){
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) {
+                                                return AlertDialog(
+                                                  title: Text('Make Post Private'),
+                                                  content: Text('Are you sure you want to make this post private?'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () async{
+                                                        final updatedPost = {
+                                                          "Comments": docs[0]['post'][index]['Comments'],
+                                                          "Dislike": docs[0]['post'][index]['Dislike'],
+                                                          "like": docs[0]['post'][index]['like'],
+                                                          "Followers":docs[0]['post'][index]['Followers'],
+                                                          "Followings":docs[0]['post'][index]['Followings'],
+                                                          "posts":docs[0]['post'][index]['posts'],
+                                                          "update": DateTime.now(),
+                                                          "CreateDate":docs[0]['post'][index]['CreateDate'],
+                                                          "postsetting":1
+                                                        };
+
+                                                        await FirebaseFirestore.instance
+                                                            .collection("users")
+                                                            .doc(docs[0]['email'])
+                                                            .update({
+                                                          "post": FieldValue.arrayRemove([docs[0]['post'][index]])
+                                                        });
+
+                                                        await FirebaseFirestore.instance
+                                                            .collection("users")
+                                                            .doc(docs[0]['email'])
+                                                            .update({
+                                                          "post": FieldValue.arrayUnion([updatedPost])
+                                                        });
+                                                        Navigator.pop(ctx);
+                                                      },
+                                                      child: Text('Private'),
+                                                    ),
+                                                    TextButton(
+
+                                                      onPressed: () async{
+                                                        final updatedPost = {
+                                                          "Comments": docs[0]['post'][index]['Comments'],
+                                                          "Dislike": docs[0]['post'][index]['Dislike'],
+                                                          "like": docs[0]['post'][index]['like'],
+                                                          "Followers":docs[0]['post'][index]['Followers'],
+                                                          "Followings":docs[0]['post'][index]['Followings'],
+                                                          "posts":docs[0]['post'][index]['posts'],
+                                                          "update": DateTime.now(),
+                                                          "CreateDate":docs[0]['post'][index]['CreateDate'],
+                                                          "postsetting":0
+                                                        };
+
+                                                        await FirebaseFirestore.instance
+                                                            .collection("users")
+                                                            .doc(docs[0]['email'])
+                                                            .update({
+                                                          "post": FieldValue.arrayRemove([docs[0]['post'][index]])
+                                                        });
+
+                                                        await FirebaseFirestore.instance
+                                                            .collection("users")
+                                                            .doc(docs[0]['email'])
+                                                            .update({
+                                                          "post": FieldValue.arrayUnion([updatedPost])
+                                                        });
+                                                        Navigator.pop(ctx);
+                                                      },
+                                                      child: Text('Public'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+
+                                     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            },
+                                            child: Icon(Icons.more_vert,color: Colors.blue,))
+                                      ],
+                                    )
                                   ],
                                 ),
                               ],

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class  friendlist extends StatefulWidget {
+class friendlist extends StatefulWidget {
   @override
   State<friendlist> createState() => _friendlistState();
 }
@@ -24,16 +24,13 @@ class _friendlistState extends State<friendlist> {
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // Assume the current user's email is available
-            final currentUserEmail = 'currentuser@example.com'; // Replace with actual current user's email
-
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   var user = snapshot.data!.docs[index];
-                  final isCurrentUser = user.id == currentUserEmail;
+                  var isCurrentUser = index == 0;
 
                   return Container(
                     padding: const EdgeInsets.all(10.0),
@@ -58,21 +55,18 @@ class _friendlistState extends State<friendlist> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: CircleAvatar(
-                                  radius: 26,
-                                  child: Text(
-                                    user['name']
-                                        .toString()
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                  backgroundColor: Colors.deepPurple.shade50,
+                              CircleAvatar(
+                                radius: 26,
+                                child: Text(
+                                  user['name']
+                                      .toString()
+                                      .substring(0, 1)
+                                      .toUpperCase(),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
+                                backgroundColor: Colors.deepPurple.shade50,
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 user['name'].toString().toUpperCase(),
                                 style: const TextStyle(
@@ -80,11 +74,10 @@ class _friendlistState extends State<friendlist> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 5),
                             ],
                           ),
+                          const SizedBox(width: 20),
                           // Followers and Following
-                          SizedBox(width: 20),
                           Column(
                             children: [
                               Text(
@@ -101,7 +94,7 @@ class _friendlistState extends State<friendlist> {
                               ),
                             ],
                           ),
-                          SizedBox(width: 17),
+                          const SizedBox(width: 20),
                           Column(
                             children: [
                               Text(
@@ -118,25 +111,25 @@ class _friendlistState extends State<friendlist> {
                               ),
                             ],
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 20),
                           // Add Button
                           GestureDetector(
                             onTap: isCurrentUser
                                 ? null
                                 : () async {
                               try {
-                                // Update current user's "following"
+                                // Increment following count for main user (index 0)
                                 await FirebaseFirestore.instance
                                     .collection('users')
-                                    .doc(currentUserEmail)
+                                    .doc(snapshot.data!.docs[0].id)
                                     .update({
                                   'following': FieldValue.increment(1),
                                 });
 
-                                // Update selected user's "follower"
+                                // Increment follower count for the selected user
                                 await FirebaseFirestore.instance
                                     .collection('users')
-                                    .doc(user.id)
+                                    .doc(snapshot.data!.docs[index].id)
                                     .update({
                                   'follower': FieldValue.increment(1),
                                 });
@@ -164,10 +157,11 @@ class _friendlistState extends State<friendlist> {
                                     : Colors.deepPurple.shade100,
                                 borderRadius: BorderRadius.circular(50),
                                 border: Border.all(
-                                    color: isCurrentUser
-                                        ? Colors.grey
-                                        : Colors.deepPurple,
-                                    width: 1),
+                                  color: isCurrentUser
+                                      ? Colors.grey
+                                      : Colors.deepPurple,
+                                  width: 1,
+                                ),
                               ),
                               child: Icon(
                                 Icons.add,
