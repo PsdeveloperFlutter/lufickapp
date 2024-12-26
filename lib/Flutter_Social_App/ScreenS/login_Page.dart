@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../Firebase_Related_Code/Google_Sign_In.dart';
 import 'Main_Page.dart';
+import 'Otp_Screen/Otp_Screen_s.dart';
+import 'Otp_Screen/otpscreen.dart';
 import 'User_Profile.dart';
 
 
@@ -112,7 +114,7 @@ class LoginPages extends StatelessWidget {
           GestureDetector(
             onTap: (){
               print("Login with Mobile Number");
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>otpscreen(verificationId:123456.toString() ,)));
             },
             child: Card(
               elevation: 3,

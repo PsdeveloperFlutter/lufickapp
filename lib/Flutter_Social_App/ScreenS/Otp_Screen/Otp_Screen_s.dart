@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+/*import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lufickapp/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
 
@@ -62,4 +62,4 @@ class _OtpScreenState extends State<OtpScreen> {
         codeAutoRetrievalTimeout: (String verificationId) {},
         phoneNumber: controller.text.trim().toString());
   }
-}
+}*/
