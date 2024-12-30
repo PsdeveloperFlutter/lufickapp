@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lufickapp/Weather_APP/Current_Weather_API.dart';
 
 import 'Forecast_weather_Screen.dart';
+import 'Search_Screen.dart';
 
 class WeatherApp extends StatelessWidget {
   @override
@@ -42,6 +43,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         child: Icon(Icons.search,color: Colors.white,),
       ),
       appBar: AppBar(
+        actions: [
+          IconButton(onPressed: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context)=>searchScreen()));
+          }, icon: Icon(Icons.more_vert))
+        ],
         title: GestureDetector(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>WeatherForecastScreen()));
