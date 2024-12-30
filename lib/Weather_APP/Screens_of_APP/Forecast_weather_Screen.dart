@@ -18,11 +18,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class WeatherForecastScreen extends StatelessWidget {
-  Future<Forecastnoaqiandalerts?> fetchForecastWeather() async {
+class WeatherForecastScreen extends StatefulWidget {
+  @override
+  State<WeatherForecastScreen> createState() => _WeatherForecastScreenState();
+}
+
+class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
+  Future<Forecastnoaqiandalerts?> fetchForecastWeather(dynamic data) async {
     const String apiKey = "7d9146bb8a634bf38cd65757243012";
     const String baseUrl = "http://api.weatherapi.com/v1/forecast.json";
-    const String query = "Panipat";
+    String query = data;
 
     try {
       final response = await http.get(
@@ -40,16 +45,25 @@ class WeatherForecastScreen extends StatelessWidget {
       return null;
     }
   }
+  TextEditingController searchcontroller=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade700,
+        onPressed: (){
+
+          setState(() {
+            fetchForecastWeather(searchcontroller.text.toString().trim());
+          });
+        },child: Icon(Icons.search,color: Colors.white,),),
       appBar: AppBar(
         title: Text('Weather Forecast'),
         centerTitle: true,
       ),
       body: FutureBuilder<Forecastnoaqiandalerts?>(
-        future: fetchForecastWeather(),
+        future: fetchForecastWeather("Panipat"),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -67,6 +81,18 @@ class WeatherForecastScreen extends StatelessWidget {
             return ListView(
               padding: EdgeInsets.all(8.0),
               children: [
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter City Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      fetchForecastWeather(value);
+                    });
+                  },
+                ),
+
                 if (forecast.location != null)
                   buildLocationCard(forecast.location!),
                 if (forecast.forecast != null &&

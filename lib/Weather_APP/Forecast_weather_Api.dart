@@ -149,23 +149,3 @@ class Day {
   };
 }
 
-// Function to fetch weather data
-Future<Forecastnoaqiandalerts?> fetchForecastWeather() async {
-  const String apiKey = "7d9146bb8a634bf38cd65757243012";
-  const String baseUrl = "http://api.weatherapi.com/v1/forecast.json";
-  const String query = "Panipat";
-
-  try {
-    final response = await http.get(Uri.parse("$baseUrl?key=$apiKey&q=$query&days=7&aqi=no&alerts=no"));
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return Forecastnoaqiandalerts.fromJson(jsonData);
-    } else {
-      print("Failed to fetch data. Status code: ${response.statusCode}");
-      return null;
-    }
-  } catch (e) {
-    print("An error occurred: $e");
-    return null;
-  }
-}
