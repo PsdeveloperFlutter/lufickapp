@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart'; // Ensure the model file is imported here.
+import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:lufickapp/Weather_APP/Forecast_weather_Api.dart';
+
+import '../Forecast_weather_Api.dart';
 
 // Main App Entry Point
 void main() {
@@ -24,10 +25,14 @@ class WeatherForecastScreen extends StatefulWidget {
 }
 
 class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
-  Future<Forecastnoaqiandalerts?> fetchForecastWeather(dynamic data) async {
+  final TextEditingController searchController = TextEditingController();
+  Future<Forecastnoaqiandalerts?>? futureWeather;
+  String query = "Panipat"; // Default city for the initial load.
+
+  // Fetch weather data from API
+  Future<Forecastnoaqiandalerts?> fetchForecastWeather(String query) async {
     const String apiKey = "7d9146bb8a634bf38cd65757243012";
     const String baseUrl = "http://api.weatherapi.com/v1/forecast.json";
-    String query = data;
 
     try {
       final response = await http.get(
@@ -45,69 +50,100 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
       return null;
     }
   }
-  TextEditingController searchcontroller=TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    futureWeather = fetchForecastWeather(query); // Load default city.
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue.shade700,
-        onPressed: (){
-
-          setState(() {
-            fetchForecastWeather(searchcontroller.text.toString().trim());
-          });
-        },child: Icon(Icons.search,color: Colors.white,),),
       appBar: AppBar(
         title: Text('Weather Forecast'),
         centerTitle: true,
       ),
-      body: FutureBuilder<Forecastnoaqiandalerts?>(
-        future: fetchForecastWeather("Panipat"),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'Error: ${snapshot.error}',
-                style: TextStyle(color: Colors.red),
-              ),
-            );
-          } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text('No data available.'));
-          } else {
-            final forecast = snapshot.data!;
-            return ListView(
-              padding: EdgeInsets.all(8.0),
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Enter City Name',
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      fetchForecastWeather(value);
-                    });
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // Search Field
+            TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                labelText: 'Enter City Name',
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    _searchWeather();
                   },
                 ),
+              ),
+              onSubmitted: (_) => _searchWeather(),
+            ),
+            SizedBox(height: 16),
 
-                if (forecast.location != null)
-                  buildLocationCard(forecast.location!),
-                if (forecast.forecast != null &&
-                    forecast.forecast!.forecastday != null)
-                  ...forecast.forecast!.forecastday!.map(
-                        (forecastDay) => buildForecastCard(forecastDay),
-                  ),
-              ],
-            );
-          }
-        },
+            // Weather Data
+            Expanded(
+              child: FutureBuilder<Forecastnoaqiandalerts?>(
+                future: futureWeather,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Error: ${snapshot.error}',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return Center(child: Text('No data available.'));
+                  } else {
+                    final forecast = snapshot.data!;
+                    return ListView(
+                      children: [
+                        if (forecast.location != null)
+                          buildLocationCard(forecast.location!),
+                        if (forecast.forecast != null &&
+                            forecast.forecast!.forecastday != null)
+                          ...forecast.forecast!.forecastday!.map(
+                                (forecastDay) => buildForecastCard(forecastDay),
+                          ),
+                      ],
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade700,
+        onPressed: _searchWeather,
+        child: Icon(Icons.search, color: Colors.white),
       ),
     );
   }
 
+  // Search Weather Function
+  void _searchWeather() {
+    if (searchController.text.trim().isNotEmpty) {
+      setState(() {
+        query = searchController.text.trim();
+        futureWeather = fetchForecastWeather(query);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a city name')),
+      );
+    }
+  }
+
+  // Build Location Card
   Widget buildLocationCard(Location location) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -130,6 +166,7 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
     );
   }
 
+  // Build Forecast Card
   Widget buildForecastCard(Forecastday forecastDay) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8.0),
