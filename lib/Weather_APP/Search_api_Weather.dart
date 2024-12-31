@@ -1,9 +1,6 @@
-// To parse this JSON data, do
-//
-//     final searchweather = searchweatherFromJson(jsonString);
-
 import 'dart:convert';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
+
 Searchweather searchweatherFromJson(String str) => Searchweather.fromJson(json.decode(str));
 
 String searchweatherToJson(Searchweather data) => json.encode(data.toJson());
@@ -193,30 +190,7 @@ class Forecastday {
   };
 }
 
-
 class Day {
-  dynamic maxtempC;
-  dynamic maxtempF;
-  dynamic mintempC;
-  dynamic mintempF;
-  dynamic avgtempC;
-  dynamic avgtempF;
-  dynamic maxwindMph;
-  dynamic maxwindKph;
-  dynamic totalprecipMm;
-  dynamic totalprecipIn;
-  dynamic totalsnowCm;
-  dynamic avgvisKm;
-  dynamic avgvisMiles;
-  dynamic avghumidity;
-  dynamic dailyWillItRain;
-  dynamic dailyChanceOfRain;
-  dynamic dailyWillItSnow;
-  dynamic dailyChanceOfSnow;
-  Condition condition;
-  double uv;
-  Map<String, double> airQuality;
-
   Day({
     required this.maxtempC,
     required this.maxtempF,
@@ -241,6 +215,28 @@ class Day {
     required this.airQuality,
   });
 
+  final double? maxtempC;
+  final double? maxtempF;
+  final double? mintempC;
+  final double? mintempF;
+  final dynamic avgtempC;
+  final double? avgtempF;
+  final double? maxwindMph;
+  final double? maxwindKph;
+  final dynamic totalprecipMm;
+  final dynamic totalprecipIn;
+  final dynamic totalsnowCm;
+  final dynamic avgvisKm;
+  final dynamic avgvisMiles;
+  final dynamic avghumidity;
+  final dynamic dailyWillItRain;
+  final dynamic dailyChanceOfRain;
+  final dynamic dailyWillItSnow;
+  final dynamic dailyChanceOfSnow;
+  final Condition condition;
+  final double? uv;
+  final Map<String, double> airQuality;
+
   factory Day.fromJson(Map<String, dynamic> json) => Day(
     maxtempC: json["maxtemp_c"]?.toDouble(),
     maxtempF: json["maxtemp_f"]?.toDouble(),
@@ -262,7 +258,8 @@ class Day {
     dailyChanceOfSnow: json["daily_chance_of_snow"],
     condition: Condition.fromJson(json["condition"]),
     uv: json["uv"]?.toDouble(),
-    airQuality: Map.from(json["air_quality"]).map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
+    airQuality: Map.from(json["air_quality"])
+        .map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
   );
 
   Map<String, dynamic> toJson() => {
@@ -286,40 +283,102 @@ class Day {
     "daily_chance_of_snow": dailyChanceOfSnow,
     "condition": condition.toJson(),
     "uv": uv,
-    "air_quality": Map.from(airQuality).map((k, v) => MapEntry<String, dynamic>(k, v)),
+    "air_quality": Map.from(airQuality)
+        .map((k, v) => MapEntry<String, dynamic>(k, v)),
   };
 }
-
 
 class Alerts {
   Alerts({
     required this.alert,
   });
 
-  final List<dynamic> alert;
+  final List<Alert> alert;
 
   factory Alerts.fromJson(Map<String, dynamic> json) => Alerts(
-    alert: List<dynamic>.from(json["alert"].map((x) => x)),
+    alert: List<Alert>.from(json["alert"].map((x) => Alert.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "alert": List<dynamic>.from(alert.map((x) => x)),
+    "alert": List<dynamic>.from(alert.map((x) => x.toJson())),
   };
 }
 
-Future<Searchweather?>searchapiweather()async{
-  try{
-    final response=await http.get(Uri.parse("http://api.weatherapi.com/v1/forecast.json?key=7d9146bb8a634bf38cd65757243012&q=London&days=1&aqi=yes&alerts=yes"));
-    if(response.statusCode==200){
+class Alert {
+  Alert({
+    required this.headline,
+    required this.msgtype,
+    required this.severity,
+    required this.urgency,
+    required this.areas,
+    required this.category,
+    required this.certainty,
+    required this.event,
+    required this.note,
+    required this.effective,
+    required this.expires,
+    required this.desc,
+    required this.instruction,
+  });
+
+  final String headline;
+  final String msgtype;
+  final String severity;
+  final String urgency;
+  final String areas;
+  final String category;
+  final String certainty;
+  final String event;
+  final String note;
+  final DateTime effective;
+  final DateTime expires;
+  final String desc;
+  final String instruction;
+
+  factory Alert.fromJson(Map<String, dynamic> json) => Alert(
+    headline: json["headline"],
+    msgtype: json["msgtype"],
+    severity: json["severity"],
+    urgency: json["urgency"],
+    areas: json["areas"],
+    category: json["category"],
+    certainty: json["certainty"],
+    event: json["event"],
+    note: json["note"],
+    effective: DateTime.parse(json["effective"]),
+    expires: DateTime.parse(json["expires"]),
+    desc: json["desc"],
+    instruction: json["instruction"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "headline": headline,
+    "msgtype": msgtype,
+    "severity": severity,
+    "urgency": urgency,
+    "areas": areas,
+    "category": category,
+    "certainty": certainty,
+    "event": event,
+    "note": note,
+    "effective": effective.toIso8601String(),
+    "expires": expires.toIso8601String(),
+    "desc": desc,
+    "instruction": instruction,
+  };
+}
+
+Future<Searchweather?> searchApiWeather(dynamic location) async {
+  try {
+    final response = await http.get(Uri.parse(
+        "http://api.weatherapi.com/v1/forecast.json?key=7d9146bb8a634bf38cd65757243012&q=$location&days=1&aqi=yes&alerts=yes"));
+    if (response.statusCode == 200) {
       return Searchweather.fromJson(jsonDecode(response.body));
-    }else{
+    } else {
       throw Exception("Failed to fetch data");
     }
-
+  } catch (e) {
+    print("$e Error Occurred");
+    return null;
   }
-
-  catch(e){
-    print("$e Error Occur");
-  }
-  return null;
 }
