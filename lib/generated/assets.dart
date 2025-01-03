@@ -29,6 +29,7 @@ class Assets {
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
   static const String riverPordRiverpod = 'lib/RiverPord/Riverpod.dart';
+  static const String riverPordRiverpod1 = 'lib/RiverPord/Riverpod1.dart';
   static const String riverPordRiverpord = 'lib/RiverPord/Riverpord.dart';
   static const String screenBackgroundAnimation = 'lib/Todo_Application/screen/Background_Animation.dart';
   static const String screenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart';

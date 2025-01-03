@@ -37,7 +37,7 @@ class _riverstatessState extends ConsumerState<riverstatess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text(ref.watch(value1).toString(),style: TextStyle(fontSize: 30),),
+      body: Center(child: Text(ref.watch(value1).toString(),style: TextStyle(fontSize: 30),)),
     );
   }
 }
