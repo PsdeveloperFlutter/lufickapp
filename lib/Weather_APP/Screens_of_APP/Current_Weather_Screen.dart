@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lufickapp/Weather_APP/Current_Weather_API.dart';
+import 'package:lufickapp/Weather_APP/Screens_of_APP/Future_weather_Screen.dart';
 
 import 'Forecast_weather_Screen.dart';
 import 'Search_Screen.dart';
@@ -51,9 +52,56 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.cyanAccent,
         actions: [
-          IconButton(onPressed: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context)=>searchScreen()));
-          }, icon: Icon(Icons.more_vert))
+          PopupMenuButton(
+            icon: const Icon(Icons.menu, size: 30, color: Colors.blue),
+            offset: Offset(0, 40),
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'Home',
+                child: Row(
+                  children: [
+                    Icon(Icons.home, size: 20, color: Colors.black),
+                    SizedBox(width: 10),
+                    Text('Home', style: TextStyle(fontSize: 16, color: Colors.black)),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'Search',
+                child: Row(
+                  children: [
+                    Icon(Icons.search, size: 20, color: Colors.black),
+                    SizedBox(width: 10),
+                    Text('Future', style: TextStyle(fontSize: 16, color: Colors.black)),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'Settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings, size: 20, color: Colors.black),
+                    SizedBox(width: 10),
+                    Text('Settings', style: TextStyle(fontSize: 16, color: Colors.black)),
+                  ],
+                ),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 'Home') {
+                // Navigate to Home screen
+              } else if (value == 'Search') {
+        Navigator.push(context,MaterialPageRoute(builder: (context) => futureweatherscreen()));
+
+              } else if (value == 'Settings') {
+                // Navigate to Settings screen
+              }
+            },
+          )
         ],
         title: Text('Weather App'),
         centerTitle: true,

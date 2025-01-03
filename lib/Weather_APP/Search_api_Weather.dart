@@ -371,7 +371,7 @@ class Alert {
 Future<Searchweather?> searchApiWeather(dynamic location) async {
   try {
     final response = await http.get(Uri.parse(
-        "http://api.weatherapi.com/v1/forecast.json?key=7d9146bb8a634bf38cd65757243012&q=$location&days=1&aqi=yes&alerts=yes"));
+        "http://api.weatherapi.com/v1/forecast.json?key=1e664b5ce1294e4aa9d65423243012&q=$location&days=1&aqi=yes&alerts=yes"));
     if (response.statusCode == 200) {
       return Searchweather.fromJson(jsonDecode(response.body));
     } else {

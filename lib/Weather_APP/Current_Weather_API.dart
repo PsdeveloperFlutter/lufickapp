@@ -3,7 +3,7 @@ import 'dart:convert';
 
 //This is the api Call for current weather Data
 Future<Currenttemp?> fetchCurrentWeather(dynamic location) async {
-  const String apiKey = "7d9146bb8a634bf38cd65757243012";
+  const String apiKey = "1e664b5ce1294e4aa9d65423243012";
   const String baseUrl = "http://api.weatherapi.com/v1/current.json";
 
   try {

@@ -31,7 +31,7 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
 
   // Fetch weather data from API
   Future<Forecastnoaqiandalerts?> fetchForecastWeather(String query) async {
-    const String apiKey = "7d9146bb8a634bf38cd65757243012";
+    const String apiKey = "1e664b5ce1294e4aa9d65423243012";
     const String baseUrl = "http://api.weatherapi.com/v1/forecast.json";
 
     try {
