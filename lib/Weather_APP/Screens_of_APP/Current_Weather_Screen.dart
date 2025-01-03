@@ -48,11 +48,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
            Navigator.push(context, MaterialPageRoute(builder: (context)=>searchScreen()));
           }, icon: Icon(Icons.more_vert))
         ],
-        title: GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>WeatherForecastScreen()));
-            },
-            child: Text('Weather App')),
+        title: Text('Weather App'),
         centerTitle: true,
       ),
       body: FutureBuilder<Currenttemp?>(
@@ -168,6 +164,37 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             );
           }
         },
+      ),
+
+      //Bottom Navigation Bar
+      //Bottom Navigation Bar
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.cyanAccent,
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => searchScreen()));
+          }
+          else if(index == 2){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>WeatherForecastScreen()));
+          }
+          else if(index == 0){
+
+          }
+        },
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.black,),
+            label: 'Home',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.search, color: Colors.black),
+            label: 'Search',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz, color: Colors.black),
+            label: 'Forecast',
+          ),
+        ],
       ),
     );
   }
