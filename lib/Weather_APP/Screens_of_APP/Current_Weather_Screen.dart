@@ -24,12 +24,18 @@ class WeatherHomePage extends StatefulWidget {
 class _WeatherHomePageState extends State<WeatherHomePage> {
   Future<Currenttemp?>? weatherData;
 
+  TextEditingController searchController=TextEditingController();
   @override
   void initState() {
     super.initState();
-    weatherData = fetchCurrentWeather(); // Fetch weather data on app start
+    weatherData = fetchCurrentWeather("Panipat"); // Fetch weather data on app start
   }
 
+  void dispose() {
+    super.dispose();
+    weatherData = null;
+    searchController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +43,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         backgroundColor: Colors.blue.shade700,
         onPressed: (){
           setState(() {
-            weatherData = fetchCurrentWeather();
+            weatherData = fetchCurrentWeather(searchController.text.toString().trim());
           });
         },
         child: Icon(Icons.search,color: Colors.white,),
       ),
       appBar: AppBar(
+        backgroundColor: Colors.cyanAccent,
         actions: [
           IconButton(onPressed: (){
            Navigator.push(context, MaterialPageRoute(builder: (context)=>searchScreen()));
@@ -69,6 +76,26 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search for weather',
+                        hintStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold,fontSize: 12),
+                          labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),
+                          label: Text('Search for weather'),
+                          prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        fillColor: Colors.white,
+                        filled: true,
+                      //  prefixStyle: TextStyle(color: Colors.blue.shade700,fontWeight: FontWeight.bold),
+                        prefixIconColor: Colors.blue.shade700
+                      ),
+                    ),
+                    SizedBox(height:10),
                     Text(
                       weather.location.name,
                       style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),

@@ -2,13 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 //This is the api Call for current weather Data
-Future<Currenttemp?> fetchCurrentWeather() async {
+Future<Currenttemp?> fetchCurrentWeather(dynamic location) async {
   const String apiKey = "7d9146bb8a634bf38cd65757243012";
   const String baseUrl = "http://api.weatherapi.com/v1/current.json";
 
   try {
     final response = await http.get(
-      Uri.parse("$baseUrl?key=$apiKey&q=Panipat&aqi=no"),
+      Uri.parse("$baseUrl?key=$apiKey&q=$location&aqi=no"),
     );
 
     if (response.statusCode == 200) {
