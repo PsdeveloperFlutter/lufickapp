@@ -3,6 +3,7 @@ import 'package:lufickapp/Weather_APP/Current_Weather_API.dart';
 import 'package:lufickapp/Weather_APP/Screens_of_APP/Future_weather_Screen.dart';
 
 import 'Forecast_weather_Screen.dart';
+import 'Google_authentication.dart';
 import 'Search_Screen.dart';
 
 class WeatherApp extends StatelessWidget {
@@ -60,33 +61,27 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               borderRadius: BorderRadius.circular(10),
             ),
             itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 'Home',
-                child: Row(
-                  children: [
-                    Icon(Icons.home, size: 20, color: Colors.black),
-                    SizedBox(width: 10),
-                    Text('Home', style: TextStyle(fontSize: 16, color: Colors.black)),
-                  ],
-                ),
-              ),
+
               PopupMenuItem(
                 value: 'Search',
                 child: Row(
                   children: [
-                    Icon(Icons.search, size: 20, color: Colors.black),
+                    Icon(Icons.timeline, size: 20, color: Colors.blue.shade700),
                     SizedBox(width: 10),
                     Text('Future', style: TextStyle(fontSize: 16, color: Colors.black)),
                   ],
                 ),
               ),
               PopupMenuItem(
-                value: 'Settings',
+                onTap: (){
+                  GooglesignClass.handleSignOut(context);
+                },
+                value: 'Logout',
                 child: Row(
                   children: [
-                    Icon(Icons.settings, size: 20, color: Colors.black),
+                    Icon(Icons.logout, size: 20, color: Colors.blue.shade700),
                     SizedBox(width: 10),
-                    Text('Settings', style: TextStyle(fontSize: 16, color: Colors.black)),
+                    Text('Logout', style: TextStyle(fontSize: 16, color: Colors.black)),
                   ],
                 ),
               ),

@@ -20,9 +20,11 @@ class Assets {
   static const String imagesNature4 = 'assets/images/nature4.jpg';
   static const String imagesToDoLogo = 'assets/images/ToDoLogo.jpg';
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
+  static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
+  static const String libRiverPordRiverpod3 = 'lib/RiverPord/Riverpod3.dart~';
   static const String libThemes = 'lib/themes.dart';
   static const String libWeatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart~';
   static const String libWeatherAPPFutureWeatherAPI = 'lib/Weather_APP/Future_weather_API.dart~';
@@ -60,14 +62,15 @@ class Assets {
   static const String screensOfAPPCurrentWeatherScreen = 'lib/Weather_APP/Screens_of_APP/Current_Weather_Screen.dart';
   static const String screensOfAPPForecastWeatherScreen = 'lib/Weather_APP/Screens_of_APP/Forecast_weather_Screen.dart';
   static const String screensOfAPPFutureWeatherScreen = 'lib/Weather_APP/Screens_of_APP/Future_weather_Screen.dart';
+  static const String screensOfAPPGoogleAuthentication = 'lib/Weather_APP/Screens_of_APP/Google_authentication.dart';
   static const String screensOfAPPSearchScreen = 'lib/Weather_APP/Screens_of_APP/Search_Screen.dart';
   static const String todoApplicationScreenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart~';
   static const String todoApplicationScreenSplash Screen of ToDoApp = 'lib/Todo_Application/screen/Splash Screen of ToDo_App.dart~';
   static const String weatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart';
   static const String weatherAPPForecastWeatherApi = 'lib/Weather_APP/Forecast_weather_Api.dart';
   static const String weatherAPPFutureWeatherAPI = 'lib/Weather_APP/Future_weather_API.dart';
-  static const String weatherAPPScreensOfAPPCurrentWeatherScreen = 'lib/Weather_APP/Screens_of_APP/Current_Weather_Screen.dart~';
   static const String weatherAPPScreensOfAPPFutureWeatherScreen = 'lib/Weather_APP/Screens_of_APP/Future_weather_Screen.dart~';
+  static const String weatherAPPScreensOfAPPGoogleAuthentication = 'lib/Weather_APP/Screens_of_APP/Google_authentication.dart~';
   static const String weatherAPPScreensOfAPPSearchScreen = 'lib/Weather_APP/Screens_of_APP/Search_Screen.dart~';
   static const String weatherAPPSearchApiWeather = 'lib/Weather_APP/Search_api_Weather.dart';
 
