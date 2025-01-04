@@ -74,10 +74,26 @@ class _GoogleAuthenticationUIPageState extends State<GoogleAuthenticationUIPage>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Spacer(),
-            Image.asset(
-              "assets/images/weather.png",
-              width: 150,
-              height: 150,
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Image.asset(
+                fit: BoxFit.cover,
+                "assets/images/weather.png",
+                width: 150,
+                height: 150,
+              ),
             ),
             Spacer(),
             ElevatedButton.icon(
