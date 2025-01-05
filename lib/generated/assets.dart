@@ -22,6 +22,7 @@ class Assets {
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
+  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libRiverPordRiverpod3 = 'lib/RiverPord/Riverpod3.dart~';
@@ -37,6 +38,7 @@ class Assets {
   static const String riverPordRiverpod1 = 'lib/RiverPord/Riverpod1.dart';
   static const String riverPordRiverpod2 = 'lib/RiverPord/Riverpod2.dart';
   static const String riverPordRiverpod3 = 'lib/RiverPord/Riverpod3.dart';
+  static const String riverPordRiverpod4 = 'lib/RiverPord/Riverpod4.dart';
   static const String riverPordRiverpord = 'lib/RiverPord/Riverpord.dart';
   static const String screenBackgroundAnimation = 'lib/Todo_Application/screen/Background_Animation.dart';
   static const String screenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart';
@@ -70,7 +72,6 @@ class Assets {
   static const String weatherAPPForecastWeatherApi = 'lib/Weather_APP/Forecast_weather_Api.dart';
   static const String weatherAPPFutureWeatherAPI = 'lib/Weather_APP/Future_weather_API.dart';
   static const String weatherAPPScreensOfAPPFutureWeatherScreen = 'lib/Weather_APP/Screens_of_APP/Future_weather_Screen.dart~';
-  static const String weatherAPPScreensOfAPPGoogleAuthentication = 'lib/Weather_APP/Screens_of_APP/Google_authentication.dart~';
   static const String weatherAPPScreensOfAPPSearchScreen = 'lib/Weather_APP/Screens_of_APP/Search_Screen.dart~';
   static const String weatherAPPSearchApiWeather = 'lib/Weather_APP/Search_api_Weather.dart';
 
