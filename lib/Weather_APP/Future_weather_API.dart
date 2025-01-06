@@ -448,7 +448,7 @@ class EnumValues<T> {
 
 Future<Futureweather> fetchFutureWeather(String location) async {
 
-  final response=await http.get(Uri.parse("http://api.weatherapi.com/v1/future.json?key=1e664b5ce1294e4aa9d65423243012&q=London&dt=2025-02-02"));
+  final response=await http.get(Uri.parse("http://api.weatherapi.com/v1/future.json?key=1e664b5ce1294e4aa9d65423243012&q=$location&dt=2025-02-02"));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

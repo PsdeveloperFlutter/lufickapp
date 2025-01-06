@@ -42,7 +42,7 @@ class _searchScreenState extends State<searchScreen> {
         }
         else if(snapshot.hasData){
             return ListView.builder(
-                itemCount: 1,
+                itemCount: snapshot.data!.forecast.forecastday.length,
               physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 itemBuilder: (context,index) {

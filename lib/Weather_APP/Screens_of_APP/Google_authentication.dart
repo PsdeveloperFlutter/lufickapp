@@ -12,7 +12,7 @@ class GooglesignClass {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            transitionDuration: Duration(seconds: 3),
+            transitionDuration: Duration(milliseconds: 500),
             pageBuilder: (context, animation, secondaryAnimation) => WeatherApp(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               return SlideTransition(
