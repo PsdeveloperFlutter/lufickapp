@@ -26,6 +26,7 @@ class Assets {
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libRiverPordRiverpod3 = 'lib/RiverPord/Riverpod3.dart~';
+  static const String libRiverPordRiverpodcrudoperation = 'lib/RiverPord/Riverpodcrudoperation.dart~';
   static const String libThemes = 'lib/themes.dart';
   static const String libWeatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart~';
   static const String libWeatherAPPFutureWeatherAPI = 'lib/Weather_APP/Future_weather_API.dart~';
@@ -39,7 +40,9 @@ class Assets {
   static const String riverPordRiverpod2 = 'lib/RiverPord/Riverpod2.dart';
   static const String riverPordRiverpod3 = 'lib/RiverPord/Riverpod3.dart';
   static const String riverPordRiverpod4 = 'lib/RiverPord/Riverpod4.dart';
+  static const String riverPordRiverpodcrudoperation = 'lib/RiverPord/Riverpodcrudoperation.dart';
   static const String riverPordRiverpord = 'lib/RiverPord/Riverpord.dart';
+  static const String riverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart';
   static const String screenBackgroundAnimation = 'lib/Todo_Application/screen/Background_Animation.dart';
   static const String screenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart';
   static const String screenDatePickerFile = 'lib/Todo_Application/screen/Date_Picker_file.dart';
