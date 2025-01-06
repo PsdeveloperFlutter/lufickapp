@@ -43,16 +43,21 @@ class screenoflist extends ConsumerWidget {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: value.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(value[index].name),
-                  subtitle: Text(value[index].id),
-                  trailing: IconButton(onPressed: (){}, icon: Icon(Icons.delete)),
-                );
-              },
-            ),
+            child:Consumer(builder: (context,ref,child){
+              return
+              ListView.builder(
+                itemCount: value.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(value[index].name),
+                    subtitle: Text(value[index].id),
+                    trailing: IconButton(onPressed: (){
+                      ref.read(itemprovider.notifier).deleteitem(value[index]);
+                    }, icon: Icon(Icons.delete)),
+                  );
+                },
+              );
+            }),
           ),
           SizedBox(height: 10),
           Padding(
