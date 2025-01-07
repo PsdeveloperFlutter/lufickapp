@@ -3,7 +3,9 @@ class Assets {
   Assets._();
 
   static const String aIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart';
-  static const String appGoogleServices = 'android/app/google-services.json';static const String firebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart';
+  static const String appGoogleServices = 'android/app/google-services.json';
+  static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
+  static const String firebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart';
   static const String flutterSocialAppFirebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart~';
   static const String flutterSocialAppScreenSFriendsProfile = 'lib/Flutter_Social_App/ScreenS/Friends_Profile.dart~';
   static const String flutterSocialAppScreenSMainPage = 'lib/Flutter_Social_App/ScreenS/Main_Page.dart~';
@@ -12,10 +14,12 @@ class Assets {
   static const String imagesFluttersocial = 'assets/images/fluttersocial.jpg';
   static const String imagesIMG20240302171902 = 'assets/images/IMG20240302171902.jpg';
   static const String imagesIMG20240731231330976 = 'assets/images/IMG_20240731_231330_976.jpg';
+  static const String imagesNature1. = 'assets/images/nature1..jpg';
   static const String imagesNature2 = 'assets/images/nature2.jpg';
   static const String imagesNature3 = 'assets/images/nature3.jpg';
   static const String imagesNature4 = 'assets/images/nature4.jpg';
   static const String imagesToDoLogo = 'assets/images/ToDoLogo.jpg';
+  static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libMain = 'lib/main.dart';
