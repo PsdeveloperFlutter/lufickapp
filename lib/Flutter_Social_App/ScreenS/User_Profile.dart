@@ -9,9 +9,9 @@ import 'Main_Page.dart';
 
 class UserProfileScreen extends StatefulWidget {
 
-  final String username;
-  final String email;
-  UserProfileScreen({required this.username,required this.email});
+  dynamic  username;
+  dynamic  email;
+  UserProfileScreen({this.username,this.email});
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }

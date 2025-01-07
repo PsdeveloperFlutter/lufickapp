@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lufickapp/Flutter_Social_App/ScreenS/Main_Page.dart';
+import 'package:lufickapp/Flutter_Social_App/ScreenS/User_Profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,6 +99,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       onPressed: () {
                         if (_isOtpSent) {
                           _verifyOtp();
+                          Timer(const Duration(seconds: 10), () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>UserProfileScreen()));
+                          });
                         } else {
                           _sendVerificationCode();
                         }
@@ -142,6 +149,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
       verificationCompleted: (PhoneAuthCredential credential) async {
         await _auth.signInWithCredential(credential);
         _showSuccessMessage("Phone number automatically verified!");
+
       },
       verificationFailed: (FirebaseException e) {
         _showErrorMessage("Verification failed: ${e.message}");
@@ -186,7 +194,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
       await _auth.signInWithCredential(credential);
       _showSuccessMessage("Phone number verified successfully!");
     } catch (e) {
-      _showErrorMessage("Failed to verify OTP: $e");
+      _showErrorMessage("Failed to verify OTP :- Enter Valid Otp.");
     }
 
     setState(() => _isLoading = false);
