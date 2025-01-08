@@ -1,22 +1,17 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart';
-
 import 'login_Page.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
-
-
 class _ProfileScreenState extends State<ProfileScreen> {
 
   TextEditingController postcontroller=TextEditingController();
-
   TextEditingController biocontroller=TextEditingController();
   TextEditingController namecontroller=TextEditingController();
 
@@ -75,15 +70,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SimpleDialogOption(
                     onPressed: () async{
                       try{
+                        final  firestore = FirebaseFirestore.instance;
+                        final QuerySnapshot snapshot = await firestore.collection("users").get();
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(snapshot.docs[0]['email']).delete();
 
-
-                        //Firebase Deletion part
-                        await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).delete();
                         // Perform logout action
-                        await GoogleSignIn().signOut();
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
-                      }
+                          print(FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(snapshot.docs[0]['email']));
+                        Timer(Duration(milliseconds: 500), ()async{
+                          await GoogleSignIn().signOut();
+                          await FirebaseAuth.instance.signOut();
+                        });
+
+                        Timer(Duration(milliseconds: 600), ()async{
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPages()));
+                        });
+
+                          }
                       catch(e){
                         print("Error Occur :- $e");
                       }
