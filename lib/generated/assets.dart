@@ -9,7 +9,6 @@ class Assets {
   static const String flutterSocialAppFirebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart~';
   static const String flutterSocialAppScreenSFriendsProfile = 'lib/Flutter_Social_App/ScreenS/Friends_Profile.dart~';
   static const String flutterSocialAppScreenSMainPage = 'lib/Flutter_Social_App/ScreenS/Main_Page.dart~';
-  static const String flutterSocialAppScreenSUserProfile = 'lib/Flutter_Social_App/ScreenS/User_Profile.dart~';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String imagesFluttersocial = 'assets/images/fluttersocial.jpg';
   static const String imagesIMG20240302171902 = 'assets/images/IMG20240302171902.jpg';
@@ -33,6 +32,7 @@ class Assets {
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
+  static const String riverPordRIverpod Favourate list  = 'lib/RiverPord/RIverpod Favourate list .dart';
   static const String riverPordRiverpod = 'lib/RiverPord/Riverpod.dart';
   static const String riverPordRiverpod practice  = 'lib/RiverPord/Riverpod practice .dart';
   static const String riverPordRiverpod1 = 'lib/RiverPord/Riverpod1.dart';
