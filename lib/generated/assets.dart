@@ -32,6 +32,7 @@ class Assets {
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
+  static const String riverPordFutureProviderPractice = 'lib/RiverPord/FutureProviderPractice.dart';
   static const String riverPordFutureRiverpod = 'lib/RiverPord/FutureRiverpod.dart';
   static const String riverPordFutureRiverpod1 = 'lib/RiverPord/FutureRiverpod1.dart';
   static const String riverPordRIverpod Favourate list  = 'lib/RiverPord/RIverpod Favourate list .dart';
@@ -45,6 +46,7 @@ class Assets {
   static const String riverPordRiverpodchangeNotifier = 'lib/RiverPord/RiverpodchangeNotifier.dart';
   static const String riverPordRiverpodcrudoperation = 'lib/RiverPord/Riverpodcrudoperation.dart';
   static const String riverPordRiverpord = 'lib/RiverPord/Riverpord.dart';
+  static const String riverPordStreamProvider Practice  = 'lib/RiverPord/StreamProvider Practice .dart';
   static const String riverPordStreamProviderRiverpod = 'lib/RiverPord/StreamProviderRiverpod.dart';
   static const String riverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart';
   static const String screenBackgroundAnimation = 'lib/Todo_Application/screen/Background_Animation.dart';
