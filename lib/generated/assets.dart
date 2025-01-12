@@ -24,6 +24,7 @@ class Assets {
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libRiverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart~';
+  static const String libRiverPordAsyncNotifierProviderPractice = 'lib/RiverPord/AsyncNotifierProviderPractice.dart~';
   static const String libRiverPordRiverpod3 = 'lib/RiverPord/Riverpod3.dart~';
   static const String libRiverPordStreamProvider Practice  = 'lib/RiverPord/StreamProvider Practice .dart~';
   static const String libRiverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart~';
@@ -36,9 +37,11 @@ class Assets {
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
   static const String riverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart';
   static const String riverPordAsyncNotifierProviderPractice = 'lib/RiverPord/AsyncNotifierProviderPractice.dart';
+  static const String riverPordChangeNotifierProvider = 'lib/RiverPord/ChangeNotifierProvider.dart';
   static const String riverPordFutureProviderPractice = 'lib/RiverPord/FutureProviderPractice.dart';
   static const String riverPordFutureRiverpod = 'lib/RiverPord/FutureRiverpod.dart';
   static const String riverPordFutureRiverpod1 = 'lib/RiverPord/FutureRiverpod1.dart';
+  static const String riverPordProviderfamily = 'lib/RiverPord/Providerfamily.dart';
   static const String riverPordRIverpod Favourate list  = 'lib/RiverPord/RIverpod Favourate list .dart';
   static const String riverPordRivepod favourite list  = 'lib/RiverPord/Rivepod favourite list .dart';
   static const String riverPordRiverpod = 'lib/RiverPord/Riverpod.dart';
