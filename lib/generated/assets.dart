@@ -42,6 +42,7 @@ class Assets {
   static const String riverPordFutureProviderPractice = 'lib/RiverPord/FutureProviderPractice.dart';
   static const String riverPordFutureRiverpod = 'lib/RiverPord/FutureRiverpod.dart';
   static const String riverPordFutureRiverpod1 = 'lib/RiverPord/FutureRiverpod1.dart';
+  static const String riverPordProvider Family Practice = 'lib/RiverPord/Provider Family Practice.dart';
   static const String riverPordProviderfamily = 'lib/RiverPord/Providerfamily.dart';
   static const String riverPordRIverpod Favourate list  = 'lib/RiverPord/RIverpod Favourate list .dart';
   static const String riverPordRivepod favourite list  = 'lib/RiverPord/Rivepod favourite list .dart';
@@ -54,6 +55,7 @@ class Assets {
   static const String riverPordRiverpodchangeNotifier = 'lib/RiverPord/RiverpodchangeNotifier.dart';
   static const String riverPordRiverpodcrudoperation = 'lib/RiverPord/Riverpodcrudoperation.dart';
   static const String riverPordRiverpord = 'lib/RiverPord/Riverpord.dart';
+  static const String riverPordStateNotifierfamily = 'lib/RiverPord/StateNotifierfamily.dart';
   static const String riverPordStreamProvider Practice  = 'lib/RiverPord/StreamProvider Practice .dart';
   static const String riverPordStreamProviderRiverpod = 'lib/RiverPord/StreamProviderRiverpod.dart';
   static const String riverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart';
