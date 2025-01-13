@@ -37,6 +37,7 @@ class Assets {
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
   static const String riverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart';
   static const String riverPordAsyncNotifierProviderPractice = 'lib/RiverPord/AsyncNotifierProviderPractice.dart';
+  static const String riverPordAsyncNotifierProviderPractice1 = 'lib/RiverPord/AsyncNotifierProviderPractice1.dart';
   static const String riverPordChangeNotifierProvider = 'lib/RiverPord/ChangeNotifierProvider.dart';
   static const String riverPordFutureProviderPractice = 'lib/RiverPord/FutureProviderPractice.dart';
   static const String riverPordFutureRiverpod = 'lib/RiverPord/FutureRiverpod.dart';
