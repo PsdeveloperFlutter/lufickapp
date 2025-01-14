@@ -22,7 +22,6 @@ class Assets {
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libRiverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart~';
@@ -31,7 +30,6 @@ class Assets {
   static const String libRiverPordStateNotifierfamily = 'lib/RiverPord/StateNotifierfamily.dart~';
   static const String libRiverPordStreamProvider Practice  = 'lib/RiverPord/StreamProvider Practice .dart~';
   static const String libRiverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart~';
-  static const String libSupabaseEmail authentication = 'lib/Supabase/Email authentication.dart~';
   static const String libThemes = 'lib/themes.dart';
   static const String libWeatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart~';
   static const String libWeatherAPPSearchApiWeather = 'lib/Weather_APP/Search_api_Weather.dart~';
@@ -39,6 +37,7 @@ class Assets {
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
+  static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
   static const String riverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart';
   static const String riverPordAsyncNotifierProviderPractice = 'lib/RiverPord/AsyncNotifierProviderPractice.dart';
   static const String riverPordAsyncNotifierProviderPractice1 = 'lib/RiverPord/AsyncNotifierProviderPractice1.dart';
@@ -59,7 +58,9 @@ class Assets {
   static const String riverPordRiverpodchangeNotifier = 'lib/RiverPord/RiverpodchangeNotifier.dart';
   static const String riverPordRiverpodcrudoperation = 'lib/RiverPord/Riverpodcrudoperation.dart';
   static const String riverPordRiverpord = 'lib/RiverPord/Riverpord.dart';
+  static const String riverPordStateFamilyProviderpractice = 'lib/RiverPord/StateFamilyProviderpractice.dart';
   static const String riverPordStateNotifierfamily = 'lib/RiverPord/StateNotifierfamily.dart';
+  static const String riverPordStateProviderfamily = 'lib/RiverPord/StateProviderfamily.dart';
   static const String riverPordStreamProvider Practice  = 'lib/RiverPord/StreamProvider Practice .dart';
   static const String riverPordStreamProviderRiverpod = 'lib/RiverPord/StreamProviderRiverpod.dart';
   static const String riverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart';
