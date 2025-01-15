@@ -42,6 +42,7 @@ class Assets {
   static const String riverPordAsyncNotifierProviderPractice = 'lib/RiverPord/AsyncNotifierProviderPractice.dart';
   static const String riverPordAsyncNotifierProviderPractice1 = 'lib/RiverPord/AsyncNotifierProviderPractice1.dart';
   static const String riverPordChangeNotifierProvider = 'lib/RiverPord/ChangeNotifierProvider.dart';
+  static const String riverPordFutureProviderFamily = 'lib/RiverPord/FutureProviderFamily.dart';
   static const String riverPordFutureProviderPractice = 'lib/RiverPord/FutureProviderPractice.dart';
   static const String riverPordFutureRiverpod = 'lib/RiverPord/FutureRiverpod.dart';
   static const String riverPordFutureRiverpod1 = 'lib/RiverPord/FutureRiverpod1.dart';
