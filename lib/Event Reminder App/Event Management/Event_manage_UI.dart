@@ -13,11 +13,11 @@ class Mainpage_event_management extends StatelessWidget {
           appBar: AppBar(
             bottom: const TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.music_note)),
-                Tab(icon: Icon(Icons.music_video)),
-                Tab(icon: Icon(Icons.camera_alt)),
-                Tab(icon: Icon(Icons.grade)),
-                Tab(icon: Icon(Icons.email)),
+                Tab(icon: Icon(Icons.music_note,color: Colors.white,)),
+                Tab(icon: Icon(Icons.music_video,color: Colors.white,)),
+                Tab(icon: Icon(Icons.camera_alt,color: Colors.white,)),
+                Tab(icon: Icon(Icons.grade,color: Colors.white,)),
+                Tab(icon: Icon(Icons.email,color: Colors.white,)),
               ],
             ), // TabBar
             title: const Text('Event Remainder App',style: TextStyle(color: Colors.white),),
@@ -32,7 +32,7 @@ class Mainpage_event_management extends StatelessWidget {
              Event_creation_UI(context),
 
               // Tab 3: Static Icon
-              const Center(child: Icon(Icons.grade, size: 50)),
+              const Center(child: Icon(Icons.grade, size: 50,)),
 
               // Tab 4: Static Icon
               const Center(child: Icon(Icons.grade, size: 50)),
