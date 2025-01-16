@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../Event Management/Event_manage_UI.dart';
 import 'Firebase Functionality/GoogleAuth.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 import 'SiginUp.dart';
@@ -30,11 +31,16 @@ void main() async {
   runApp(ProviderScope(
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
+
+      // Setting up the Routes from here
       initialRoute: '/login',
       routes: {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
+       '/mainpage': (context) => Mainpage_event_management(),
       },
+
+      //This is the Route End Here
       home: LoginPage(),
     ),
   ));

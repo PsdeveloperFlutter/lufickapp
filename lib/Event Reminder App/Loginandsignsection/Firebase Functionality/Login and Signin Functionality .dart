@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,9 @@ class LoggingService {
       } else {
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
         print("Login Successful");
+        Timer(Duration(seconds: 2), () {
+          Navigator.pushNamed(context, '/mainpage'); //Go to that Screen
+           });
       }
     } catch (e) {
       print("Error Occurred in Login: $e");
