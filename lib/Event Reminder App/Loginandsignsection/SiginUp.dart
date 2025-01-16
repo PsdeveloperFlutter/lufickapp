@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'Firebase Functionality/Login and Signin Functionality .dart';
+
 
 //Now We are working on the Password hide show Functionality with Riverpod and use the StateProvider in this code and make sure of that Do good State Management
 
@@ -101,6 +103,11 @@ class SignupPage extends ConsumerWidget {
                         emailController.text.isNotEmpty &&
                         passwordController.text.isNotEmpty) {
                       // Show a success message
+
+
+                      //Save the data to Firebase for Signup Purpose in Firebase
+                      LoggingService.signup(emailController.text, passwordController.text, context);
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Account created successfully!'),
@@ -129,7 +136,7 @@ class SignupPage extends ConsumerWidget {
                   ),
                   child: Text(
                     'Sign Up',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
