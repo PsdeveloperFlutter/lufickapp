@@ -7,6 +7,7 @@ class Assets {
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
+  static const String event Reminder AppLoginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart~';
   static const String firebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart';
   static const String flutterSocialAppFirebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart~';
   static const String flutterSocialAppScreenSFriendsProfile = 'lib/Flutter_Social_App/ScreenS/Friends_Profile.dart~';
@@ -34,6 +35,7 @@ class Assets {
   static const String libThemes = 'lib/themes.dart';
   static const String libWeatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart~';
   static const String libWeatherAPPSearchApiWeather = 'lib/Weather_APP/Search_api_Weather.dart~';
+  static const String loginandsignsectionGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/GoogleAuth.dart';
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
   static const String lufickappLibMain = 'lib/main.dart~';

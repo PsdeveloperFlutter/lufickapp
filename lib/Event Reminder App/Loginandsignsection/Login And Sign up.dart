@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'GoogleAuth.dart';
 import 'SiginUp.dart';
 
 //Now We are working on the Password hide show Functionality with Riverpod and use the StateProvider in this code and make sure of that Do good State Management
@@ -134,6 +135,12 @@ class LoginPage extends ConsumerWidget {
               ElevatedButton.icon(
                 onPressed: () {
                   // Implement Google Sign-In logic
+                  GoogleAuth googleauth=GoogleAuth();
+                  googleauth.googleLogin();
+
+                  //Done the User Sign in with Google With Firebase Authentication
+
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
