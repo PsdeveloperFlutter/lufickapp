@@ -8,6 +8,7 @@ class Assets {
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
+  static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';
   static const String event Reminder AppLoginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart~';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
   static const String firebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
@@ -74,6 +75,7 @@ class Assets {
   static const String riverPordStreamProviderRiverpod = 'lib/RiverPord/StreamProviderRiverpod.dart';
   static const String riverPordStreamProviderfamily = 'lib/RiverPord/StreamProviderfamily.dart';
   static const String riverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart';
+  static const String riverpodManagementRiverpodAddManagement = 'lib/Event Reminder App/Riverpod_Management/Riverpod_add_Management.dart';
   static const String screenBackgroundAnimation = 'lib/Todo_Application/screen/Background_Animation.dart';
   static const String screenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart';
   static const String screenDatePickerFile = 'lib/Todo_Application/screen/Date_Picker_file.dart';
