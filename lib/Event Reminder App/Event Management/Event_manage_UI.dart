@@ -13,6 +13,7 @@ void main() {
   runApp(ProviderScope(child: Mainpage_event_management()));
 }
 
+List<String> categories = ['Work', 'Personal', 'Meeting', 'Birthday', 'Other'];
 class Mainpage_event_management extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -169,8 +170,33 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             const SizedBox(height: 12),
 
+            //Expansion Title Widget for Managing the Category of the Event
+
+            ExpansionTile(title: const Text("Category",style: TextStyle(fontStyle: FontStyle.italic,fontSize: 20,fontWeight: FontWeight.bold),),
+            children: [
+              Container(
+                width: 300,
+                height: 180,
+                child: ListView.builder(itemBuilder: (context,index){
+                  return
+                    GestureDetector(
+                      onTap: (){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]}Category")));
+                      },
+                      child: Card(
+                        elevation: 5,
+                        child: ListTile(
+                          title: Text(categories[index],style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          trailing: Icon(Icons.select_all),
+                        ),
+                      ),
+                    );
+                },itemCount: categories.length,),
+              ),
+            ]),
+
             Padding(
-              padding: const EdgeInsets.only(left:8.0),
+              padding: const EdgeInsets.only(left:26.0),
               child: Text("Priority",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             )
             // Radio Button
@@ -214,8 +240,8 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             SizedBox(height: 10,),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text("Selected Priority: ${selectedPriority?.name}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text("Selected Priority: ${selectedPriority?.name}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
             ),
 
 
@@ -339,7 +365,8 @@ Widget _buildTextField(TextEditingController controller, String label, IconData 
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      suffixIcon: Icon(icon, color: Colors.black45),
+      suffixIcon: Icon(icon, color: Colors.blue.shade700
+      ),
       hintText: "Enter $label",
       label: Text(label),
     ),

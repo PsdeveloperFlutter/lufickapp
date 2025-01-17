@@ -7,6 +7,7 @@ class Assets {
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
+  static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
   static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';
   static const String event Reminder AppLoginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart~';
