@@ -256,30 +256,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
               ],
             ),
 
-            const SizedBox(height: 12),
-
-            // Display Selected Image
-            selectedImage != null
-                ? Image.file(File(selectedImage.path), height: 100, width: 100, fit: BoxFit.cover)
-                : Container(height: 100, width: 100, color: Colors.grey),
-
             //Display Selected Video
-
-    videoController != null && videoController.value.isInitialized
-        ? AspectRatio(
-      aspectRatio: videoController.value.aspectRatio,
-      child: VideoPlayer(videoController),
-    )
-        : const Text("No video selected"),
-
-
-
-
-            //Display Selected File
-            // Display Selected File
-            selectedFile != null
-                ? Text("File Selected: ${selectedFile.name}")
-                : Text("No file selected"),
 
 
           ],
