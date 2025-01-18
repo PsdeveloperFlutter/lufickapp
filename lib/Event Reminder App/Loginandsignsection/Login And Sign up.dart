@@ -1,19 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import '../Event Management/Event_manage_UI.dart';
+import '../Getx Storage/Them e Change getxController.dart';
+import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/GoogleAuth.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 import 'SiginUp.dart';
+import 'package:get_storage/get_storage.dart';
 
-// State provider for password visibility toggle
-final Switchvalue = StateProvider<bool>((ref) {
-  return false; // Default: password hidden
-});
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+   //FireBase Initialize
   try {
     await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -24,12 +25,21 @@ void main() async {
         storageBucket: "lufickinternship-d0d28.firebasestorage.app",
       ),
     );
+
   } catch (e) {
     print('Firebase initialization error: $e');
   }
 
+  // Initialize GetStorage
+  await GetStorage.init();
+  // Initialize GetX
+  final ThemeController themeController = Get.put(ThemeController()); // Inject Controller
+
   runApp(ProviderScope(
-    child: MaterialApp(
+    child: GetMaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
 
       // Setting up the Routes from here
@@ -39,9 +49,6 @@ void main() async {
         '/signup': (context) => SignupPage(),
        '/mainpage': (context) => Mainpage_event_management(),
       },
-
-      //This is the Route End Here
-      home: LoginPage(),
     ),
   ));
 }
@@ -114,12 +121,13 @@ class LoginPage extends ConsumerWidget {
               }),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
+                onPressed: ()async {
                   final email = emailController.text.trim();
                   final password = passwordController.text.trim();
 
                   // Call the login function from the loging_sign class
-                  LoggingService.login(email, password, context);
+                 await LoggingService.login(email, password, context);
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,

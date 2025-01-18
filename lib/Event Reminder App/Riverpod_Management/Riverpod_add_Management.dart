@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
@@ -11,7 +12,7 @@ final videoControllerProvider = StateNotifierProvider<VideoControllerNotifier, V
 });
 
 
-
+//This is for the Managing the Video Controller in This App
 class VideoControllerNotifier extends StateNotifier<VideoPlayerController?> {
   VideoControllerNotifier() : super(null);
 
@@ -24,7 +25,7 @@ class VideoControllerNotifier extends StateNotifier<VideoPlayerController?> {
 
     await controllers.initialize();
     state = controllers;  // Update state
-    controllers.play();  // Auto-play the video
+    //controllers.play();  // Auto-play the video
   }
 
   @override
@@ -46,6 +47,14 @@ class VideoControllerNotifier extends StateNotifier<VideoPlayerController?> {
 
 
 
+// State provider for password visibility toggle in Login Page
+final Switchvalue = StateProvider<bool>((ref) {
+  return false; // Default: password hidden
+});
+//State provider for password visibility toggle in Sign Up Page
+final Switchpassword=StateProvider<bool>((ref){
+  return false;
+});//This is false means hide for Initial
 
 
 // This is for managing the state of UI after selection of the image with Riverpod
@@ -60,3 +69,46 @@ final fileProvider = StateProvider<PlatformFile?>((ref) => null);
 enum PriorityLevel { high, medium, low }
 // Create a Riverpod StateProvider for managing the selected priority level
 final radioButtonProvider = StateProvider<PriorityLevel?>((ref) => null);
+
+
+
+
+
+//This is for managing the Custom Tags for the Event For User and make sure of that State will manage Properly in this with River Pod with StateNotifier Provider
+
+
+/*
+How It Works
+✅ User enters a tag → It is stored in GetStorage permanently.
+✅ Tags are retrieved automatically when the app starts.
+✅ Users can delete tags, and the list updates in real time.
+✅ Uses Riverpod to manage state while storing data in GetStorage.
+
+Now, even if the app is closed and reopened, the tags will persist! 🚀 Let me know if you need further refinements! 😊
+*/
+
+
+// GetStorage instance
+final box = GetStorage();
+
+
+
+
+// Notifier to manage custom tags
+class CustomTagsNotifier extends StateNotifier<List<String>> {
+  CustomTagsNotifier() : super([]);
+
+  void addTag(String tag) {
+    state = [...state, tag]; // Add new tag
+  }
+
+  void removeTag(String tag) {
+    state = state.where((t) => t != tag).toList(); // Remove tag
+  }
+}
+
+// Ensure List<String> type is enforced
+final customTagsProvider = StateNotifierProvider<CustomTagsNotifier, List<String>>((ref) {
+  return CustomTagsNotifier();
+});
+

@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoggingService {
   // For Login in Firebase
@@ -10,17 +10,24 @@ class LoggingService {
       if (email.isEmpty || password.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Email and Password")));
       } else {
+        // Attempt to sign in
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
         print("Login Successful");
-        Timer(Duration(seconds: 2), () {
-          Navigator.pushNamed(context, '/mainpage'); //Go to that Screen
-           });
+
+        // Check if the user is authenticated before navigating
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          // Successfully logged in, navigate to the main page
+          Get.offNamed('/mainpage'); // Use Get.offNamed to clear the login stack
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login failed")));
+        }
       }
     } catch (e) {
       print("Error Occurred in Login: $e");
-
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login failed: $e")));
     } finally {
-      print("Code Run Successfully of Login in Firebase");
+      print("Login process finished.");
     }
   }
 
@@ -33,11 +40,14 @@ class LoggingService {
       } else {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
         print("Signup Successful");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Signup successful")));
+        Get.offNamed('/login'); // Redirect to login after successful signup
       }
     } catch (e) {
       print("Error Occurred in Signup: $e");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Signup failed: $e")));
     } finally {
-      print("Code Run Successfully of Signup in Firebase");
+      print("Signup process finished.");
     }
   }
 
@@ -46,10 +56,11 @@ class LoggingService {
     try {
       await FirebaseAuth.instance.signOut();
       print("Logout Successful");
+      Get.offNamed('/login'); // Redirect to login after logout
     } catch (e) {
       print("Error Occurred in Logout: $e");
     } finally {
-      print("Code Run Successfully of Signout in Firebase");
+      print("Logout process finished.");
     }
   }
 }

@@ -1,42 +1,45 @@
-import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:video_player/video_player.dart';
-
+import '../Getx Storage/Them e Change getxController.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
+import 'Custom Tags Class .dart';
 // Main application class
+
 void main() {
   runApp(ProviderScope(child: Mainpage_event_management()));
 }
-
+final ThemeController themeController = Get.put(ThemeController()); // Inject Controller
 List<String> categories = ['Work', 'Personal', 'Meeting', 'Birthday', 'Other'];
+
 class Mainpage_event_management extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
+    return  DefaultTabController(
         length: 5,
         child: Scaffold(
+          floatingActionButton: FloatingActionButton(onPressed: (){
+            final ThemeController themeController = Get.find();
+            themeController.toggletheme();
+          },child: Icon(Icons.toggle_off,color: Colors.white,),backgroundColor: Colors.green,),
           appBar: AppBar(
             bottom: const TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.music_note, color: Colors.white)),
-                Tab(icon: Icon(Icons.music_video, color: Colors.white)),
-                Tab(icon: Icon(Icons.camera_alt, color: Colors.white)),
-                Tab(icon: Icon(Icons.grade, color: Colors.white)),
-                Tab(icon: Icon(Icons.email, color: Colors.white)),
+                Tab(icon: Icon(Icons.music_note),),
+                Tab(icon: Icon(Icons.music_video)),
+                Tab(icon: Icon(Icons.camera_alt)),
+                Tab(icon: Icon(Icons.grade)),
+                Tab(icon: Icon(Icons.email)),
               ],
             ),
             title: const Text(
               'Event Reminder App',
-              style: TextStyle(color: Colors.white),
             ),
-            backgroundColor: Colors.green,
           ),
           body: TabBarView(
             children: [
@@ -48,8 +51,7 @@ class Mainpage_event_management extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -195,13 +197,18 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
               ),
             ]),
 
+            SizedBox(height: 12,),
+
+            CustomTagsWidget(),
+            SizedBox(height: 12,),
+
             Padding(
               padding: const EdgeInsets.only(left:26.0),
               child: Text("Priority",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             )
             // Radio Button
             ,
-            SizedBox(height: 5,),
+            SizedBox(height: 7,),
             Row(
               children: [
                 Radio<PriorityLevel>(
@@ -238,10 +245,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             // Display the selected option
 
-            SizedBox(height: 10,),
+            SizedBox(height: 12,),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: Text("Selected Priority: ${selectedPriority?.name}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+              child: Text("Selected Priority: ${selectedPriority?.name??"Not Selected"}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
             ),
 
 
@@ -356,7 +363,7 @@ Widget _buildMediaButton(IconData icon, String label, VoidCallback onPressed) {
   return Column(
     children: [
       IconButton(onPressed: onPressed, icon: Icon(icon, color: Colors.deepOrange)),
-      Text(label, style: TextStyle(color: Colors.deepPurple))
+      Text(label),
     ],
   );
 }

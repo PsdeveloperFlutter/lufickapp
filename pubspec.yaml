@@ -83,7 +83,7 @@ dependencies:
   firebase_auth: ^5.3.2
   url_launcher: ^6.1.7
   arkit_plugin: ^1.1.0
-
+  get_storage:
 
 dev_dependencies:
   flutter_test:

@@ -3,14 +3,12 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 
 
 //Now We are working on the Password hide show Functionality with Riverpod and use the StateProvider in this code and make sure of that Do good State Management
 
-final Switchpassword=StateProvider<bool>((ref){
-  return false;
-});//This is false means hide for Initial
 
 //Code End here
 

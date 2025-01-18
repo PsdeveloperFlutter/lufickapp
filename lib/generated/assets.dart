@@ -8,9 +8,9 @@ class Assets {
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
+  static const String event ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
   static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';
-  static const String event Reminder AppLoginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart~';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
   static const String firebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
   static const String firebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart';
@@ -18,6 +18,7 @@ class Assets {
   static const String flutterSocialAppScreenSFriendsProfile = 'lib/Flutter_Social_App/ScreenS/Friends_Profile.dart~';
   static const String flutterSocialAppScreenSMainPage = 'lib/Flutter_Social_App/ScreenS/Main_Page.dart~';
   static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String getx StorageThem e Change getxController = 'lib/Event Reminder App/Getx Storage/Them e Change getxController.dart';
   static const String imagesFluttersocial = 'assets/images/fluttersocial.jpg';
   static const String imagesIMG20240302171902 = 'assets/images/IMG20240302171902.jpg';
   static const String imagesIMG20240731231330976 = 'assets/images/IMG_20240731_231330_976.jpg';
