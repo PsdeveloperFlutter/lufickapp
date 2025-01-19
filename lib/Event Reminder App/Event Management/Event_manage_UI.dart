@@ -21,7 +21,7 @@ class Mainpage_event_management extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  DefaultTabController(
-        length: 5,
+        length: 2,
         child: Scaffold(
           floatingActionButton: FloatingActionButton(onPressed: (){
             final ThemeController themeController = Get.find();
@@ -32,9 +32,6 @@ class Mainpage_event_management extends StatelessWidget {
               tabs: [
                 Tab(icon: Icon(Icons.music_note),),
                 Tab(icon: Icon(Icons.music_video)),
-                Tab(icon: Icon(Icons.camera_alt)),
-                Tab(icon: Icon(Icons.grade)),
-                Tab(icon: Icon(Icons.email)),
               ],
             ),
             title: const Text(
@@ -45,9 +42,6 @@ class Mainpage_event_management extends StatelessWidget {
             children: [
               const Center(child: Icon(Icons.music_note, size: 50)),
               EventCreationUI(),
-              const Center(child: Icon(Icons.camera_alt, size: 50)),
-              const Center(child: Icon(Icons.grade, size: 50)),
-              const Center(child: Icon(Icons.email, size: 50)),
             ],
           ),
         ),
@@ -183,7 +177,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                   return
                     GestureDetector(
                       onTap: (){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]}Category")));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]} Category")));
                       },
                       child: Card(
                         elevation: 5,
@@ -200,6 +194,12 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
             SizedBox(height: 12,),
 
             CustomTagsWidget(),
+
+            SizedBox(height: 12,),
+
+
+
+
             SizedBox(height: 12,),
 
             Padding(
@@ -266,8 +266,11 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
             SizedBox(height: 12,),
             Center(child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                onPressed: (){},
-                child: Text("Submit")),)
+                onPressed: (){
+
+
+                },
+                child: Text("Submit",style: TextStyle(color: Colors.white),)),)
           ],
         ),
 
@@ -289,6 +292,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
     if (image != null) {
       ref.read(imageprovider.notifier).state = image;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image Selected Successfully")));
     }
   }
 
@@ -299,6 +303,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
     if (video != null) {
       ref.read(videoControllerProvider.notifier).setVideo(video);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video Selected Successfully")));
     }
   }
 
@@ -313,6 +318,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
       // Updating the provider state
       ref.read(fileProvider.notifier).state = file;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File Selected Successfully")));
     }
   }
 

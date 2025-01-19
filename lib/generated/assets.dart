@@ -7,6 +7,7 @@ class Assets {
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
+  static const String controller of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart';
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
   static const String event ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
@@ -47,15 +48,13 @@ class Assets {
   static const String lufickappLibMain = 'lib/main.dart~';
   static const String notificationCodeLocalNotification = 'lib/Event Reminder App/NotificationCode/Local_Notification.dart';
   static const String notificationCodeMainFile = 'lib/Event Reminder App/NotificationCode/Main_File.dart';
-  static const String notificationCodeNotification1 = 'lib/Event Reminder App/NotificationCode/Notification1.dart';
-  static const String notificationCodeNotification2 = 'lib/Event Reminder App/NotificationCode/Notification2.dart';
-  static const String notificationCodeNotification3 = 'lib/Event Reminder App/NotificationCode/Notification3.dart';
   static const String notificationCodeNotification4 = 'lib/Event Reminder App/NotificationCode/Notification4.dart~';
   static const String notificationCodePeriodicNotifications. = 'lib/Event Reminder App/NotificationCode/PeriodicNotifications..dart';
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
+  static const String riverPodNotificationRiverPod = 'lib/Event Reminder App/NotificationCode/RiverPod_Notification/RiverPod.dart';
   static const String riverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart';
   static const String riverPordAsyncNotifierProviderPractice = 'lib/RiverPord/AsyncNotifierProviderPractice.dart';
   static const String riverPordAsyncNotifierProviderPractice1 = 'lib/RiverPord/AsyncNotifierProviderPractice1.dart';
@@ -116,6 +115,8 @@ class Assets {
   static const String supabaseSignUp page  = 'lib/Supabase/SignUp page .dart';
   static const String todoApplicationScreenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart~';
   static const String todoApplicationScreenSplash Screen of ToDoApp = 'lib/Todo_Application/screen/Splash Screen of ToDo_App.dart~';
+  static const String uINotificationNotificationSettingS = 'lib/Event Reminder App/NotificationCode/UI_Notification/Notification_SettingS.dart';
+  static const String uINotificationUINotification = 'lib/Event Reminder App/NotificationCode/UI_Notification/UI_Notification.dart';
   static const String weatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart';
   static const String weatherAPPForecastWeatherApi = 'lib/Weather_APP/Forecast_weather_Api.dart';
   static const String weatherAPPFutureWeatherAPI = 'lib/Weather_APP/Future_weather_API.dart';
