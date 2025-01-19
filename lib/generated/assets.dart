@@ -45,6 +45,13 @@ class Assets {
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
   static const String lufickappLibMain = 'lib/main.dart~';
+  static const String notificationCodeLocalNotification = 'lib/Event Reminder App/NotificationCode/Local_Notification.dart';
+  static const String notificationCodeMainFile = 'lib/Event Reminder App/NotificationCode/Main_File.dart';
+  static const String notificationCodeNotification1 = 'lib/Event Reminder App/NotificationCode/Notification1.dart';
+  static const String notificationCodeNotification2 = 'lib/Event Reminder App/NotificationCode/Notification2.dart';
+  static const String notificationCodeNotification3 = 'lib/Event Reminder App/NotificationCode/Notification3.dart';
+  static const String notificationCodeNotification4 = 'lib/Event Reminder App/NotificationCode/Notification4.dart~';
+  static const String notificationCodePeriodicNotifications. = 'lib/Event Reminder App/NotificationCode/PeriodicNotifications..dart';
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';

@@ -263,9 +263,11 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
               ],
             ),
 
-            //Display Selected Video
-
-
+            SizedBox(height: 12,),
+            Center(child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                onPressed: (){},
+                child: Text("Submit")),)
           ],
         ),
 

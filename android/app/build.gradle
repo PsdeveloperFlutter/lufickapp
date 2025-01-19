@@ -1,9 +1,8 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id 'com.google.gms.google-services'
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'  // Google services for Firebase
+    id "dev.flutter.flutter-gradle-plugin"  // Flutter Gradle Plugin
 }
 
 def localProperties = new Properties()
@@ -14,52 +13,54 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
-}
-
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
-}
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode", "1")
+def flutterVersionName = localProperties.getProperty("flutter.versionName", "1.0")
 
 android {
-    namespace = "com.example.lufickapp"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
-
+    namespace "com.example.lufickapp"
+    compileSdk 34  // Use the latest stable version
+    ndkVersion "25.1.8937393"  // Ensure NDK version matches dependencies
+    defaultConfig {
+        multiDexEnabled true
+    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17  // Changed from 1.8 to 17
+        targetCompatibility JavaVersion.VERSION_17  // Changed from 1.8 to 17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"  // Aligning Kotlin JVM Target with Java
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.lufickapp"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = 24
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        applicationId "com.example.lufickapp"
+        minSdk 24
+        targetSdk 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildFeatures {
+        viewBinding true  // Optional: Enables View Binding
     }
 }
 
 flutter {
-    source = "../.."
+    source "../.."
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:33.7.0') // Latest Firebase BOM
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')  // Firebase BOM
     implementation 'com.google.firebase:firebase-analytics'
-    // Add other Firebase dependencies as needed
+    // Core library desugaring
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }
