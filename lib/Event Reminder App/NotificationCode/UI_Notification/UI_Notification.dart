@@ -66,81 +66,98 @@ class CustomReminderScreen extends ConsumerWidget {
       appBar: AppBar(title: Text('Set Custom Reminder')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Reminder Time:', style: TextStyle(fontSize: 18)),
-            TextField(
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                ref.read(reminderProvider.notifier).updateValue(int.tryParse(value) ?? 10);
-              },
-              decoration: InputDecoration(hintText: 'Enter value'),
-            ),
-            SizedBox(height: 20),
-            Text('Unit:', style: TextStyle(fontSize: 18)),
-            DropdownButton<String>(
-              value: reminderState.selectedUnit,
-              items: ['Seconds', 'Minutes', 'Hours', 'Days']
-                  .map((unit) => DropdownMenuItem<String>(
-                value: unit,
-                child: Text(unit),
-              ))
-                  .toList(),
-              onChanged: (value) {
-                ref.read(reminderProvider.notifier).updateUnit(value ?? 'Minutes');
-              },
-            ),
-            SizedBox(height: 20),
-            Text('Repeat Option:', style: TextStyle(fontSize: 18)),
-            DropdownButton<String>(
-              value: reminderState.repeatOption,
-              items: ['None', 'Daily', 'Weekly', 'Monthly', 'Custom']
-                  .map((option) => DropdownMenuItem<String>(
-                value: option,
-                child: Text(option),
-              ))
-                  .toList(),
-              onChanged: (value) {
-                ref.read(reminderProvider.notifier).updateRepeatOption(value ?? 'None');
-              },
-            ),
-            SizedBox(height: 20),
-            if (reminderState.repeatOption == 'Custom')
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Custom Interval (Days):', style: TextStyle(fontSize: 18)),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      ref.read(reminderProvider.notifier).updateRepeatOption(
-                          'Custom', interval: int.tryParse(value) ?? 1);
-                    },
-                    decoration: InputDecoration(hintText: 'Enter custom interval'),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Reminder Time:', style: TextStyle(fontSize: 18)),
+              TextField(
+
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  ref.read(reminderProvider.notifier).updateValue(int.tryParse(value) ?? 10);
+                },
+                decoration: InputDecoration(hintText: 'Enter value'
+                ,hintStyle: TextStyle(color: Colors.black),
+                labelStyle: TextStyle(color: Colors.black),
+                labelText: 'Enter value',
+                focusedBorder: OutlineInputBorder(
+                  gapPadding: 2.0,
+                ),),
               ),
-            SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () async {
-                // Ensure LocalNotification.init()
-                LocalNotification.scheduleNotification(
-                  payload: "Event Reminder Payload",
-                  title: "Event Reminder",
-                  body: "You have an event in your calendar!",
-                  reminderValue: reminderState.reminderValue,
-                  selectedUnit: reminderState.selectedUnit,
-                  repeatOption: reminderState.repeatOption,
-                  customInterval: reminderState.customInterval,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Reminder Set!'),
-                ));
-              },
-              child: Text('Set Reminder'),
-            ),
-          ],
+              SizedBox(height: 20),
+              Text('Unit:', style: TextStyle(fontSize: 18)),
+              DropdownButton<String>(
+                value: reminderState.selectedUnit,
+                items: ['Seconds', 'Minutes', 'Hours', 'Days']
+                    .map((unit) => DropdownMenuItem<String>(
+                  value: unit,
+                  child: Text(unit),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  ref.read(reminderProvider.notifier).updateUnit(value ?? 'Minutes');
+                },
+              ),
+              SizedBox(height: 20),
+              Text('Repeat Option:', style: TextStyle(fontSize: 18)),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                width: 110,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<String>(
+                    value: reminderState.repeatOption,
+                    items: ['None', 'Daily', 'Weekly', 'Monthly', 'Custom']
+                        .map((option) => DropdownMenuItem<String>(
+                      value: option,
+                      child: Text(option),
+                    ))
+                        .toList(),
+                    onChanged: (value) {
+                      ref.read(reminderProvider.notifier).updateRepeatOption(value ?? 'None');
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              if (reminderState.repeatOption == 'Custom')
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Custom Interval (Days):', style: TextStyle(fontSize: 18)),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        ref.read(reminderProvider.notifier).updateRepeatOption(
+                            'Custom', interval: int.tryParse(value) ?? 1);
+                      },
+                      decoration: InputDecoration(hintText: 'Enter custom interval'),
+                    ),
+                  ],
+                ),
+              SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () async {
+                  // Ensure LocalNotification.init()
+                  LocalNotification.scheduleNotification(
+                    payload: "Event Reminder Payload",
+                    title: "Event Reminder",
+                    body: "You have an event in your calendar!",
+                    reminderValue: reminderState.reminderValue,
+                    selectedUnit: reminderState.selectedUnit,
+                    repeatOption: reminderState.repeatOption,
+                    customInterval: reminderState.customInterval,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Reminder Set!'),
+                  ));
+                },
+                child: Text('Set Reminder'),
+              ),
+            ],
+          ),
         ),
       ),
     );
