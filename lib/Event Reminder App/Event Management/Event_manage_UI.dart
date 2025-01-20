@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // For formatting date and time
+import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
@@ -12,6 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
 // Main application class
 
+XFile? image;
+XFile? video;
+PlatformFile? file;
 void main() {
   runApp(ProviderScope(child: Mainpage_event_management()));
 }
@@ -65,6 +69,7 @@ class EventCreationUI extends ConsumerStatefulWidget {
 }
 
 class _EventCreationUIState extends ConsumerState<EventCreationUI> {
+  dynamic categoriesvalue;
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _eventDateTimeController = TextEditingController();
   final TextEditingController _eventLocationController = TextEditingController();
@@ -181,6 +186,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                       return
                         GestureDetector(
                           onTap: (){
+
+                            setState(() {
+                              categoriesvalue=categories[index];
+                            });
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]} Category")));
                           },
                           child: Card(
@@ -307,6 +316,25 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Priority")));
                   }
                   else {
+
+                    // ✅ Pass Validated Data to AttachWithDB Class (Maintaining Your Structure)
+                    AttachWithDB newEvent = AttachWithDB(
+                      name: _eventNameController.text.trim(),
+                      date: _eventDateTimeController.text.trim(),
+                      description: _eventDescriptionController.text.trim(),
+                      location: _eventLocationController.text.trim(),
+                      category: categoriesvalue.toString(),
+                      priority: selectedPriority.toString(),
+                      file: file,  // Keep structure (can add file picker)
+                      image: image, // Keep structure (can add image)
+                      video: video, // Keep structure (can add video)
+                      customCategory: categories, // Keep structure (pass category list)
+                    );
+
+                            print("${newEvent.name}"+"${newEvent.date}"+
+            "${newEvent.description}"+ "${newEvent.location}"+ "${newEvent.category}"+
+     "${newEvent.priority}"+ "${newEvent.file}"+ "${newEvent.image}"+ "${newEvent.video}"+
+                                "${newEvent.customCategory}");
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Created Successfully")));
                   }
                 },
@@ -328,7 +356,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
   //This is for the Managing the Image
   Future<void> _pickImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       ref.read(imageprovider.notifier).state = image;
@@ -339,10 +367,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
   //This is for the Managing the Video
   Future<void> _pickVideo(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
-    XFile? video = await picker.pickVideo(source: ImageSource.gallery);
+    video = await picker.pickVideo(source: ImageSource.gallery);
 
     if (video != null) {
-      ref.read(videoControllerProvider.notifier).setVideo(video);
+      ref.read(videoControllerProvider.notifier).setVideo(video!);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video Selected Successfully")));
     }
   }
@@ -354,7 +382,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null && result.files.isNotEmpty) {
-      PlatformFile file = result.files.first;
+     file = result.files.first;
 
       // Updating the provider state
       ref.read(fileProvider.notifier).state = file;

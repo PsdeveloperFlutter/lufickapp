@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AttachWithDB {
@@ -8,7 +9,7 @@ class AttachWithDB {
   final String location;
   final String category;
   final String priority;
-  final File? file; // Optional File
+  final PlatformFile? file; // Optional File
   final XFile? image;
   final XFile? video;
   final List<String>? customCategory; // Optional custom categories
