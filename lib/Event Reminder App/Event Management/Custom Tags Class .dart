@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart'; // Import provider file
-
+import 'package:google_fonts/google_fonts.dart';
 class CustomTagsWidget extends ConsumerStatefulWidget {
   @override
   _CustomTagsWidgetState createState() => _CustomTagsWidgetState();
@@ -27,6 +27,14 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
         TextField(
           controller: _tagController,
           decoration: InputDecoration(
+            hintStyle: GoogleFonts.poppins(
+             fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            labelStyle: GoogleFonts.poppins(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
             hintText: "Enter a custom tag",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -51,7 +59,10 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
           spacing: 8.0,
           children: customTags.map((tag) {
             return Chip(
-              label: Text(tag),
+              label: Text(tag,style:GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),),
               onDeleted: () => ref.read(customTagsProvider.notifier).removeTag(tag),
             );
           }).toList(),

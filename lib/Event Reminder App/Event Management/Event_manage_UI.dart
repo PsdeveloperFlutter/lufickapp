@@ -8,6 +8,7 @@ import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
 // Main application class
 
@@ -21,31 +22,32 @@ class Mainpage_event_management extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: (){
-            final ThemeController themeController = Get.find();
-            themeController.toggletheme();
-          },child: Icon(Icons.toggle_off,color: Colors.white,),backgroundColor: Colors.green,),
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.music_note),),
-                Tab(icon: Icon(Icons.music_video)),
-              ],
-            ),
-            title: const Text(
-              'Event Reminder App',
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              const Center(child: Icon(Icons.music_note, size: 50)),
-              EventCreationUI(),
+      length: 2,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: (){
+          final ThemeController themeController = Get.find();
+          themeController.toggletheme();
+        },child: Icon(Icons.toggle_off,color: Colors.white,),backgroundColor: Colors.green,),
+        appBar: AppBar(
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.music_note),),
+              Tab(icon: Icon(Icons.music_video)),
             ],
           ),
+          title:Text(
+            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold),
+            'Event Reminder App',
+          ),
         ),
-      );
+        body: TabBarView(
+          children: [
+            const Center(child: Icon(Icons.music_note, size: 50)),
+            EventCreationUI(),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -119,19 +121,21 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: "Create an Event",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.deepOrange,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                      children: [
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+
+                      children:  [
                         TextSpan(
                           text: "\nTo be Reminded",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontSize: 20),
+                          style: GoogleFonts.poppins(
+                            color: Colors.blue.shade700,
+                            fontSize: 15
+                          ),
                         )
                       ],
                     ),
@@ -164,47 +168,56 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
             // Event Description Field
             _buildTextField(_eventDescriptionController, "Event Description", Icons.description, maxLines: 3),
 
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
             //Expansion Title Widget for Managing the Category of the Event
 
-            ExpansionTile(title: const Text("Category",style: TextStyle(fontStyle: FontStyle.italic,fontSize: 20,fontWeight: FontWeight.bold),),
-            children: [
-              Container(
-                width: 300,
-                height: 180,
-                child: ListView.builder(itemBuilder: (context,index){
-                  return
-                    GestureDetector(
-                      onTap: (){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]} Category")));
-                      },
-                      child: Card(
-                        elevation: 5,
-                        child: ListTile(
-                          title: Text(categories[index],style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.select_all),
-                        ),
-                      ),
-                    );
-                },itemCount: categories.length,),
-              ),
-            ]),
+            ExpansionTile(title: Text("Category",style:GoogleFonts.poppins(fontStyle: FontStyle.italic,fontSize: 20,fontWeight: FontWeight.w500),),
+                children: [
+                  Container(
+                    width: 300,
+                    height: 180,
+                    child: ListView.builder(itemBuilder: (context,index){
+                      return
+                        GestureDetector(
+                          onTap: (){
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]} Category")));
+                          },
+                          child: Card(
+                            elevation: 5,
+                            child: ListTile(
+                              title: Text(categories[index],style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                              trailing: Icon(Icons.select_all),
+                            ),
+                          ),
+                        );
+                    },itemCount: categories.length,),
+                  ),
+                ]),
 
-            SizedBox(height: 12,),
+            SizedBox(height: 16,),
 
             CustomTagsWidget(),
 
-            SizedBox(height: 12,),
+            SizedBox(height: 14,),
 
 
 
+            //set the Notifications
+            TextButton(onPressed: (){
+              Navigator.pushNamed(context, '/event');
+            }, child: Text("Set Notification",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800
+                ),)),
 
-            SizedBox(height: 12,),
+
+            SizedBox(height: 16,),
 
             Padding(
               padding: const EdgeInsets.only(left:26.0),
-              child: Text("Priority",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              child: Text("Priority",style: GoogleFonts.poppins(fontSize: 20,fontWeight: FontWeight.bold),),
             )
             // Radio Button
             ,
@@ -219,7 +232,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                     ref.read(radioButtonProvider.notifier).state = value;
                   },
                 ),
-                const Text("High"),
+                 Text("High",style: GoogleFonts.poppins(
+                   fontSize: 13,
+                   fontWeight: FontWeight.w600
+                 ),),
 
                 Radio<PriorityLevel>(
                   value: PriorityLevel.medium,
@@ -229,7 +245,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                     ref.read(radioButtonProvider.notifier).state = value;
                   },
                 ),
-                const Text("Medium"),
+                 Text("Medium", style: GoogleFonts.poppins(
+                   fontSize: 13,
+                   fontWeight: FontWeight.w600
+                 ),),
 
                 Radio<PriorityLevel>(
                   value: PriorityLevel.low,
@@ -239,7 +258,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                     ref.read(radioButtonProvider.notifier).state = value;
                   },
                 ),
-                const Text("Low"),
+                Text("Low",style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),),
               ],
             ),
 
@@ -248,7 +270,8 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
             SizedBox(height: 12,),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: Text("Selected Priority: ${selectedPriority?.name??"Not Selected"}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+              child: Text("Selected Priority: ${selectedPriority?.name??"Not Selected"}",style: GoogleFonts.poppins
+                (fontSize: 15,fontWeight: FontWeight.bold),),
             ),
 
 
@@ -268,7 +291,24 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 onPressed: (){
 
-
+                  if(_eventDateTimeController.text.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Date and Time")));
+                  }
+                  else if(_eventNameController.text.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Name")));
+                  }
+                  else if(_eventLocationController.text.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Location")));
+                  }
+                  else if(_eventDescriptionController.text.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Description")));
+                  }
+                  else if(selectedPriority==null){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Priority")));
+                  }
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Created Successfully")));
+                  }
                 },
                 child: Text("Submit",style: TextStyle(color: Colors.white),)),)
           ],
@@ -361,6 +401,14 @@ Widget _buildTextField(TextEditingController controller, String label, IconData 
       ),
       hintText: "Enter $label",
       label: Text(label),
+      hintStyle:GoogleFonts.poppins(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
+      labelStyle: GoogleFonts.poppins(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
     ),
   );
 }
@@ -371,11 +419,13 @@ Widget _buildMediaButton(IconData icon, String label, VoidCallback onPressed) {
   return Column(
     children: [
       IconButton(onPressed: onPressed, icon: Icon(icon, color: Colors.deepOrange)),
-      Text(label),
+      Text(label,style: GoogleFonts.poppins(
+        fontSize: 12,
+        fontWeight: FontWeight.w700
+      ),),
     ],
   );
 }
-
 
 
 

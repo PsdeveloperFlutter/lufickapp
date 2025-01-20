@@ -25,7 +25,7 @@ class LoggingService {
       }
     } catch (e) {
       print("Error Occurred in Login: $e");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login failed: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login failed Invalid Email or Password")));
     } finally {
       print("Login process finished.");
     }

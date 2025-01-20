@@ -9,6 +9,7 @@ class Assets {
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
   static const String controller of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart';
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
+  static const String databaseMainDatabaseApp = 'lib/Event Reminder App/Database/Main_Database_App.dart';
   static const String event ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
   static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';

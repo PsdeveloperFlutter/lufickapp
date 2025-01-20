@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import '../Event Management/Event_manage_UI.dart';
 import '../Getx Storage/Them e Change getxController.dart';
+import '../NotificationCode/UI_Notification/UI_Notification.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/GoogleAuth.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
@@ -48,6 +49,7 @@ void main() async {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
        '/mainpage': (context) => Mainpage_event_management(),
+        '/event':(context)=>CustomReminderScreen(),
       },
     ),
   ));
