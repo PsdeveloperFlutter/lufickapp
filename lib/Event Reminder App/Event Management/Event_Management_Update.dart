@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// Enum for priority levels
+enum PriorityLevel { high, medium, low }
+
 class UpdateEventUI extends StatefulWidget {
+  final int index;
   final String eventName;
   final String eventDateTime;
   final String eventLocation;
   final String eventDescription;
-  final String eventPriority;
+  final PriorityLevel eventPriority;
 
   UpdateEventUI({
+    required this.index,
     required this.eventName,
     required this.eventDateTime,
     required this.eventLocation,
@@ -25,15 +30,15 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
   late TextEditingController _eventDateTimeController;
   late TextEditingController _eventLocationController;
   late TextEditingController _eventDescriptionController;
-  String _selectedPriority = "Medium";
+  PriorityLevel _selectedPriority = PriorityLevel.medium;
 
   @override
   void initState() {
     super.initState();
-    _eventNameController = TextEditingController(text: widget.eventName??"");
-    _eventDateTimeController = TextEditingController(text: widget.eventDateTime??"");
-    _eventLocationController = TextEditingController(text: widget.eventLocation??"");
-    _eventDescriptionController = TextEditingController(text: widget.eventDescription??"");
+    _eventNameController = TextEditingController(text: widget.eventName);
+    _eventDateTimeController = TextEditingController(text: widget.eventDateTime);
+    _eventLocationController = TextEditingController(text: widget.eventLocation);
+    _eventDescriptionController = TextEditingController(text: widget.eventDescription);
     _selectedPriority = widget.eventPriority;
   }
 
@@ -143,15 +148,15 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
             const SizedBox(height: 16),
 
             // Priority Dropdown
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<PriorityLevel>(
               value: _selectedPriority,
-              items: ["High", "Medium", "Low"].map((String priority) {
+              items: PriorityLevel.values.map((PriorityLevel priority) {
                 return DropdownMenuItem(
                   value: priority,
-                  child: Text(priority),
+                  child: Text(priority.toString().split('.').last.capitalize()),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (PriorityLevel? newValue) {
                 setState(() {
                   _selectedPriority = newValue!;
                 });
@@ -171,7 +176,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Handle event update logic
+                    // Handle event update logic here
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Event Updated: ${_eventNameController.text}")),
                     );
@@ -201,5 +206,12 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     _eventLocationController.dispose();
     _eventDescriptionController.dispose();
     super.dispose();
+  }
+}
+
+// Extension to capitalize strings
+extension StringCapitalizeExtension on String {
+  String capitalize() {
+    return this[0].toUpperCase() + this.substring(1).toLowerCase();
   }
 }

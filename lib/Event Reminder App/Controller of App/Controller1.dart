@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import '../Database/Main_Database_App.dart';
 
 class AttachWithDB {
   final String name;
@@ -13,6 +13,9 @@ class AttachWithDB {
   final XFile? image;
   final XFile? video;
   final List<String>? customCategory; // Optional custom categories
+  final String? reminderTime;   // Stores the reminder time
+  final String? repeatOption;   // Repeat type (Daily, Weekly, etc.)
+  final int? customInterval;    // Stores custom interval (e.g., every 3 days)
 
   AttachWithDB({
     required this.name,
@@ -21,14 +24,41 @@ class AttachWithDB {
     required this.location,
     required this.category,
     required this.priority,
-    this.file, // Required
+    this.file,
     this.image,
     this.video,
-    this.customCategory, // Optional
+    this.customCategory,
+    this.reminderTime,
+    this.repeatOption,
+    this.customInterval,
   });
 
+  void connect() async {
+    final DatabaseHelper databaseHelper = DatabaseHelper.instance;
+    try {
+      final eventData = {
+        'name': name,
+        'date_time': date,
+        'description': description,
+        'location': location,
+        'category': category,
+        'priority': priority,
+        'file_path': file?.path ?? null,  // ✅ Stores NULL if no file is provided
+        'image_path': image?.path ?? null,
+        'video_path': video?.path ?? null,
+        'reminder_time': reminderTime ?? '',
+        'repeat_option': repeatOption ?? '',
+        'custom_interval': customInterval ?? null, // ✅ Correct NULL handling
+      };
 
-
-
-
+      int id = await databaseHelper.insertEvent(eventData);
+      if (id != -1) {
+        print('✅ Event added with ID: $id');
+      } else {
+        print('❌ Failed to insert event');
+      }
+    } catch (e) {
+      print("❌ Database Insert Error: $e");
+    }
+  }
 }

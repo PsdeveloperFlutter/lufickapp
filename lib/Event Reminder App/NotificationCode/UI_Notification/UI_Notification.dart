@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
+import 'package:google_fonts/google_fonts.dart';
 import 'Notification_SettingS.dart';
 
 final reminderProvider = StateNotifierProvider<ReminderNotifier, ReminderState>((ref) {
@@ -61,103 +61,81 @@ class ReminderNotifier extends StateNotifier<ReminderState> {
 class CustomReminderScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminderState = ref.watch(reminderProvider);
-
     return Scaffold(
       appBar: AppBar(
-          title: Text('Set Custom Reminder', style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.bold),)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+        title: Text('Event Reminder', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold)),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => showReminderBottomSheet(context, ref),
+          child: Text('Set Reminder', style: GoogleFonts.poppins()),
+        ),
+      ),
+    );
+  }
+
+  void showReminderBottomSheet(BuildContext context, WidgetRef ref) {
+    final reminderState = ref.watch(reminderProvider);
+
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Reminder Time:', style: GoogleFonts.poppins(fontSize: 18)),
-              SizedBox(height: 12,),
+              Text('Set Custom Reminder', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 12),
               TextField(
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   ref.read(reminderProvider.notifier).updateValue(int.tryParse(value) ?? 10);
                 },
                 decoration: InputDecoration(
-                  hintText: 'Enter value',
-                  hintStyle: GoogleFonts.poppins(),
-                  labelStyle: GoogleFonts.poppins(),
-                  labelText: 'Enter value',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: Colors.black, width: 5.0),
-                    gapPadding: 2.0,
-                  ),
+                  labelText: 'Reminder Time',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                 ),
               ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Text('Unit:', style: GoogleFonts.poppins(fontSize: 12)),
-                      DropdownButton<String>(
-                        value: reminderState.selectedUnit,
-                        items: ['Seconds', 'Minutes', 'Hours', 'Days']
-                            .map((unit) => DropdownMenuItem<String>(
-                          value: unit,
-                          child: Text(unit, style: GoogleFonts.poppins()),
-                        ))
-                            .toList(),
-                        onChanged: (value) {
-                          ref.read(reminderProvider.notifier).updateUnit(value ?? 'Minutes');
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 20),
-                  Column(
-                    children: [
-                      SizedBox(height: 5),
-                      Text('Repeat Option:', style: GoogleFonts.poppins(fontSize: 12)),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownButton<String>(
-                          value: reminderState.repeatOption,
-                          items: ['None', 'Daily', 'Weekly', 'Monthly', 'Custom']
-                              .map((option) => DropdownMenuItem<String>(
-                            value: option,
-                            child: Text(option, style: GoogleFonts.poppins()),
-                          ))
-                              .toList(),
-                          onChanged: (value) {
-                            ref.read(reminderProvider.notifier).updateRepeatOption(value ?? 'None');
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+              SizedBox(height: 12),
+              DropdownButton<String>(
+                value: reminderState.selectedUnit,
+                items: ['Seconds', 'Minutes', 'Hours', 'Days']
+                    .map((unit) => DropdownMenuItem<String>(
+                  value: unit,
+                  child: Text(unit, style: GoogleFonts.poppins()),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  ref.read(reminderProvider.notifier).updateUnit(value ?? 'Minutes');
+                },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 12),
+              DropdownButton<String>(
+                value: reminderState.repeatOption,
+                items: ['None', 'Daily', 'Weekly', 'Monthly', 'Custom']
+                    .map((option) => DropdownMenuItem<String>(
+                  value: option,
+                  child: Text(option, style: GoogleFonts.poppins()),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  ref.read(reminderProvider.notifier).updateRepeatOption(value ?? 'None');
+                },
+              ),
               if (reminderState.repeatOption == 'Custom')
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Custom Interval (Days):', style: GoogleFonts.poppins(fontSize: 18)),
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        ref.read(reminderProvider.notifier).updateRepeatOption(
-                            'Custom', interval: int.tryParse(value) ?? 1);
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Enter custom interval',
-                        hintStyle: GoogleFonts.poppins(),
-                      ),
-                    ),
-                  ],
+                TextField(
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    ref.read(reminderProvider.notifier).updateRepeatOption(
+                        'Custom', interval: int.tryParse(value) ?? 1);
+                  },
+                  decoration: InputDecoration(labelText: 'Custom Interval (Days)'),
                 ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   LocalNotification.scheduleNotification(
@@ -169,16 +147,17 @@ class CustomReminderScreen extends ConsumerWidget {
                     repeatOption: reminderState.repeatOption,
                     customInterval: reminderState.customInterval,
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Reminder Set!', style: GoogleFonts.poppins()),
-                  ));
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Reminder Set!', style: GoogleFonts.poppins())),
+                  );
                 },
-                child: Text('Set Reminder', style: GoogleFonts.poppins()),
+                child: Text('Confirm Reminder', style: GoogleFonts.poppins()),
               ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -187,6 +166,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalNotification.init();
   runApp(ProviderScope(child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CustomReminderScreen())));
+    debugShowCheckedModeBanner: false,
+    home: CustomReminderScreen(),
+  )));
 }

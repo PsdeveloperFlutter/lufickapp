@@ -1,9 +1,13 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+ // Import your database helper file
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+
+import '../Database/Main_Database_App.dart';
 
 
 //Set the Riverpod Provider
@@ -94,21 +98,14 @@ final box = GetStorage();
 
 
 
-// Notifier to manage custom tags
-class CustomTagsNotifier extends StateNotifier<List<String>> {
-  CustomTagsNotifier() : super([]);
+final eventsProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
 
-  void addTag(String tag) {
-    state = [...state, tag]; // Add new tag
+  final DatabaseHelper databaseHelper = DatabaseHelper.instance;
+  final db = await databaseHelper.database; // Assuming 'database' is your SQLite database instance
+  try {
+    return db!.query('events');
+  } catch (e) {
+    print("SQLite Fetch Error: $e");
+    return []; // Return an empty list on failure
   }
-
-  void removeTag(String tag) {
-    state = state.where((t) => t != tag).toList(); // Remove tag
-  }
-}
-
-// Ensure List<String> type is enforced
-final customTagsProvider = StateNotifierProvider<CustomTagsNotifier, List<String>>((ref) {
-  return CustomTagsNotifier();
 });
-

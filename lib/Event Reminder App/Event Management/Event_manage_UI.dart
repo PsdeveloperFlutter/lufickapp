@@ -8,9 +8,11 @@ import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
+import '../NotificationCode/UI_Notification/UI_Notification.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
+import 'Event_List_Screen.dart';
 // Main application class
 
 XFile? image;
@@ -46,7 +48,7 @@ class Mainpage_event_management extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            const Center(child: Icon(Icons.music_note, size: 50)),
+            EventsScreen(),
             EventCreationUI(),
           ],
         ),
@@ -214,7 +216,8 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             //set the Notifications
             TextButton(onPressed: (){
-              Navigator.pushNamed(context, '/event');
+              CustomReminderScreen  instance = CustomReminderScreen();
+              instance.showReminderBottomSheet(context, ref);
             }, child: Text("Set Notification",
                 style: GoogleFonts.poppins(
                   fontSize: 15,
@@ -331,11 +334,18 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
                       customCategory: categories, // Keep structure (pass category list)
                     );
 
-                            print("${newEvent.name}"+"${newEvent.date}"+
-            "${newEvent.description}"+ "${newEvent.location}"+ "${newEvent.category}"+
-     "${newEvent.priority}"+ "${newEvent.file}"+ "${newEvent.image}"+ "${newEvent.video}"+
-                                "${newEvent.customCategory}");
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Created Successfully")));
+                            print(
+     "${newEvent.name}"+"${newEvent.date}"+
+     "${newEvent.description}"+
+     "${newEvent.location}"+ "${newEvent.category}"+
+     "${newEvent.priority}"+ "${newEvent.file}"+
+     "${newEvent.image}"+ "${newEvent.video}"+
+     "${newEvent.customCategory}");
+      //This is the Sending Data to the Database
+
+
+     newEvent.connect(); //call the function which connect the database to our project
+
                   }
                 },
                 child: Text("Submit",style: TextStyle(color: Colors.white),)),)

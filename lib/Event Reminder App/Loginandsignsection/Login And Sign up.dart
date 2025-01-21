@@ -2,15 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import '../Database/Main_Database_App.dart';
 import '../Event Management/Event_manage_UI.dart';
 import '../Getx Storage/Them e Change getxController.dart';
+import '../NotificationCode/Local_Notification.dart';
 import '../NotificationCode/UI_Notification/UI_Notification.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/GoogleAuth.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 import 'SiginUp.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:timezone/data/latest_all.dart' as tz;
 
 
 void main() async {
@@ -36,6 +38,14 @@ void main() async {
   // Initialize GetX
   final ThemeController themeController = Get.put(ThemeController()); // Inject Controller
 
+  //Initialize Database
+  final db = await DatabaseHelper.instance.database; // Initialize the database
+
+
+
+  tz.initializeTimeZones(); // ✅ Initialize timezones before scheduling notifications
+  await LocalNotification.init(); // ✅ Initialize local notifications
+
   runApp(ProviderScope(
     child: GetMaterialApp(
       theme: ThemeData.light(),
@@ -55,6 +65,8 @@ void main() async {
   ));
 }
 
+
+//This is the Login Page for the Login and Sign Up purpose
 class LoginPage extends ConsumerWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
