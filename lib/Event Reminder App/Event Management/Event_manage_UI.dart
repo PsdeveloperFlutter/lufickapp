@@ -275,7 +275,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
             //set the Notifications
             TextButton(onPressed: (){
               CustomReminderScreen  instance = CustomReminderScreen();
-              instance.showReminderBottomSheet(context, ref);
+              instance.showReminderBottomSheet(context, ref,_eventNameController.text.toString(),_eventDescriptionController.text.toString());
             }, child: Text("Set Notification",
                 style: GoogleFonts.poppins(
                   fontSize: 15,

@@ -110,7 +110,6 @@ class LocalNotification {
         'repeat_option': repeatOption,
         'custom_interval': customInterval,
       };
-      await  DatabaseHelper.instance.insertEvent(eventData);
 
       print('Notification scheduled successfully and stored in database');
     } on PlatformException catch (e) {

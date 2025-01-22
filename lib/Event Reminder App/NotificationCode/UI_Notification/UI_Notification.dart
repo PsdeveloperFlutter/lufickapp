@@ -66,15 +66,11 @@ class CustomReminderScreen extends ConsumerWidget {
         title: Text('Event Reminder', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold)),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => showReminderBottomSheet(context, ref),
-          child: Text('Set Reminder', style: GoogleFonts.poppins()),
-        ),
-      ),
+      )
     );
   }
 
-  void showReminderBottomSheet(BuildContext context, WidgetRef ref) {
+    void showReminderBottomSheet(BuildContext context, WidgetRef ref,String title ,String body) {
     final reminderState = ref.watch(reminderProvider);
 
     showModalBottomSheet(
@@ -139,9 +135,9 @@ class CustomReminderScreen extends ConsumerWidget {
               ElevatedButton(
                 onPressed: () async {
                   LocalNotification.scheduleNotification(
-                    payload: "Event Reminder Payload",
-                    title: "Event Reminder",
-                    body: "You have an event in your calendar!",
+                    payload: "",
+                    title: title,
+                    body: body,
                     reminderValue: reminderState.reminderValue,
                     selectedUnit: reminderState.selectedUnit,
                     repeatOption: reminderState.repeatOption,
@@ -161,6 +157,7 @@ class CustomReminderScreen extends ConsumerWidget {
     );
   }
 }
+/*
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -170,3 +167,5 @@ void main() async {
     home: CustomReminderScreen(),
   )));
 }
+
+*/
