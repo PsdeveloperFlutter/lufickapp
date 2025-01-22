@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../Database/Main_Database_App.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
@@ -51,8 +52,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                       children: [
                         // Event Name
                         Text(
-                          'Event Name: ${getValue(event['name'])}',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          'Event :-  ${getValue(event['name'])}',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black87),
                         ),
                         SizedBox(height: 8),
 
@@ -134,14 +135,33 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   ),
                                 );
                               },
-                              icon: Icon(Icons.edit),
+                              icon: Icon(Icons.edit,color: Colors.green.shade700,),
                             ),
                              IconButton(onPressed: () async{
                                await DatabaseHelper.instance.deleteEvent(event['id']).
                                    then((value) =>
                                    ref.refresh(eventsProvider)    // Refresh the provider
                                );
-                             }, icon: Icon(Icons.delete))
+                             }, icon: Icon(Icons.delete,color: Colors.red.shade700,)),
+                            IconButton(
+                              onPressed: () {
+                                final eventDetails = '''
+                       Event: ${getValue(event['name'])}
+                       Date & Time: ${getValue(event['date_time'])}
+                       Category: ${getValue(event['category'])}
+                        Location: ${getValue(event['location'])}
+                        Description: ${getValue(event['description'])}
+                        Priority: ${getValue(event['priority'])}
+                        Reminder Time: ${getValue(event['reminder_time'], defaultValue: 'Not set')}
+                        Repeat Option: ${getValue(event['repeat_option'], defaultValue: 'Not set')}
+                        Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
+                           ''';
+
+                                Share.share(eventDetails);  // Share the event details
+                              },
+                              icon: Icon(Icons.share, color: Colors.blue.shade700),
+                            )
+
                           ],
                         ),
                       ],

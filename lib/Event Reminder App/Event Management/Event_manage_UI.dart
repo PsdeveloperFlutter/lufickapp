@@ -9,6 +9,7 @@ import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controlle
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
 import '../NotificationCode/UI_Notification/UI_Notification.dart';
+import '../Riverpod_Management/Riverpod_Theme_Management.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
@@ -34,11 +35,68 @@ class Mainpage_event_management extends StatelessWidget {
           final ThemeController themeController = Get.find();
           themeController.toggletheme();
         },child: Icon(Icons.toggle_off,color: Colors.white,),backgroundColor: Colors.green,),
+
+        drawer: Drawer(
+          width: 250,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 30,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: Text('Settings',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 24),),
+                ),
+                SizedBox(height: 12,),
+                TextButton(onPressed: (){}, child: Text('Theme',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 18),),),
+                SizedBox(height: 12,),
+                ExpansionTile(title: Text('Font-Color',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 18),),children: [
+                  Container(
+                    height: 400,
+                    child: ListView.builder(itemBuilder: (context,index){
+                      final newvalue=colorsname[index].substring(0,1).toUpperCase()+colorsname[index].substring(1);
+                      colorsname[index]=newvalue;
+                      return
+                      Card(
+                        shape:RoundedRectangleBorder(borderRadius:
+                        BorderRadius.circular(15)) ,
+                        elevation: 5,
+
+                        child: Center(child: Text(colorsname[index],style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15,color: Colors.purple.shade700),)),
+                      );
+                    },itemCount: colorsname.length,),
+                  )
+                ]),
+
+                SizedBox(height: 12,),
+                ExpansionTile(title: Text('Font-Size',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 18),),children: [
+                  Container(
+                    height: 400,
+                    child: ListView.builder(itemBuilder: (context,index){
+
+                      return
+                        Card(
+                          shape:RoundedRectangleBorder(borderRadius:
+                          BorderRadius.circular(15)) ,
+                          elevation: 5,
+
+                          child: Center(child: Text("Set font size as "+fontvalue[index].toString(),style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15,color: Colors.purple.shade700),)),
+                        );
+                    },itemCount: fontvalue.length,),
+                  )
+                ]),
+
+
+              ],
+            ),
+          ),
+        ),
         appBar: AppBar(
           bottom: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.music_note),),
-              Tab(icon: Icon(Icons.music_video)),
+              Tab(icon: Icon(Icons.event,color: Colors.green),),
+              Tab(icon: Icon(Icons.create,color: Colors.green,)),
             ],
           ),
           title:Text(

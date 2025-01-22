@@ -7,6 +7,7 @@ class Assets {
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
+  static const String bio MetricBioMetric = 'lib/Event Reminder App/Bio Metric/BioMetric.dart';
   static const String controller of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart';
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
   static const String databaseMainDatabaseApp = 'lib/Event Reminder App/Database/Main_Database_App.dart';
@@ -33,6 +34,7 @@ class Assets {
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
+  static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libRiverPordAsyncNotifierProvider = 'lib/RiverPord/AsyncNotifierProvider.dart~';
@@ -86,6 +88,7 @@ class Assets {
   static const String riverPordStreamProviderfamily = 'lib/RiverPord/StreamProviderfamily.dart';
   static const String riverPordTodoListRiverPod = 'lib/RiverPord/TodoListRiverPod.dart';
   static const String riverpodManagementRiverpodAddManagement = 'lib/Event Reminder App/Riverpod_Management/Riverpod_add_Management.dart';
+  static const String riverpodManagementRiverpodThemeManagement = 'lib/Event Reminder App/Riverpod_Management/Riverpod_Theme_Management.dart';
   static const String screenBackgroundAnimation = 'lib/Todo_Application/screen/Background_Animation.dart';
   static const String screenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart';
   static const String screenDatePickerFile = 'lib/Todo_Application/screen/Date_Picker_file.dart';
