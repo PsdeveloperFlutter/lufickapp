@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,10 +140,28 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                               icon: Icon(Icons.edit,color: Colors.green.shade700,),
                             ),
                              IconButton(onPressed: () async{
-                               await DatabaseHelper.instance.deleteEvent(event['id']).
-                                   then((value) =>
-                                   ref.refresh(eventsProvider)    // Refresh the provider
-                               );
+
+                               showDialog(context: context, builder: (context)=>AlertDialog(
+                                 title: Text("Confirm Delete",style: TextStyle(color: Colors.red.shade700),),
+                                 actions: [
+
+                                   Row(
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     children: [
+                                       TextButton(onPressed: (){Navigator.pop(context);}, child:Text('Cancel',style: TextStyle(color: Colors.green.shade700),)),
+                                       TextButton(onPressed: ()async{
+                                         await DatabaseHelper.instance.deleteEvent(event['id']).
+                                         then((value) =>
+                                             ref.refresh(eventsProvider)    // Refresh the provider
+                                         );
+                                         Navigator.pop(context);
+                                       }, child:Text('Delete',style: TextStyle(color: Colors.red.shade700),)),
+                                     ],
+                                   )
+                                 ],
+
+                               ));
                              }, icon: Icon(Icons.delete,color: Colors.red.shade700,)),
                             IconButton(
                               onPressed: () {

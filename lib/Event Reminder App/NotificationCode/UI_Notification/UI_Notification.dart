@@ -134,19 +134,28 @@ class CustomReminderScreen extends ConsumerWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  LocalNotification.scheduleNotification(
-                    payload: "",
-                    title: title,
-                    body: body,
-                    reminderValue: reminderState.reminderValue,
-                    selectedUnit: reminderState.selectedUnit,
-                    repeatOption: reminderState.repeatOption,
-                    customInterval: reminderState.customInterval,
-                  );
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Reminder Set!', style: GoogleFonts.poppins())),
-                  );
+                 if(title.isEmpty || body.isEmpty){
+                   Navigator.pop(context);
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                         content: Text('Please Enter Title and Body', style: GoogleFonts.poppins())),
+                   );
+                 }
+                 else {
+                   LocalNotification.scheduleNotification(
+                     payload: "",
+                     title: title,
+                     body: body,
+                     reminderValue: reminderState.reminderValue,
+                     selectedUnit: reminderState.selectedUnit,
+                     repeatOption: reminderState.repeatOption,
+                     customInterval: reminderState.customInterval,
+                   );
+                   Navigator.pop(context);
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(content: Text('Reminder Set!', style: GoogleFonts.poppins())),
+                   );
+                 }
                 },
                 child: Text('Confirm Reminder', style: GoogleFonts.poppins()),
               ),
