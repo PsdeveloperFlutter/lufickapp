@@ -63,12 +63,12 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
-            hintText: "Enter a custom tag",
+            hintText: "Enter a custom Category",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
               borderSide: BorderSide.none,
             ),
-            labelText: "Add Custom Tag",
+            labelText: "Add Custom Category",
             suffixIcon: IconButton(
               icon: Icon(Icons.add),
               onPressed: () {

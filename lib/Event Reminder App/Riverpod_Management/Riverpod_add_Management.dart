@@ -109,3 +109,4 @@ final eventsProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
     return []; // Return an empty list on failure
   }
 });
+
