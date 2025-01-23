@@ -214,7 +214,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                         ),
                       ),
                       back: Container(
-                        height: 600,
+                        height: 500,
                         margin: EdgeInsets.all(8),
                         child: Card(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
