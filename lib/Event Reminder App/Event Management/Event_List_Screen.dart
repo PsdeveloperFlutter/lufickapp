@@ -1,4 +1,5 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
@@ -174,7 +175,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
                                 ),
                                 SizedBox(height: 8),
-                                Text('Date & Time: ${getValue(event['date_time'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                Text('Date & Time: ${formatDate(event['date_time'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                 SizedBox(height: 8),
                                 Text('Category: ${getValue(event['category'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                 SizedBox(height: 8),
@@ -296,7 +297,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                       icon: Icon(Icons.share, color: Colors.blue.shade700),
                     ),
 
-// Helper functio
+
 
                     IconButton(
                                       onPressed: () {},
@@ -426,18 +427,55 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                         icon: Icon(Icons.delete, color: Colors.red.shade700),
                                       ),
                                       IconButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           final eventDetails = '''
-                              Event: ${getValue(event['name'])}
-                              Date & Time: ${getValue(event['date_time'])}
-                              Category: ${getValue(event['category'])}
-                              Location: ${getValue(event['location'])}
-                              Description: ${getValue(event['description'])}
-                              Priority: ${getValue(event['priority'])}
-                              Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
-                              ''';
+    DateTime? eventDate=getValue(event['date_time']);
+    String fromattedTime=DateFormat('dd-MM-yyyy').format(eventDate!);
+    Event: ${getValue(event['name'])}
+    Date & Time: fromattedTime
+    Category: ${getValue(event['category'])}
+    Location: ${getValue(event['location'])}
+    Description: ${getValue(event['description'])}
+    Priority: ${getValue(event['priority'])}
+    Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
+    ''';
 
-                                          Share.share(eventDetails);
+                                          // Initialize a list for media paths (XFile)
+                                          List<XFile> mediaPaths = [];
+
+                                          // Check if there's an image and copy it to a shareable directory
+                                          if (event['image_path'] != null && event['image_path'] != '') {
+                                            try {
+                                              XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
+                                              mediaPaths.add(imageFile);
+                                            } catch (e) {
+                                              print("Error copying image: $e");
+                                            }
+                                          }
+
+                                          // Check if there's a video and add it to the mediaPaths
+                                          if (event['video_path'] != null && event['video_path'] != '') {
+                                            mediaPaths.add(XFile(event['video_path']));
+                                          }
+
+                                          // Check if there's a file and add it to the mediaPaths
+                                          if (event['file_path'] != null && event['file_path'] != '') {
+                                            mediaPaths.add(XFile(event['file_path']));
+                                          }
+
+                                          // Combine event details and media paths to share
+                                          String shareText = eventDetails;
+                                          if (mediaPaths.isNotEmpty) {
+                                            shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
+                                          }
+
+                                          // Share media files along with event details
+                                          if (mediaPaths.isNotEmpty) {
+                                            Share.shareXFiles(mediaPaths, text: shareText);
+                                          } else {
+                                            // Share only the event details if there are no media files
+                                            Share.share(shareText);
+                                          }
                                         },
                                         icon: Icon(Icons.share, color: Colors.blue.shade700),
                                       ),
@@ -491,6 +529,19 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     final imageFile = File(imagePath);
     await imageFile.copy(tempFile.path); // Copy image to temp directory
     return XFile(tempFile.path);
+  }
+
+  formatDate(event) {
+    if(event==null){
+      return 'Not set'; // Handle null case
+    }
+    try{
+      DateTime? eventtime=DateTime.parse(event);
+      return DateFormat("dd-MM-yyyy").format(eventtime);
+    }
+    catch(e){
+      return 'Invalid date'; // In case the parsing fails
+    }
   }
 }
 /*
