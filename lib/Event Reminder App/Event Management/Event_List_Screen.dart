@@ -4,6 +4,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lufickapp/Todo_Application/screen/Videoplayer.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,14 +84,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                 if (filteredEvents.isEmpty) {
                   return Center(child: Text('No events found. Restoring list...'));
                 }
-            
+
                 return ListView.builder(
                   itemCount: filteredEvents.length,
                   itemBuilder: (context, index) {
                     final event = events[index];
-            
-            
-            
+
+
+
                     return FlipCard(
                       direction: FlipDirection.HORIZONTAL,
                       side: CardSide.FRONT,
@@ -127,7 +128,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                 Text('Repeat Option: ${getValue(event['repeat_option'], defaultValue: 'Not set')}', style: TextStyle(fontSize: 16, color: Colors.grey[700])),
                                 SizedBox(height: 8),
                                 Text('Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style: TextStyle(fontSize: 16, color: Colors.grey[700])),
-            
+
                                 // Actions (Edit, Delete, Share, PDF)
                                 SizedBox(height: 12),
                                 Row(
@@ -197,7 +198,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                               Repeat Option: ${getValue(event['repeat_option'], defaultValue: 'Not set')}
                               Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
                               ''';
-            
+
                                         Share.share(eventDetails);
                                       },
                                       icon: Icon(Icons.share, color: Colors.blue.shade700),
@@ -228,12 +229,46 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   SizedBox(height: 5),
                                   event['image_path'] != null
                                       ? Column(
-                                    children: [Center(child: Text("Image Section",style: TextStyle(fontWeight: FontWeight.bold),)), Image.file(File(event['image_path']),fit: BoxFit.cover,width: 200,height: 200,)],
+                                    children: [
+                         Center(child:
+                     Text("Image Section",style: TextStyle(fontWeight: FontWeight.bold),)), Image.file(File(event['image_path']),fit: BoxFit.cover,width: 200,height: 200,)],
                                   )
                                       : Text("No Image", style: TextStyle(color: Colors.red.shade700)),
-            
-            
+
+
                                   SizedBox(height: 18,),
+
+
+
+                                  //This is for showing the file on the back side from database
+
+                                  event['file_path']!=null
+                                  ?
+                                      Column(
+                                        children:[
+                                          Center(
+                                            child:Text("File Section",style:TextStyle(fontWeight:FontWeight.bold))
+                                          ),
+                                          SizedBox(height: 12,),
+                                          ElevatedButton.icon(onPressed: (){
+
+                                            //When the Button Press so At that case it will show the Option for the Opening with the
+                                            //File by many options
+                                            File file = File(event['file_path']);
+                                            if (file.existsSync()) {
+                                              OpenFile.open(file.path); // Requires `open_file` package
+                                            } else {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(content: Text("File not found")),
+                                              );
+                                            }
+                                          },
+
+                                              icon: Icon(Icons.insert_drive_file),
+                                              label: Text("Open File")
+                                          )
+                                        ]
+                                      ):Text("No File",style:TextStyle(color:Colors.red.shade700)),
                                   //This is for the Operation Purpose for the Events make sure of this
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -302,7 +337,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                               Repeat Option: ${getValue(event['repeat_option'], defaultValue: 'Not set')}
                               Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
                               ''';
-            
+
                                           Share.share(eventDetails);
                                         },
                                         icon: Icon(Icons.share, color: Colors.blue.shade700),
