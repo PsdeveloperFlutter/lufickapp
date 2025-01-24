@@ -1,7 +1,11 @@
 // Extension to convert string to enum
+import 'dart:io';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
 PriorityLevel stringToPriorityLevel(String priority) {
   switch (priority.toLowerCase()) {
@@ -26,7 +30,8 @@ class UpdateEventUI extends StatefulWidget {
   final String eventLocation;
   final String eventDescription;
   final String eventPriority; // Change this to String, we'll convert to enum
-
+  dynamic imagepath;
+  dynamic filepath;
   UpdateEventUI({
     required this.index,
     required this.eventName,
@@ -34,6 +39,8 @@ class UpdateEventUI extends StatefulWidget {
     required this.eventLocation,
     required this.eventDescription,
     required this.eventPriority, // String value for priority
+    this.imagepath,
+    this.filepath
   });
 
   @override
@@ -94,121 +101,187 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Update Event Details",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Event Name Field
-            TextField(
-              controller: _eventNameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Update Event Details",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-                suffixIcon: const Icon(Icons.event, color: Colors.black45),
-                labelText: "Event Name",
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Event Date and Time Field
-            TextField(
-              controller: _eventDateTimeController,
-              readOnly: true,
-              onTap: () => _selectDateTime(context),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              const SizedBox(height: 16),
+          
+              // Event Name Field
+              TextField(
+                controller: _eventNameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  suffixIcon: const Icon(Icons.event),
+                  labelText: "Event Name",
                 ),
-                suffixIcon: const Icon(Icons.calendar_today, color: Colors.black45),
-                labelText: "Event Date and Time",
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Event Location Field
-            TextField(
-              controller: _eventLocationController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              const SizedBox(height: 16),
+          
+              // Event Date and Time Field
+              TextField(
+                controller: _eventDateTimeController,
+                readOnly: true,
+                onTap: () => _selectDateTime(context),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  suffixIcon: const Icon(Icons.calendar_today),
+                  labelText: "Event Date and Time",
                 ),
-                suffixIcon: const Icon(Icons.location_on, color: Colors.black45),
-                labelText: "Event Location",
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Event Description Field
-            TextField(
-              controller: _eventDescriptionController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              const SizedBox(height: 16),
+          
+              // Event Location Field
+              TextField(
+                controller: _eventLocationController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  suffixIcon: const Icon(Icons.location_on),
+                  labelText: "Event Location",
                 ),
-                suffixIcon: const Icon(Icons.description, color: Colors.black45),
-                labelText: "Event Description",
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Priority Dropdown
-            DropdownButtonFormField<PriorityLevel>(
-              value: _selectedPriority,
-              items: PriorityLevel.values.map((PriorityLevel priority) {
-                return DropdownMenuItem(
-                  value: priority,
-                  child: Text(priority.toString().split('.').last.capitalize()),
-                );
-              }).toList(),
-              onChanged: (PriorityLevel? newValue) {
-                setState(() {
-                  _selectedPriority = newValue!;
-                });
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              const SizedBox(height: 16),
+          
+              // Event Description Field
+              TextField(
+                controller: _eventDescriptionController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  suffixIcon: const Icon(Icons.description),
+                  labelText: "Event Description",
                 ),
-                labelText: "Priority",
               ),
-            ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 16),
+          
+              // Priority Dropdown
+              DropdownButtonFormField<PriorityLevel>(
+                value: _selectedPriority,
+                items: PriorityLevel.values.map((PriorityLevel priority) {
+                  return DropdownMenuItem(
+                    value: priority,
+                    child: Text(priority.toString().split('.').last.capitalize()),
+                  );
+                }).toList(),
+                onChanged: (PriorityLevel? newValue) {
+                  setState(() {
+                    _selectedPriority = newValue!;
+                  });
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  labelText: "Priority",
+                ),
+              ),
+              const SizedBox(height: 24),
+              widget.imagepath!=null?
+          
+              Center(
+                child: Column(
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.file(File(widget.imagepath),height: 200,width: 300,)),
+                    SizedBox(height: 10,),
+                    ElevatedButton.icon(
+                      label: Text("Upload another Image",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
+                      onPressed: (){},
+                      icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
+                    ),
+                  ],
+                ),
+              ):
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                     child:
+                     Text("No Image ",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),)),
+                      SizedBox(height: 10,),
+                      ElevatedButton.icon(
+                        label: Text("Upload Image",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
+                        onPressed: (){},
+                        icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
+                      ),
+                    ],
+                  ),
+              const SizedBox(height: 24,),
 
-            // Buttons Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+            widget.filepath!=null ?
+             Column(
+               children: [
+                 ClipRRect(
+                     borderRadius: BorderRadius.circular(50),
+                     child: seefile(widget.filepath)),
+                     SizedBox(height: 10,)
+               ,ElevatedButton.icon(
+                   label: Text("Upload another file",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
+                   onPressed: (){},
+                   icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
+                 ),
+               ],
+             ):
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle event update logic here
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Event Updated: ${_eventNameController.text}")),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  child: const Text("Save Changes", style: TextStyle(color: Colors.white)),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text("Cancel", style: TextStyle(color: Colors.white)),
+                Center(child: Text("No File ",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),)),
+                SizedBox(height: 10,),
+                ElevatedButton.icon(
+                  label: Text("Upload File",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
+                  onPressed: (){},
+                  icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
                 ),
               ],
             ),
-          ],
+
+        const SizedBox(height: 24,),
+
+
+              // Buttons Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle event update logic here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Event Updated: ${_eventNameController.text}")),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Text("Save Changes", style: TextStyle(color: Colors.white)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: const Text("Cancel", style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -221,6 +294,41 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     _eventLocationController.dispose();
     _eventDescriptionController.dispose();
     super.dispose();
+  }
+
+  Widget seefile(String filepath) {
+    File file = File(filepath);
+
+    if (!file.existsSync()) {
+      return Center(
+        child: Text(
+          "File not found!",
+          style: TextStyle(fontSize: 18, color: Colors.red),
+        ),
+      );
+    }
+
+    // Check file type based on extension
+    String fileExtension = filepath.split('.').last.toLowerCase();
+
+    if (["jpg", "jpeg", "png", "gif"].contains(fileExtension)) {
+      // Display Image
+      return Center(child: Image.file(file, fit: BoxFit.cover,width: 300,height: 200,));
+    } else if (["mp4", "mov", "avi"].contains(fileExtension)) {
+      // Display Video
+      return VideoPlayerWidget(videoFile: file);
+    } else if (["pdf"].contains(fileExtension)) {
+      // Display PDF
+      return PDFViewWidget(pdfFile: file);
+    } else {
+      // Unsupported file type
+      return Center(
+        child: Text(
+          "Unsupported file format!",
+          style: TextStyle(fontSize: 18, color: Colors.red),
+        ),
+      );
+    }
   }
 }
 
@@ -522,3 +630,58 @@ So yes, you are passing a string and then converting it into the corresponding e
 
 
 
+class VideoPlayerWidget extends StatefulWidget {
+  final File videoFile;
+  const VideoPlayerWidget({Key? key, required this.videoFile}) : super(key: key);
+
+  @override
+  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
+}
+
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.file(widget.videoFile)
+      ..initialize().then((_) {
+        setState(() {}); // Update the UI after initialization
+        _controller.play(); // Auto-play video
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _controller.value.isInitialized
+        ? AspectRatio(
+      aspectRatio: _controller.value.aspectRatio,
+      child: VideoPlayer(_controller),
+    )
+        : Center(child: CircularProgressIndicator());
+  }
+}
+
+
+
+class PDFViewWidget extends StatelessWidget {
+  final File pdfFile;
+  const PDFViewWidget({Key? key, required this.pdfFile}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PDFView(
+      filePath: pdfFile.path,
+      enableSwipe: true,
+      swipeHorizontal: false,
+      autoSpacing: true,
+      pageFling: true,
+    );
+  }
+}

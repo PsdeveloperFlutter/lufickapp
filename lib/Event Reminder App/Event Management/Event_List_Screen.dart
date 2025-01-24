@@ -181,7 +181,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                 SizedBox(height: 8),
                                 Text('Location: ${getValue(event['location'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                 SizedBox(height: 8),
-                                Text('Description: ${getValue(event['description'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                Text('Description: ${getValue(event ['description'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                 SizedBox(height: 8),
                                 Text('Priority: ${formatPriority(event)}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                 SizedBox(height: 8),
@@ -204,6 +204,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                               eventLocation: event['location'],
                                               eventDescription: event['description'],
                                               eventPriority: event['priority'],
+                                                imagepath: event['image_path'],
+                                              filepath:event['file_path'],
                                             ),
                                           ),
                                         );
@@ -387,6 +389,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                                 eventLocation: event['location'],
                                                 eventDescription: event['description'],
                                                 eventPriority: event['priority'],
+                                                imagepath: event['image_path'],
+                                                filepath:event['file_path'],
                                               ),
                                             ),
                                           );
