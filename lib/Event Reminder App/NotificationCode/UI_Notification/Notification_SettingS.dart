@@ -44,13 +44,11 @@ class LocalNotification {
     required String selectedUnit,
     required String repeatOption,
     required int customInterval,
+    required DateTime selectdate,
   }) async {
     try {
       Duration duration;
       switch (selectedUnit) {
-        case 'Seconds':
-          duration = Duration(seconds: reminderValue);
-          break;
         case 'Minutes':
           duration = Duration(minutes: reminderValue);
           break;

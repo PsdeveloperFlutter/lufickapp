@@ -1,11 +1,16 @@
 // Extension to convert string to enum
+import 'dart:async';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
+
+import '../Database/Main_Database_App.dart';
 
 PriorityLevel stringToPriorityLevel(String priority) {
   switch (priority.toLowerCase()) {
@@ -32,6 +37,8 @@ class UpdateEventUI extends StatefulWidget {
   final String eventPriority; // Change this to String, we'll convert to enum
   dynamic imagepath;
   dynamic filepath;
+  dynamic id;
+  dynamic videopath;
   UpdateEventUI({
     required this.index,
     required this.eventName,
@@ -40,7 +47,9 @@ class UpdateEventUI extends StatefulWidget {
     required this.eventDescription,
     required this.eventPriority, // String value for priority
     this.imagepath,
-    this.filepath
+    this.filepath,
+    this.id,
+    this.videopath
   });
 
   @override
@@ -202,7 +211,19 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                     SizedBox(height: 10,),
                     ElevatedButton.icon(
                       label: Text("Upload another Image",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                      onPressed: (){},
+                      onPressed: ()async{
+                        ImagePicker image=ImagePicker();
+                        XFile ?file=await image.pickImage(source:ImageSource.gallery);
+                        if(file!=null){
+                          setState(() {
+                            widget.imagepath=file.path;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image uploaded successfully")));
+                        }
+                        else{
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image not uploaded")));
+                        }
+                      },
                       icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
                     ),
                   ],
@@ -218,7 +239,19 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                       SizedBox(height: 10,),
                       ElevatedButton.icon(
                         label: Text("Upload Image",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                        onPressed: (){},
+                        onPressed: ()async{
+                          ImagePicker image= await ImagePicker();
+                           XFile ? imagestore=await image.pickImage(source: ImageSource.gallery);
+                           if(imagestore!=null){
+                             setState(() {
+                               widget.imagepath=imagestore.path;
+                             });
+                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image uploaded successfully")));
+                           }
+                           else {
+                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image not uploaded")));
+                           }
+                          },
                         icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
                       ),
                     ],
@@ -229,13 +262,26 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
             widget.filepath!=null ?
              Column(
                children: [
-                 ClipRRect(
-                     borderRadius: BorderRadius.circular(50),
-                     child: seefile(widget.filepath)),
+                 Center(
+                   child: ClipRRect(
+                       borderRadius: BorderRadius.circular(50),
+                       child: Container(
+                           width: 200,
+                           height: 200,
+                           child: seefile(widget.filepath))),
+                 ),
                      SizedBox(height: 10,)
                ,ElevatedButton.icon(
                    label: Text("Upload another file",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                   onPressed: (){},
+                   onPressed: ()async{
+                     FilePickerResult? result=await FilePicker.platform.pickFiles();
+                     if(result!=null){
+                       setState(() {
+                         widget.filepath=result.files.single.path;
+                       });
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File uploaded successfully")));
+                     }
+                   },
                    icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
                  ),
                ],
@@ -248,7 +294,18 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 SizedBox(height: 10,),
                 ElevatedButton.icon(
                   label: Text("Upload File",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                  onPressed: (){},
+                  onPressed: ()async{
+                    FilePickerResult? result=await FilePicker.platform.pickFiles();
+                    if(result!=null){
+                     setState(() {
+                       widget.filepath=result.files.single.path;
+                     });
+                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File uploaded successfully")));
+                    }
+                    else{
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File not uploaded")));
+                    }
+                  },
                   icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
                 ),
               ],
@@ -262,11 +319,30 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
                       // Handle event update logic here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Event Updated: ${_eventNameController.text}")),
-                      );
+                      final DatabaseHelper database=await DatabaseHelper.instance;
+
+                      final Map<String, dynamic> data={
+                        'name': _eventNameController.text,
+                        'date_time': _eventDateTimeController.text,
+                        'location': _eventLocationController.text,
+                        'description': _eventDescriptionController.text,
+                        'priority': _selectedPriority.toString().split('.').last,
+                        'image_path': widget.imagepath,
+                        'file_path': widget.filepath,
+                        'video_path': widget.videopath
+                      };
+
+
+                      //This is for the Show Result of Updation of the Data
+                      database.updateEvent(data, widget.id).then((value)=>{
+                        print("Event updated successfully!"),
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Event updated successfully!"))),
+                        Timer(Duration (seconds: 2), () => Navigator.pop(context)),
+                      });
+
+
                     },
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     child: const Text("Save Changes", style: TextStyle(color: Colors.white)),

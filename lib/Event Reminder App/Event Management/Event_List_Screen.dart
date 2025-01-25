@@ -7,14 +7,11 @@ import 'dart:io';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lufickapp/Todo_Application/screen/Videoplayer.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:video_player/video_player.dart';
 import '../Database/Main_Database_App.dart';
+import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Event_Management_Update.dart';
 
@@ -107,13 +104,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
               controller: searchController,
               decoration: InputDecoration(
                 labelStyle: GoogleFonts.aBeeZee(
-                  color: Colors.blue.shade700
                 ),
                 hintStyle: GoogleFonts.aBeeZee(
-                    color: Colors.blue.shade700
                 ),
                 hintText: "Search Events",
-                prefixIconColor: Colors.blue.shade700,
                 labelText: 'Search Events',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30,),
@@ -166,148 +160,164 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                           color: Colors.white,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Event Details
-                                Text(
-                                  'Event :-  ${getValue(event['name'])}',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
-                                ),
-                                SizedBox(height: 8),
-                                Text('Date & Time: ${formatDate(event['date_time'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                                SizedBox(height: 8),
-                                Text('Category: ${getValue(event['category'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                                SizedBox(height: 8),
-                                Text('Location: ${getValue(event['location'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                                SizedBox(height: 8),
-                                Text('Description: ${getValue(event ['description'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                                SizedBox(height: 8),
-                                Text('Priority: ${formatPriority(event)}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                                SizedBox(height: 8),
-                                Text('Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-
-                                // Actions (Edit, Delete, Share, PDF)
-                                SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => UpdateEventUI(
-                                              index: index,
-                                              eventName: event['name'],
-                                              eventDateTime: event['date_time'],
-                                              eventLocation: event['location'],
-                                              eventDescription: event['description'],
-                                              eventPriority: event['priority'],
-                                                imagepath: event['image_path'],
-                                              filepath:event['file_path'],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.edit, color: Colors.green.shade700),
-                                    ),
-                                    IconButton(
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: Text("Confirm Delete", style: TextStyle(color: Colors.red.shade700)),
-                                            actions: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text('Cancel', style: TextStyle(color: Colors.green.shade700)),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () async {
-                                                      await DatabaseHelper.instance.deleteEvent(event['id']).then(
-                                                            (value) => ref.refresh(eventsProvider),
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text('Delete', style: TextStyle(color: Colors.red.shade700)),
-                                                  ),
-                                                ],
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Event Details
+                                  Text(
+                                    'Event :-  ${getValue(event['name'])}',
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text('Date & Time: ${formatDate(event['date_time'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 8),
+                                  Text('Category: ${getValue(event['category'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 8),
+                                  Text('Location: ${getValue(event['location'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 8),
+                                  Text('Description: ${getValue(event ['description'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 8),
+                                  Text('Priority: ${formatPriority(event)}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 8),
+                                  Text('Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                              
+                                  // Actions (Edit, Delete, Share, PDF)
+                                  SizedBox(height: 12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => UpdateEventUI(
+                                                index: index,
+                                                eventName: event['name'],
+                                                eventDateTime: event['date_time'],
+                                                eventLocation: event['location'],
+                                                eventDescription: event['description'],
+                                                eventPriority: event['priority'],
+                                                  imagepath: event['image_path'],
+                                                filepath:event['file_path'],
+                                                id:event['id'],
+                                                videopath: event['video_path'],
                                               ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.delete, color: Colors.red.shade700),
-                                    ),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.edit, color: Colors.green.shade700),
+                                      ),
+                                      IconButton(
+                                        onPressed: () async {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text("Confirm Delete", style: TextStyle(color: Colors.red.shade700)),
+                                              actions: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('Cancel', style: TextStyle(color: Colors.green.shade700)),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        await DatabaseHelper.instance.deleteEvent(event['id']).then(
+                                                              (value) => ref.refresh(eventsProvider),
+                                                        );
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('Delete', style: TextStyle(color: Colors.red.shade700)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.delete, color: Colors.red.shade700),
+                                      ),
+                              
+                              
+                                                    IconButton(
+                                                        onPressed: () async {
+                                                  final eventDetails = '''
+                                  Event: ${getValue(event['name'])}
+                                  Date & Time: ${getValue(event['date_time'])}
+                                  Category: ${getValue(event['category'])}
+                                  Location: ${getValue(event['location'])}
+                                  Description: ${getValue(event['description'])}
+                                  Priority: ${getValue(event['priority'])}
+                                  Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
+                                  ''';
+                              
+                                                  // Initialize a list for media paths (XFile)
+                                                  List<XFile> mediaPaths = [];
+                              
+                                                  // Check if there's an image and copy it to a shareable directory
+                                                  if (event['image_path'] != null && event['image_path'] != '') {
+                                                  try {
+                                                  XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
+                                                  mediaPaths.add(imageFile);
+                                                  } catch (e) {
+                                                  print("Error copying image: $e");
+                                                  }
+                                                  }
+                              
+                                                  // Check if there's a video and add it to the mediaPaths
+                                                  if (event['video_path'] != null && event['video_path'] != '') {
+                                                  mediaPaths.add(XFile(event['video_path']));
+                                                  }
+                              
+                                                  // Check if there's a file and add it to the mediaPaths
+                                                  if (event['file_path'] != null && event['file_path'] != '') {
+                                                  mediaPaths.add(XFile(event['file_path']));
+                                                  }
+                              
+                                                  // Combine event details and media paths to share
+                                                  String shareText = eventDetails;
+                                                  if (mediaPaths.isNotEmpty) {
+                                                  shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
+                                                  }
+                              
+                                                  // Share media files along with event details
+                                                  if (mediaPaths.isNotEmpty) {
+                                                  Share.shareXFiles(mediaPaths, text: shareText);
+                                                  } else {
+                                                  // Share only the event details if there are no media files
+                                                  Share.share(shareText);
+                                                  }
+                                                  },
+                                                    icon: Icon(Icons.share, color: Colors.blue.shade700),
+                                                  ),
+                              
+                              
+                              
+                                                  IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
+                                      ),
+
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                            return NotificationDateTimePicker();
+                                          }));
+                                        },
+                                        icon: Icon(Icons.notification_add, color: Colors.amberAccent.shade700),
+                                      ),
 
 
-                      IconButton(
-                          onPressed: () async {
-                    final eventDetails = '''
-    Event: ${getValue(event['name'])}
-    Date & Time: ${getValue(event['date_time'])}
-    Category: ${getValue(event['category'])}
-    Location: ${getValue(event['location'])}
-    Description: ${getValue(event['description'])}
-    Priority: ${getValue(event['priority'])}
-    Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
-    ''';
 
-                    // Initialize a list for media paths (XFile)
-                    List<XFile> mediaPaths = [];
-
-                    // Check if there's an image and copy it to a shareable directory
-                    if (event['image_path'] != null && event['image_path'] != '') {
-                    try {
-                    XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
-                    mediaPaths.add(imageFile);
-                    } catch (e) {
-                    print("Error copying image: $e");
-                    }
-                    }
-
-                    // Check if there's a video and add it to the mediaPaths
-                    if (event['video_path'] != null && event['video_path'] != '') {
-                    mediaPaths.add(XFile(event['video_path']));
-                    }
-
-                    // Check if there's a file and add it to the mediaPaths
-                    if (event['file_path'] != null && event['file_path'] != '') {
-                    mediaPaths.add(XFile(event['file_path']));
-                    }
-
-                    // Combine event details and media paths to share
-                    String shareText = eventDetails;
-                    if (mediaPaths.isNotEmpty) {
-                    shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
-                    }
-
-                    // Share media files along with event details
-                    if (mediaPaths.isNotEmpty) {
-                    Share.shareXFiles(mediaPaths, text: shareText);
-                    } else {
-                    // Share only the event details if there are no media files
-                    Share.share(shareText);
-                    }
-                    },
-                      icon: Icon(Icons.share, color: Colors.blue.shade700),
-                    ),
-
-
-
-                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -391,6 +401,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                                 eventPriority: event['priority'],
                                                 imagepath: event['image_path'],
                                                 filepath:event['file_path'],
+                                                id: event['id'],
+                                                videopath: event['video_path'],
                                               ),
                                             ),
                                           );

@@ -149,7 +149,7 @@ class CustomReminderScreen extends ConsumerWidget {
                      reminderValue: reminderState.reminderValue,
                      selectedUnit: reminderState.selectedUnit,
                      repeatOption: reminderState.repeatOption,
-                     customInterval: reminderState.customInterval,
+                     customInterval: reminderState.customInterval, selectdate: DateTime.now(),
                    );
                    Navigator.pop(context);
                    ScaffoldMessenger.of(context).showSnackBar(
