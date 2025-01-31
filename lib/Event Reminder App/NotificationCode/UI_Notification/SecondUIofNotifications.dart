@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzData;
@@ -27,7 +28,7 @@ Future<void> initNotifications() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
-Future<void> scheduleNotification(DateTime scheduledTime, String message) async {
+Future<void> scheduleNotification(DateTime scheduledTime, String message, String name,String location,String description,String category,String priority) async {
   // Convert DateTime to TZDateTime
   final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
     scheduledTime,
@@ -47,13 +48,15 @@ Future<void> scheduleNotification(DateTime scheduledTime, String message) async 
 
   await flutterLocalNotificationsPlugin.zonedSchedule(
     0,
-    'Scheduled Notification',
-    message,
+    '$name',
+    'Description :- $description', // Ensure priority is correctly formatted
     scheduledTZDateTime,
     platformChannelSpecifics,
     uiLocalNotificationDateInterpretation:
-    UILocalNotificationDateInterpretation.absoluteTime, androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    UILocalNotificationDateInterpretation.absoluteTime,
+    androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
   );
+
 }
 
 class MyApp extends StatelessWidget {
@@ -63,20 +66,41 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Notification Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
-      home: NotificationScreen(),
+      home: NotificationScreen(
+        name: 'Event Name',
+        location: 'Event Location',
+        description: 'Event Description',
+        category: 'Event Category',
+        priority: 'Event Priority',
+      ),
     );
   }
 }
 
 class NotificationScreen extends StatefulWidget {
+  final String name;
+  final String location;
+  final String description;
+  final String category;
+  final String priority;
+
+  NotificationScreen({
+    required this.name,
+    required this.location,
+    required this.description,
+    required this.category,
+    required this.priority,
+  });
+
   @override
   _NotificationScreenState createState() => _NotificationScreenState();
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
+  DateTime? selectedDate = DateTime.now();
+  TimeOfDay? selectedTime = TimeOfDay.now();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -105,58 +129,100 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   void _scheduleNotification() {
-    if (selectedDate != null && selectedTime != null) {
-      final scheduledDateTime = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
-        selectedTime!.hour,
-        selectedTime!.minute,
-      );
-
-      final formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(scheduledDateTime);
-
-      scheduleNotification(scheduledDateTime, 'Notification at $formattedDate');
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Notification scheduled for $formattedDate')),
-      );
-    } else {
+    if (selectedDate == null || selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please select a date and time')),
       );
+      return;
     }
+
+    if (widget.name.isEmpty ||
+        widget.location.isEmpty ||
+        widget.description.isEmpty ||
+        widget.category.isEmpty ||
+        widget.priority.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill all event details')),
+      );
+      return;
+    }
+
+    final scheduledDateTime = DateTime(
+      selectedDate!.year,
+      selectedDate!.month,
+      selectedDate!.day,
+      selectedTime!.hour,
+      selectedTime!.minute,
+    );
+
+    final formattedDate = DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
+
+    // Call the Schedule Notification Function
+    scheduleNotification(scheduledDateTime, 'Notification at $formattedDate', widget.name ,widget.location,widget.description,widget.category,widget.priority );
+
+    // Show the result
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Notification scheduled for $formattedDate')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Schedule Notification'),
+        title: Text(
+          'Schedule Notification',
+          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () => _selectDate(context),
-              child: Text(selectedDate == null
-                  ? 'Select Date'
-                  : 'Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDate!)}'),
+            Text(
+              "Select Date and Time",
+              style: GoogleFonts.aBeeZee(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
+            TextButton(
+              onPressed: () => _selectDate(context),
+              child: Text(
+                selectedDate == null
+                    ? 'Select Date'
+                    : 'Selected Date: ${DateFormat('dd-MM-yyyy').format(selectedDate!)}',
+                style: GoogleFonts.poppins(),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextButton(
               onPressed: () => _selectTime(context),
-              child: Text(selectedTime == null
-                  ? 'Select Time'
-                  : 'Selected Time: ${selectedTime!.format(context)}'),
+              child: Text(
+                selectedTime == null
+                    ? 'Select Time'
+                    : 'Selected Time: ${selectedTime!.format(context)}',
+                style: GoogleFonts.poppins(),
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _scheduleNotification,
-              child: Text('Schedule Notification'),
+              child: Text(
+                'Schedule Notification',
+                style: GoogleFonts.poppins(),
+              ),
             ),
+            //This is the Operation Perform on the Notifications
+            SizedBox(height: 12,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(onPressed: (){}, icon: Icon(Icons.close,color: Colors.green,),),
+                IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Colors.red,),),
+              ],
+            )
           ],
         ),
       ),

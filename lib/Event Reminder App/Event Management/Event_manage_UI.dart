@@ -6,10 +6,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
+import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
-import '../NotificationCode/UI_Notification/UI_Notification.dart';
-import '../Riverpod_Management/Riverpod_Theme_Management.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
@@ -219,8 +218,16 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             //set the Notifications
             TextButton(onPressed: (){
-              CustomReminderScreen  instance = CustomReminderScreen();
-              instance.showReminderBottomSheet(context, ref,_eventNameController.text.toString(),_eventDescriptionController.text.toString());
+           Navigator.push(context, MaterialPageRoute(builder: (context){
+             return NotificationScreen(
+              name: _eventNameController.text.toString(),
+              category: categoriesvalue.toString(),
+              location: _eventLocationController.text.toString(),
+              description: _eventDescriptionController.text.toString(),
+               priority: selectedPriority.toString(),
+
+             );
+           }));
             }, child: Text("Set Notification",
                 style: GoogleFonts.poppins(
                   fontSize: 15,

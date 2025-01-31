@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
-import 'dart:io';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -184,145 +183,148 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   SizedBox(height: 8),
                                   Text('Priority: ${formatPriority(event['priority'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
-                                  Text('Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  Text('Custom Category : ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                               
                                   // Actions (Edit, Delete, Share, PDF)
                                   SizedBox(height: 12),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => UpdateEventUI(
-                                                index: index,
-                                                eventName: event['name'],
-                                                eventDateTime: event['date_time'],
-                                                eventLocation: event['location'],
-                                                eventDescription: event['description'],
-                                                eventPriority: event['priority'],
-                                                  imagepath: event['image_path'],
-                                                filepath:event['file_path'],
-                                                id:event['id'],
-                                                videopath: event['video_path'],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(Icons.edit, color: Colors.green.shade700),
-                                      ),
-                                      IconButton(
-                                        onPressed: () async {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              title: Text("Confirm Delete", style: TextStyle(color: Colors.red.shade700)),
-                                              actions: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('Cancel', style: TextStyle(color: Colors.green.shade700)),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () async {
-                                                        await DatabaseHelper.instance.deleteEvent(event['id']).then(
-                                                              (value) => ref.refresh(eventsProvider),
-                                                        );
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('Delete', style: TextStyle(color: Colors.red.shade700)),
-                                                    ),
-                                                  ],
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => UpdateEventUI(
+                                                  index: index,
+                                                  eventName: event['name'],
+                                                  eventDateTime: event['date_time'],
+                                                  eventLocation: event['location'],
+                                                  eventDescription: event['description'],
+                                                  eventPriority: event['priority'],
+                                                    imagepath: event['image_path'],
+                                                  filepath:event['file_path'],
+                                                  id:event['id'],
+                                                  videopath: event['video_path'],
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(Icons.delete, color: Colors.red.shade700),
-                                      ),
-                              
-                              
-                                                    IconButton(
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(Icons.edit, color: Colors.green.shade700),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: Text("Confirm Delete", style: TextStyle(color: Colors.red.shade700)),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text('Cancel', style: TextStyle(color: Colors.green.shade700)),
+                                                      ),
+                                                      TextButton(
                                                         onPressed: () async {
-                                                  final eventDetails = '''
-                                  Event: ${getValue(event['name'])}
-                                  Date & Time: ${getValue(event['date_time'])}
-                                  Category: ${getValue(event['category'])}
-                                  Location: ${getValue(event['location'])}
-                                  Description: ${getValue(event['description'])}
-                                  Priority: ${getValue(event['priority'])}
-                                  Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
-                                  ''';
-                              
-                                                  // Initialize a list for media paths (XFile)
-                                                  List<XFile> mediaPaths = [];
-                              
-                                                  // Check if there's an image and copy it to a shareable directory
-                                                  if (event['image_path'] != null && event['image_path'] != '') {
-                                                  try {
-                                                  XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
-                                                  mediaPaths.add(imageFile);
-                                                  } catch (e) {
-                                                  print("Error copying image: $e");
-                                                  }
-                                                  }
-                              
-                                                  // Check if there's a video and add it to the mediaPaths
-                                                  if (event['video_path'] != null && event['video_path'] != '') {
-                                                  mediaPaths.add(XFile(event['video_path']));
-                                                  }
-                              
-                                                  // Check if there's a file and add it to the mediaPaths
-                                                  if (event['file_path'] != null && event['file_path'] != '') {
-                                                  mediaPaths.add(XFile(event['file_path']));
-                                                  }
-                              
-                                                  // Combine event details and media paths to share
-                                                  String shareText = eventDetails;
-                                                  if (mediaPaths.isNotEmpty) {
-                                                  shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
-                                                  }
-                              
-                                                  // Share media files along with event details
-                                                  if (mediaPaths.isNotEmpty) {
-                                                  Share.shareXFiles(mediaPaths, text: shareText);
-                                                  } else {
-                                                  // Share only the event details if there are no media files
-                                                  Share.share(shareText);
-                                                  }
-                                                  },
-                                                    icon: Icon(Icons.share, color: Colors.blue.shade700),
+                                                          await DatabaseHelper.instance.deleteEvent(event['id']).then(
+                                                                (value) => ref.refresh(eventsProvider),
+                                                          );
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text('Delete', style: TextStyle(color: Colors.red.shade700)),
+                                                      ),
+                                                    ],
                                                   ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(Icons.delete, color: Colors.red.shade700),
+                                        ),
 
 
-                                      IconButton(
-                                        onPressed: () async {
-                                          await PdfGenerator.generatePdf(event,event['name']);
-                                        },
-                                        icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
-                                      ),
-                                      IconButton(
-                                        onPressed: () async {
-                                          try{
-                                            await PdfGenerator.generatePdf(event,event['name']).then((value) =>SnackBar(content: Text("PDF Downloaded Successfully")));
-                                          }catch(e){
-                                            SnackBar(content: Text("PDF Downloaded Successfully"));
-                                          }
-                                          finally{
-                                            print("Code Here Successfully Executed");
-                                          }
-                                        },
-                                        icon: Icon(Icons.download, color: Colors.blue.shade700),
-                                      ),
+                                                      IconButton(
+                                                          onPressed: () async {
+                                                    final eventDetails = '''
+                                    Event: ${getValue(event['name'])}
+                                    Date & Time: ${getValue(event['date_time'])}
+                                    Category: ${getValue(event['category'])}
+                                    Location: ${getValue(event['location'])}
+                                    Description: ${getValue(event['description'])}
+                                    Priority: ${getValue(event['priority'])}
+                                    Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
+                                    ''';
+
+                                                    // Initialize a list for media paths (XFile)
+                                                    List<XFile> mediaPaths = [];
+
+                                                    // Check if there's an image and copy it to a shareable directory
+                                                    if (event['image_path'] != null && event['image_path'] != '') {
+                                                    try {
+                                                    XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
+                                                    mediaPaths.add(imageFile);
+                                                    } catch (e) {
+                                                    print("Error copying image: $e");
+                                                    }
+                                                    }
+
+                                                    // Check if there's a video and add it to the mediaPaths
+                                                    if (event['video_path'] != null && event['video_path'] != '') {
+                                                    mediaPaths.add(XFile(event['video_path']));
+                                                    }
+
+                                                    // Check if there's a file and add it to the mediaPaths
+                                                    if (event['file_path'] != null && event['file_path'] != '') {
+                                                    mediaPaths.add(XFile(event['file_path']));
+                                                    }
+
+                                                    // Combine event details and media paths to share
+                                                    String shareText = eventDetails;
+                                                    if (mediaPaths.isNotEmpty) {
+                                                    shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
+                                                    }
+
+                                                    // Share media files along with event details
+                                                    if (mediaPaths.isNotEmpty) {
+                                                    Share.shareXFiles(mediaPaths, text: shareText);
+                                                    } else {
+                                                    // Share only the event details if there are no media files
+                                                    Share.share(shareText);
+                                                    }
+                                                    },
+                                                      icon: Icon(Icons.share, color: Colors.blue.shade700),
+                                                    ),
 
 
-                                    ],
+                                        IconButton(
+                                          onPressed: () async {
+                                            await PdfGenerator.generatePdf(event,event['name']);
+                                          },
+                                          icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            try{
+                                              await PdfGenerator.generatePdf(event,event['name']).then((value) =>SnackBar(content: Text("PDF Downloaded Successfully")));
+                                            }catch(e){
+                                              SnackBar(content: Text("PDF Downloaded Successfully"));
+                                            }
+                                            finally{
+                                              print("Code Here Successfully Executed");
+                                            }
+                                          },
+                                          icon: Icon(Icons.download, color: Colors.blue.shade700),
+                                        ),
+                                        IconButton(onPressed: (){}, icon: Icon(Icons.notification_add, color: Colors.blue.shade700),),
+
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
