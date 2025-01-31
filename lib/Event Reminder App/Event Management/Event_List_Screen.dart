@@ -11,7 +11,6 @@ import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../Database/Main_Database_App.dart';
-import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Event_Management_Update.dart';
 import 'PDF_generation.dart';
@@ -462,7 +461,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     Location: ${getValue(event['location'])}
     Description: ${getValue(event['description'])}
     Priority: ${getValue(event['priority'])}
-    Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
+    Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
     ''';
 
                                           // Initialize a list for media paths (XFile)
@@ -529,13 +528,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
  dynamic formatPriority(String? event) {
   String? priority = event; // Extract priority string
 
-  if(priority == "PriorityLevel.high"){
+  if(priority?.toLowerCase() == "high"){
       return "High";
     }
-    else if(priority == "PriorityLevel.low"){
+    else if(priority?.toLowerCase() == "low"){
       return "Low";
     }
-    else if(priority == "PriorityLevel.medium"){
+    else if(priority?.toLowerCase() == "medium"){
       return "Medium";
     }
     else {
