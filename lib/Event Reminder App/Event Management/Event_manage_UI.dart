@@ -286,7 +286,7 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text("Selected Priority: ${selectedPriority?.name??"Not Selected"}",style: GoogleFonts.poppins
-                (fontSize: 15,fontWeight: FontWeight.bold),),
+                (fontSize: 13,fontWeight: FontWeight.bold),),
             ),
 
 

@@ -15,6 +15,7 @@ class Assets {
   static const String event ManagementEventListScreen = 'lib/Event Reminder App/Event Management/Event_List_Screen.dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
   static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';
+  static const String event ManagementPDFGeneration = 'lib/Event Reminder App/Event Management/PDF_generation.dart';
   static const String event ManagementVideoPlayer = 'lib/Event Reminder App/Event Management/Video_Player.dart';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
   static const String firebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
@@ -122,6 +123,7 @@ class Assets {
   static const String todoApplicationScreenCreationOfTask = 'lib/Todo_Application/screen/Creation_of_task.dart~';
   static const String todoApplicationScreenSplash Screen of ToDoApp = 'lib/Todo_Application/screen/Splash Screen of ToDo_App.dart~';
   static const String uINotificationNotificationSettingS = 'lib/Event Reminder App/NotificationCode/UI_Notification/Notification_SettingS.dart';
+  static const String uINotificationSecondUIofNotifications = 'lib/Event Reminder App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
   static const String uINotificationUINotification = 'lib/Event Reminder App/NotificationCode/UI_Notification/UI_Notification.dart';
   static const String weatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart';
   static const String weatherAPPForecastWeatherApi = 'lib/Weather_APP/Forecast_weather_Api.dart';

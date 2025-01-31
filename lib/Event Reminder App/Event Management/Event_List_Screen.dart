@@ -14,6 +14,7 @@ import '../Database/Main_Database_App.dart';
 import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Event_Management_Update.dart';
+import 'PDF_generation.dart';
 
 class EventsScreen extends ConsumerStatefulWidget {
   @override
@@ -74,6 +75,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   Widget build(BuildContext context) {
     final eventsAsyncValue = ref.watch(eventsProvider);
 
+    // Ensure the provider refreshes after the UI builds
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      return ref.refresh(eventsProvider);
+    });
     return Scaffold(
 
       floatingActionButton: Padding(
@@ -85,7 +90,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
               isSorted = true; // Always enable sorting when button is pressed
               isAscending = !isAscending; // Toggle sorting order
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                ref.refresh(eventsProvider);
+               return  ref.refresh(eventsProvider);
               });
             });
           },
@@ -178,7 +183,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   SizedBox(height: 8),
                                   Text('Description: ${getValue(event ['description'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
-                                  Text('Priority: ${formatPriority(event)}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
+                                  Text('Priority: ${formatPriority(event['priority'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text('Custom Interval: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                               
@@ -295,23 +300,27 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                                   },
                                                     icon: Icon(Icons.share, color: Colors.blue.shade700),
                                                   ),
-                              
-                              
-                              
-                                                  IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
-                                      ),
+
 
                                       IconButton(
-                                        onPressed: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                                            return NotificationDateTimePicker();
-                                          }));
+                                        onPressed: () async {
+                                          await PdfGenerator.generatePdf(event,event['name']);
                                         },
-                                        icon: Icon(Icons.notification_add, color: Colors.amberAccent.shade700),
+                                        icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
                                       ),
-
+                                      IconButton(
+                                        onPressed: () async {
+                                          try{
+                                            await PdfGenerator.generatePdf(event,event['name']).then((value) =>SnackBar(content: Text("PDF Downloaded Successfully")));
+                                          }catch(e){
+                                            SnackBar(content: Text("PDF Downloaded Successfully"));
+                                          }
+                                          finally{
+                                            print("Code Here Successfully Executed");
+                                          }
+                                        },
+                                        icon: Icon(Icons.download, color: Colors.blue.shade700),
+                                      ),
 
 
                                     ],
@@ -495,10 +504,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                         },
                                         icon: Icon(Icons.share, color: Colors.blue.shade700),
                                       ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
-                                      ),
+
                                     ],
                                   ),
                                 ],
@@ -520,8 +526,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     );
   }
 
- dynamic formatPriority(Map<String, dynamic> event) {
-  String? priority = event['priority']; // Extract priority string
+ dynamic formatPriority(String? event) {
+  String? priority = event; // Extract priority string
 
   if(priority == "PriorityLevel.high"){
       return "High";
