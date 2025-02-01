@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,35 +31,44 @@ Future<void> initNotifications() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
-Future<void> scheduleNotification(DateTime scheduledTime, String message, String name,String location,String description,String category,String priority) async {
+Future<void> scheduleNotification(
+    DateTime scheduledTime,
+    String message,
+    String name,
+    String location,
+    String description,
+    String category,
+    String priority,
+    String? soundPath) async {
   // Convert DateTime to TZDateTime
   final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
     scheduledTime,
     tz.local,
   );
 
-  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
     'your_channel_id',
     'your_channel_name',
+    channelDescription: 'your_channel_description',
     importance: Importance.max,
     priority: Priority.high,
+    sound: RawResourceAndroidNotificationSound('hanuman'), // No ".mp3"
   );
 
-  const NotificationDetails platformChannelSpecifics =
+  NotificationDetails platformChannelSpecifics =
   NotificationDetails(android: androidPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.zonedSchedule(
-    0,
-    '$name',
-    'Description :- $description', // Ensure priority is correctly formatted
-    scheduledTZDateTime,
-    platformChannelSpecifics,
+    0, // Notification ID
+    '$name', // Notification Title
+    '$description', // Notification Body
+    scheduledTZDateTime, // Scheduled Time
+    platformChannelSpecifics, // Notification Details
     uiLocalNotificationDateInterpretation:
     UILocalNotificationDateInterpretation.absoluteTime,
     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
   );
-
 }
 
 class MyApp extends StatelessWidget {
@@ -95,12 +107,13 @@ class NotificationScreen extends StatefulWidget {
   });
 
   @override
-  _NotificationScreenState createState() => _NotificationScreenState();
+  NotificationScreenState createState() => NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class NotificationScreenState extends State<NotificationScreen> {
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedTime = TimeOfDay.now();
+  String? selectedSoundPath; // Store the selected sound file path
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -124,6 +137,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (picked != null && picked != selectedTime) {
       setState(() {
         selectedTime = picked;
+      });
+    }
+  }
+
+  Future<void> _pickSound() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+    );
+    if (result != null) {
+      setState(() {
+        selectedSoundPath = result.files.single.path;
       });
     }
   }
@@ -155,14 +179,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
       selectedTime!.minute,
     );
 
-    final formattedDate = DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
+    final formattedDate =
+    DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
 
     // Call the Schedule Notification Function
-    scheduleNotification(scheduledDateTime, 'Notification at $formattedDate', widget.name ,widget.location,widget.description,widget.category,widget.priority );
+    scheduleNotification(
+      scheduledDateTime,
+      'Notification at $formattedDate',
+      widget.name,
+      widget.location,
+      widget.description,
+      widget.category,
+      widget.priority,
+      'custom_sound', // Pass the sound file name without the extension
+    );
 
     // Show the result
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Notification scheduled for $formattedDate')),
+    );
+  }
+
+  // Function to cancel the notification
+  void _cancelNotification() async {
+    await flutterLocalNotificationsPlugin.cancel(0); // Cancel notification with ID 0
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Notification canceled')),
     );
   }
 
@@ -213,16 +255,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 style: GoogleFonts.poppins(),
               ),
             ),
-            //This is the Operation Perform on the Notifications
-            SizedBox(height: 12,),
+            // This is the Operation Perform on the Notifications
+            SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                IconButton(onPressed: (){}, icon: Icon(Icons.close,color: Colors.green,),),
-                IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Colors.red,),),
+                IconButton(
+                  onPressed: _cancelNotification, // Cancel the notification
+                  icon: Icon(Icons.close, color: Colors.green),
+                ),
+                IconButton(
+                  onPressed: _cancelNotification,// Add functionality for delete if needed
+                  icon: Icon(Icons.delete, color: Colors.red),
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),

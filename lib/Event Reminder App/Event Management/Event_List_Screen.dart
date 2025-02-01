@@ -10,6 +10,7 @@ import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../Database/Main_Database_App.dart';
+import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Event_Management_Update.dart';
 import 'PDF_generation.dart';
@@ -321,7 +322,20 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           },
                                           icon: Icon(Icons.download, color: Colors.blue.shade700),
                                         ),
-                                        IconButton(onPressed: (){}, icon: Icon(Icons.notification_add, color: Colors.blue.shade700),),
+                                        IconButton(onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) =>
+                                       NotificationScreen(name:event['name'],
+                                       location:event['location'],
+                                       description:event['description'],
+                                       category:event['category'],
+                                       priority:event['priority']
+                                       )),
+                                          );
+
+
+                                        }, icon: Icon(Icons.notification_add, color: Colors.blue.shade700),),
 
                                       ],
                                     ),
