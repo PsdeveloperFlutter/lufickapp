@@ -312,6 +312,60 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
             ),
 
         const SizedBox(height: 24,),
+              widget.videopath!=null ?
+              Column(
+                children: [
+                  Center(
+                    child: Text("Video Selected",style: GoogleFonts.aBeeZee(fontSize: 15),),
+                  ),
+                  SizedBox(height: 10,)
+                  ,ElevatedButton.icon(
+                    label: Text("Upload another Video",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
+                    onPressed: ()async{
+                      ImagePicker picker=ImagePicker();
+                      final XFile? result = await picker.pickVideo(source: ImageSource.gallery);
+                      if(result!=null){
+                        setState(() {
+                          widget.videopath = result.path;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video uploaded successfully")));
+                      }
+                    },
+                    icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
+                  ),
+                ],
+              ):
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(child: Text("No File ",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),)),
+                  SizedBox(height: 10,),
+                  ElevatedButton.icon(
+                    label: Text("Upload Video",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
+                    onPressed: ()async{
+                      ImagePicker picker=ImagePicker();
+                      final XFile? result = await picker.pickVideo(source: ImageSource.gallery);
+                      if(result!=null){
+                        setState(() {
+                          widget.videopath = result.path;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video uploaded successfully")));
+                      }
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video not uploaded")));
+                      }
+                    },
+                    icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
+                  ),
+                ],
+              ),
+
+
+
+
+
+        const SizedBox(height: 24,),
 
 
               // Buttons Row
@@ -372,6 +426,74 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     super.dispose();
   }
 
+
+  //This is for See the video
+  Widget seeVideo(String filepath) {
+    // Create a video player controller
+    VideoPlayerController? _controller;
+    bool isPlaying = false;
+
+    // Initialize the controller and play/pause functionality
+    Future<void> _initializeVideoPlayer() async {
+      _controller = VideoPlayerController.file(File(filepath))
+        ..initialize().then((_) {
+          setState(() {});
+          _controller!.play();
+          isPlaying = true;
+        });
+    }
+
+    // Play or pause the video based on the current state
+    void _togglePlayPause() {
+      if (isPlaying) {
+        _controller?.pause();
+      } else {
+        _controller?.play();
+      }
+      isPlaying = !isPlaying;
+      setState(() {});
+    }
+
+    // Check if file exists and show video player or error message
+    if (!File(filepath).existsSync()) {
+      return Center(
+        child: Text(
+          "File not found!",
+          style: TextStyle(fontSize: 18, color: Colors.red),
+        ),
+      );
+    }
+
+    // Initialize the video player asynchronously
+    _initializeVideoPlayer();
+
+    return Column(
+      children: [
+        Center(
+          child: _controller?.value.isInitialized ?? false
+              ? AspectRatio(
+            aspectRatio: _controller!.value.aspectRatio,
+            child: VideoPlayer(_controller!),
+          )
+              : CircularProgressIndicator(),
+        ),
+        SizedBox(height: 10),
+        ElevatedButton.icon(
+          label: Text(
+            isPlaying ? "Pause Video" : "Play Video",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          ),
+          onPressed: _togglePlayPause,
+          icon: Icon(
+            isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+            color: Colors.red,
+          ),
+        ),
+      ],
+    );
+  }
+
+  //This is for see the File
   Widget seefile(String filepath) {
     File file = File(filepath);
 
@@ -415,7 +537,10 @@ extension StringCapitalizeExtension on String {
   }
 }
 
+
+
 /*
+
 
 
 

@@ -407,7 +407,54 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           )
                                         ]
                                       ):Text("No File",style:TextStyle(color:Colors.red.shade700)),
+
+
+                                  SizedBox(height: 10,),
+
+                                  //This is for the Showing Video on Screen
+
+                              event['video_path'] != null
+                                  ? Column(
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      "Video Section",
+                                      style: GoogleFonts.aBeeZee(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 12),
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      // When the button is pressed, open the video file
+                                      File file = File(event['video_path']);
+                                      if (file.existsSync()) {
+                                        OpenFile.open(file.path); // Open the file with the default app
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text("File not found")),
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(Icons.videocam, color: Colors.purple),
+                                    label: Text(
+                                      "Play Video",
+                                      style: GoogleFonts.aBeeZee(fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : Text(
+                                "No Video",
+                                style: TextStyle(color: Colors.red.shade700),
+                              ),
+
+
                                   //This is for the Operation Purpose for the Events make sure of this
+
+
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [

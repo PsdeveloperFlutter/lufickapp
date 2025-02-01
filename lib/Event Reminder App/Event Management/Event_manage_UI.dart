@@ -22,7 +22,7 @@ void main() {
   runApp(ProviderScope(child: Mainpage_event_management()));
 }
 final ThemeController themeController = Get.put(ThemeController()); // Inject Controller
-List<String> categories = ['Work', 'Personal', 'Meeting', 'Birthday', 'Other'];
+List<String> categories = ['Work', 'Personal', 'Meeting', 'Birthday'];
 
 class Mainpage_event_management extends StatelessWidget {
   @override
