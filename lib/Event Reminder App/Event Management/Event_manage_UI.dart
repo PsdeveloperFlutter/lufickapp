@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
+import 'package:lufickapp/Event%20Reminder%20App/Database/Main_Database_App.dart';
+import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/Get%20X%20Storage.dart';
 import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
@@ -37,6 +39,55 @@ class Mainpage_event_management extends StatelessWidget {
 
 
         appBar: AppBar(
+          actions: [
+            IconButton(onPressed: (){
+
+              //Logic Here of Retrieve of data from GetxStorage and show send in database
+
+              //First of Retrieve the data from Get X Storage and after send the data to database
+
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Consumer(builder: (context,ref,child){
+                    return AlertDialog(
+                      title: const Text('Retrieve Data'), // Your title here
+                      content: const Text('Are you sure you want to retrieve data.'), // Your content here
+                      actions: <Widget>[ // Buttons at the bottom
+                        TextButton(
+                          onPressed: () {
+
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () async{
+                            // Do something else, like process data
+
+                            print(getSavedEvents());
+                            var data= getSavedEvents();
+                            DatabaseHelper obj=await DatabaseHelper.instance;
+                            //Here getSavedEvents give us data in the form of List<Map<String,dynamic>> and through this we convert the List<Map<String,dynamic>> to Map<String,dynamic>
+                            for(var event in data){
+                              await obj.insertEvent(event);
+                            }
+                            Navigator.pop(context);
+                            ref.invalidate(eventsProvider);
+
+                          },
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    );
+                  });
+                },
+              );
+
+
+
+            }, icon: Icon(Icons.restart_alt,color: Colors.blue.shade500,))
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.event,color: Colors.green),),
@@ -44,7 +95,7 @@ class Mainpage_event_management extends StatelessWidget {
             ],
           ),
           title:Text(
-            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold),
+            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 19),
             'Event Reminder App',
           ),
         ),

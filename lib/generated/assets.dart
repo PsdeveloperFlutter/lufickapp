@@ -11,10 +11,12 @@ class Assets {
   static const String controller of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart';
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
   static const String databaseMainDatabaseApp = 'lib/Event Reminder App/Database/Main_Database_App.dart';
+  static const String event ManagementCalendar = 'lib/Event Reminder App/Event Management/Calendar.dart';
   static const String event ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart';
   static const String event ManagementEventListScreen = 'lib/Event Reminder App/Event Management/Event_List_Screen.dart';
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
   static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';
+  static const String event ManagementGet X Storage = 'lib/Event Reminder App/Event Management/Get X Storage.dart';
   static const String event ManagementPDFGeneration = 'lib/Event Reminder App/Event Management/PDF_generation.dart';
   static const String event ManagementVideoPlayer = 'lib/Event Reminder App/Event Management/Video_Player.dart';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
@@ -70,6 +72,8 @@ class Assets {
   static const String riverPordFutureProviderPractice = 'lib/RiverPord/FutureProviderPractice.dart';
   static const String riverPordFutureRiverpod = 'lib/RiverPord/FutureRiverpod.dart';
   static const String riverPordFutureRiverpod1 = 'lib/RiverPord/FutureRiverpod1.dart';
+  static const String riverPordGet api = 'lib/RiverPord/Get api.dart';
+  static const String riverPordGetApis = 'lib/RiverPord/GetApis.dart';
   static const String riverPordProvider Family Practice = 'lib/RiverPord/Provider Family Practice.dart';
   static const String riverPordProviderfamily = 'lib/RiverPord/Providerfamily.dart';
   static const String riverPordRIverpod Favourate list  = 'lib/RiverPord/RIverpod Favourate list .dart';

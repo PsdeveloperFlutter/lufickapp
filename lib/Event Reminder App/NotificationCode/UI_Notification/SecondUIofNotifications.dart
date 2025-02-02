@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -38,8 +36,7 @@ Future<void> scheduleNotification(
     String location,
     String description,
     String category,
-    String priority,
-    String? soundPath) async {
+    String priority) async {
   // Convert DateTime to TZDateTime
   final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
     scheduledTime,
@@ -53,7 +50,6 @@ Future<void> scheduleNotification(
     channelDescription: 'your_channel_description',
     importance: Importance.max,
     priority: Priority.high,
-    sound: RawResourceAndroidNotificationSound('hanuman'), // No ".mp3"
   );
 
   NotificationDetails platformChannelSpecifics =
@@ -113,7 +109,6 @@ class NotificationScreen extends StatefulWidget {
 class NotificationScreenState extends State<NotificationScreen> {
   DateTime? selectedDate = DateTime.now();
   TimeOfDay? selectedTime = TimeOfDay.now();
-  String? selectedSoundPath; // Store the selected sound file path
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -137,17 +132,6 @@ class NotificationScreenState extends State<NotificationScreen> {
     if (picked != null && picked != selectedTime) {
       setState(() {
         selectedTime = picked;
-      });
-    }
-  }
-
-  Future<void> _pickSound() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.audio,
-    );
-    if (result != null) {
-      setState(() {
-        selectedSoundPath = result.files.single.path;
       });
     }
   }
@@ -191,7 +175,6 @@ class NotificationScreenState extends State<NotificationScreen> {
       widget.description,
       widget.category,
       widget.priority,
-      'custom_sound', // Pass the sound file name without the extension
     );
 
     // Show the result
@@ -254,22 +237,6 @@ class NotificationScreenState extends State<NotificationScreen> {
                 'Schedule Notification',
                 style: GoogleFonts.poppins(),
               ),
-            ),
-            // This is the Operation Perform on the Notifications
-            SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: _cancelNotification, // Cancel the notification
-                  icon: Icon(Icons.close, color: Colors.green),
-                ),
-                IconButton(
-                  onPressed: _cancelNotification,// Add functionality for delete if needed
-                  icon: Icon(Icons.delete, color: Colors.red),
-                ),
-              ],
             ),
           ],
         ),

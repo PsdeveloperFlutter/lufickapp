@@ -13,6 +13,7 @@ import '../Database/Main_Database_App.dart';
 import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Event_Management_Update.dart';
+import 'Get X Storage.dart';
 import 'PDF_generation.dart';
 
 class EventsScreen extends ConsumerStatefulWidget {
@@ -96,7 +97,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           child: Icon(Icons.sort, color: Colors.white),
         ),
       ),
-
       body: Column(
 
         children: [
@@ -114,8 +114,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                 hintText: "Search Events",
                 labelText: 'Search Events',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30,),
-                  borderSide: BorderSide(color: Colors.black,width: 10)
+                    borderRadius: BorderRadius.circular(30,),
+                    borderSide: BorderSide(color: Colors.black,width: 10)
                 ),
                 prefixIcon: Icon(Icons.search),
               ),
@@ -149,7 +149,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                 }
 
                 return ListView.builder(
-                    itemCount: filteredEvents.length,
+                  itemCount: filteredEvents.length,
                   itemBuilder: (context, index) {
                     final event = filteredEvents[index];
                     return FlipCard(
@@ -185,7 +185,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   Text('Priority: ${formatPriority(event['priority'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text('Custom Category : ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                              
+
                                   // Actions (Edit, Delete, Share, PDF)
                                   SizedBox(height: 12),
                                   SingleChildScrollView(
@@ -205,7 +205,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                                   eventLocation: event['location'],
                                                   eventDescription: event['description'],
                                                   eventPriority: event['priority'],
-                                                    imagepath: event['image_path'],
+                                                  imagepath: event['image_path'],
                                                   filepath:event['file_path'],
                                                   id:event['id'],
                                                   videopath: event['video_path'],
@@ -250,9 +250,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                         ),
 
 
-                                                      IconButton(
-                                                          onPressed: () async {
-                                                    final eventDetails = '''
+                                        IconButton(
+                                          onPressed: () async {
+                                            final eventDetails = '''
                                     Event: ${getValue(event['name'])}
                                     Date & Time: ${getValue(event['date_time'])}
                                     Category: ${getValue(event['category'])}
@@ -262,45 +262,45 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
                                     ''';
 
-                                                    // Initialize a list for media paths (XFile)
-                                                    List<XFile> mediaPaths = [];
+                                            // Initialize a list for media paths (XFile)
+                                            List<XFile> mediaPaths = [];
 
-                                                    // Check if there's an image and copy it to a shareable directory
-                                                    if (event['image_path'] != null && event['image_path'] != '') {
-                                                    try {
-                                                    XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
-                                                    mediaPaths.add(imageFile);
-                                                    } catch (e) {
-                                                    print("Error copying image: $e");
-                                                    }
-                                                    }
+                                            // Check if there's an image and copy it to a shareable directory
+                                            if (event['image_path'] != null && event['image_path'] != '') {
+                                              try {
+                                                XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
+                                                mediaPaths.add(imageFile);
+                                              } catch (e) {
+                                                print("Error copying image: $e");
+                                              }
+                                            }
 
-                                                    // Check if there's a video and add it to the mediaPaths
-                                                    if (event['video_path'] != null && event['video_path'] != '') {
-                                                    mediaPaths.add(XFile(event['video_path']));
-                                                    }
+                                            // Check if there's a video and add it to the mediaPaths
+                                            if (event['video_path'] != null && event['video_path'] != '') {
+                                              mediaPaths.add(XFile(event['video_path']));
+                                            }
 
-                                                    // Check if there's a file and add it to the mediaPaths
-                                                    if (event['file_path'] != null && event['file_path'] != '') {
-                                                    mediaPaths.add(XFile(event['file_path']));
-                                                    }
+                                            // Check if there's a file and add it to the mediaPaths
+                                            if (event['file_path'] != null && event['file_path'] != '') {
+                                              mediaPaths.add(XFile(event['file_path']));
+                                            }
 
-                                                    // Combine event details and media paths to share
-                                                    String shareText = eventDetails;
-                                                    if (mediaPaths.isNotEmpty) {
-                                                    shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
-                                                    }
+                                            // Combine event details and media paths to share
+                                            String shareText = eventDetails;
+                                            if (mediaPaths.isNotEmpty) {
+                                              shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
+                                            }
 
-                                                    // Share media files along with event details
-                                                    if (mediaPaths.isNotEmpty) {
-                                                    Share.shareXFiles(mediaPaths, text: shareText);
-                                                    } else {
-                                                    // Share only the event details if there are no media files
-                                                    Share.share(shareText);
-                                                    }
-                                                    },
-                                                      icon: Icon(Icons.share, color: Colors.blue.shade700),
-                                                    ),
+                                            // Share media files along with event details
+                                            if (mediaPaths.isNotEmpty) {
+                                              Share.shareXFiles(mediaPaths, text: shareText);
+                                            } else {
+                                              // Share only the event details if there are no media files
+                                              Share.share(shareText);
+                                            }
+                                          },
+                                          icon: Icon(Icons.share, color: Colors.blue.shade700),
+                                        ),
 
 
                                         IconButton(
@@ -326,17 +326,35 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) =>
-                                       NotificationScreen(name:event['name'],
-                                       location:event['location'],
-                                       description:event['description'],
-                                       category:event['category'],
-                                       priority:event['priority']
-                                       )),
+                                                NotificationScreen(name:event['name'],
+                                                    location:event['location'],
+                                                    description:event['description'],
+                                                    category:event['category'],
+                                                    priority:event['priority']
+                                                )),
                                           );
 
 
                                         }, icon: Icon(Icons.notification_add, color: Colors.blue.shade700),),
 
+                              //Here We Recover the data from the GetXStorage make sure of this
+                              IconButton(onPressed:(){
+                                Map<String,dynamic>data={
+                                  'name':event['name'],
+                                  'date_time':event['date_time'],
+                                  'category':event['category'],
+                                  'location':event['location'],
+                                  'description':event['description'],
+                                  'priority':event['priority'],
+                                  'video_path':event['video_path'],
+                                  'image_path':event['image_path'],
+                                  'file_path':event['file_path']
+                                };
+                                saveEvent(data,context);
+
+
+                                 print( getSavedEvents());
+                                },icon:Icon(Icons.save_alt,color:Colors.red.shade500))
                                       ],
                                     ),
                                   ),
@@ -362,14 +380,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   event['image_path'] != null
                                       ? Column(
                                     children: [
-                         Center(child:
-                     Text("Image Section",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 16),)),
-                     SizedBox(height: 12,),
-                     ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                       child: Image.file(File(event['image_path']),fit: BoxFit.cover,width: 200,height: 200,
-                       ),
-                     )],
+                                      Center(child:
+                                      Text("Image Section",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 16),)),
+                                      SizedBox(height: 12,),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.file(File(event['image_path']),fit: BoxFit.cover,width: 200,height: 200,
+                                        ),
+                                      )],
                                   )
                                       : Text("No Image", style: TextStyle(color: Colors.red.shade700)),
 
@@ -381,75 +399,75 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   //This is for showing the file on the back side from database
 
                                   event['file_path']!=null
-                                  ?
-                                      Column(
-                                        children:[
-                                          Center(
+                                      ?
+                                  Column(
+                                      children:[
+                                        Center(
                                             child:Text("File Section",style:GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 16))
-                                          ),
-                                          SizedBox(height: 12,),
-                                          ElevatedButton.icon(onPressed: (){
+                                        ),
+                                        SizedBox(height: 12,),
+                                        ElevatedButton.icon(onPressed: (){
 
-                                            //When the Button Press so At that case it will show the Option for the Opening with the
-                                            //File by many options
-                                            File file = File(event['file_path']);
-                                            if (file.existsSync()) {
-                                              OpenFile.open(file.path); // Requires `open_file` package
-                                            } else {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text("File not found")),
-                                              );
-                                            }
-                                          },
+                                          //When the Button Press so At that case it will show the Option for the Opening with the
+                                          //File by many options
+                                          File file = File(event['file_path']);
+                                          if (file.existsSync()) {
+                                            OpenFile.open(file.path); // Requires `open_file` package
+                                          } else {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text("File not found")),
+                                            );
+                                          }
+                                        },
 
-                                              icon: Icon(Icons.insert_drive_file,color: Colors.purple,),
-                                              label: Text("Open File",style: GoogleFonts.aBeeZee(fontSize: 16),)
-                                          )
-                                        ]
-                                      ):Text("No File",style:TextStyle(color:Colors.red.shade700)),
+                                            icon: Icon(Icons.insert_drive_file,color: Colors.purple,),
+                                            label: Text("Open File",style: GoogleFonts.aBeeZee(fontSize: 16),)
+                                        )
+                                      ]
+                                  ):Text("No File",style:TextStyle(color:Colors.red.shade700)),
 
 
                                   SizedBox(height: 10,),
 
                                   //This is for the Showing Video on Screen
 
-                              event['video_path'] != null
-                                  ? Column(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "Video Section",
-                                      style: GoogleFonts.aBeeZee(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
+                                  event['video_path'] != null
+                                      ? Column(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          "Video Section",
+                                          style: GoogleFonts.aBeeZee(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      SizedBox(height: 12),
+                                      ElevatedButton.icon(
+                                        onPressed: () {
+                                          // When the button is pressed, open the video file
+                                          File file = File(event['video_path']);
+                                          if (file.existsSync()) {
+                                            OpenFile.open(file.path); // Open the file with the default app
+                                          } else {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text("File not found")),
+                                            );
+                                          }
+                                        },
+                                        icon: Icon(Icons.videocam, color: Colors.purple),
+                                        label: Text(
+                                          "Play Video",
+                                          style: GoogleFonts.aBeeZee(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : Text(
+                                    "No Video",
+                                    style: TextStyle(color: Colors.red.shade700),
                                   ),
-                                  SizedBox(height: 12),
-                                  ElevatedButton.icon(
-                                    onPressed: () {
-                                      // When the button is pressed, open the video file
-                                      File file = File(event['video_path']);
-                                      if (file.existsSync()) {
-                                        OpenFile.open(file.path); // Open the file with the default app
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("File not found")),
-                                        );
-                                      }
-                                    },
-                                    icon: Icon(Icons.videocam, color: Colors.purple),
-                                    label: Text(
-                                      "Play Video",
-                                      style: GoogleFonts.aBeeZee(fontSize: 16),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : Text(
-                                "No Video",
-                                style: TextStyle(color: Colors.red.shade700),
-                              ),
 
 
                                   //This is for the Operation Purpose for the Events make sure of this
@@ -585,6 +603,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           ),
         ],
       ),
+
     );
   }
 
