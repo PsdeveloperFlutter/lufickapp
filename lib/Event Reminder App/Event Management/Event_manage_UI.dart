@@ -39,6 +39,7 @@ class Mainpage_event_management extends StatelessWidget {
 
 
         appBar: AppBar(
+          toolbarHeight: 30,
           actions: [
             IconButton(onPressed: (){
 

@@ -1,3 +1,4 @@
+import 'package:flutter_date_picker_timeline/flutter_date_picker_timeline.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
@@ -22,12 +23,16 @@ class EventsScreen extends ConsumerStatefulWidget {
 }
 
 class _EventsScreenState extends ConsumerState<EventsScreen> {
+
+
+  // Selected date for the Flutter TimeLine
+  DateTime? selectedDatetl;
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
   Timer? _searchTimer;
   bool isSorted = false; // Track sorting state
   bool isAscending = true; // Track sorting order
-
+  List<Map<String, dynamic>> filteredEvents=[];
   @override
   void initState() {
     super.initState();
@@ -103,32 +108,77 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
 
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: TextField(
-
-              controller: searchController,
-              decoration: InputDecoration(
-                labelStyle: GoogleFonts.aBeeZee(
+            child: Container(
+              height: 48,
+              child: TextField(
+                 minLines: 1,
+                controller: searchController,
+                decoration: InputDecoration(
+                  labelStyle: GoogleFonts.aBeeZee(
+                  ),
+                  hintStyle: GoogleFonts.aBeeZee(
+                  ),
+                  hintText: "Search Events",
+                  labelText: 'Search Events',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30,),
+                      borderSide: BorderSide(color: Colors.black,width: 10)
+                  ),
+                  prefixIcon: Icon(Icons.search),
                 ),
-                hintStyle: GoogleFonts.aBeeZee(
-                ),
-                hintText: "Search Events",
-                labelText: 'Search Events',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30,),
-                    borderSide: BorderSide(color: Colors.black,width: 10)
-                ),
-                prefixIcon: Icon(Icons.search),
+                onChanged: _onSearchChanged,
               ),
-              onChanged: _onSearchChanged,
             ),
           ),
+          SizedBox(height: 12,),
+          ExpansionTile(title: Text("Calendar"),children: [
+            Container(
+              padding: const EdgeInsets.only(top: 11, bottom: 11),
+              decoration: BoxDecoration(color: const Color(0xFFF5F5F5)),
+              child: FlutterDatePickerTimeline(
+                startDate: DateTime(2025, 01, 01),
+                endDate: DateTime(2025, 12, 30),
+                initialSelectedDate: DateTime(2025, 01, 01),
+                  onSelectedDateChange: (dateTime) {
+                    setState(() {
+                      selectedDatetl = dateTime;
+
+                      // Backup the original list before filtering
+                      List<Map<String,dynamic>> originalEvents = List.from(filteredEvents);
+
+                      // Filter events based on the selected date
+                      filteredEvents = originalEvents.where((event) {
+                        DateTime eventDate = DateTime.parse(event['date_time']); // Convert String to DateTime
+                        return eventDate.year == dateTime?.year &&
+                            eventDate.month == dateTime?.month &&
+                            eventDate.day == dateTime?.day;
+                      }).toList();
+
+                      // If no events match, restore the full event list
+                      if (filteredEvents.isEmpty) {
+                        filteredEvents = originalEvents;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("No events found for this date. Restoring full list."))
+                        );
+                      }
+
+                      // Refresh UI
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        return ref.refresh(eventsProvider);
+                      });
+                    });
+                  }
+              )
+            )
+          ],),
+          SizedBox(height: 12,),
           Expanded(
             child: eventsAsyncValue.when(
               data: (events) {
 
 
                 // Filter events based on search
-                List<Map<String, dynamic>> filteredEvents = events
+                filteredEvents= events
                     .where((event) => event['name'].toLowerCase().contains(searchQuery))
                     .toList();
 
