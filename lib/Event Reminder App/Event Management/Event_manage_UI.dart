@@ -120,10 +120,10 @@ class Mainpage_event_management extends StatelessWidget {
 // Widget for Event Creation UI
 class EventCreationUI extends ConsumerStatefulWidget {
   @override
-  _EventCreationUIState createState() => _EventCreationUIState();
+  EventCreationUIState createState() => EventCreationUIState();
 }
 
-class _EventCreationUIState extends ConsumerState<EventCreationUI> {
+class EventCreationUIState extends ConsumerState<EventCreationUI> {
   dynamic categoriesvalue;
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _eventDateTimeController = TextEditingController();
@@ -279,6 +279,10 @@ class _EventCreationUIState extends ConsumerState<EventCreationUI> {
 
              );
            }));
+
+
+
+
             }, child: Text("Set Notification",
                 style: GoogleFonts.poppins(
                   fontSize: 15,

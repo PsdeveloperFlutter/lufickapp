@@ -36,7 +36,7 @@ Future<void> scheduleNotification(
     String location,
     String description,
     String category,
-    String priority) async {
+    ) async {
   // Convert DateTime to TZDateTime
   final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
     scheduledTime,
@@ -174,7 +174,6 @@ class NotificationScreenState extends State<NotificationScreen> {
       widget.location,
       widget.description,
       widget.category,
-      widget.priority,
     );
 
     // Show the result
@@ -204,7 +203,7 @@ class NotificationScreenState extends State<NotificationScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Select Date and Time",

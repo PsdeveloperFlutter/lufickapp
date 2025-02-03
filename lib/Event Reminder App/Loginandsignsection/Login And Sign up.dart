@@ -161,9 +161,9 @@ class LoginPage extends ConsumerWidget {
               ),
               SizedBox(height: 20),
               ElevatedButton.icon(
-                onPressed: () {
-                  GoogleAuth googleAuth = GoogleAuth();
-                  googleAuth.googleLogin();
+                onPressed: () async{
+                  final GoogleAuth _googleAuth = GoogleAuth(); // Create an instance of GoogleAuth
+                  await _googleAuth.googleLogin(context); // Call the method on button press
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
