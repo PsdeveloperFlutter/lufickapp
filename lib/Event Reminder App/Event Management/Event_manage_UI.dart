@@ -162,10 +162,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
   @override
   Widget build(BuildContext context) {
-    final XFile? selectedImage = ref.watch(imageprovider);
-    final VideoPlayerController? videoController = ref.watch(videoControllerProvider.select((value) => value));
-    final PlatformFile? selectedFile = ref.watch(fileProvider);
-    // Watch the state of the radio button provider
+    // // Watch the state of the radio button provider
     final selectedPriority = ref.watch(radioButtonProvider);
 
 

@@ -178,7 +178,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
 
 
                 // Filter events based on search
-                filteredEvents= events
+                filteredEvents=
+
+                    events
                     .where((event) => event['name'].toLowerCase().contains(searchQuery))
                     .toList();
 

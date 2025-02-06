@@ -11,7 +11,9 @@ void saveEvent(Map<String, dynamic> event, BuildContext context) {
 
     // Explicitly cast the retrieved data to List<Map<String, dynamic>>
     List<Map<String, dynamic>> savedEvent = (savedEventsDynamic ?? [])
+
         .map<Map<String, dynamic>>((item) => item as Map<String, dynamic>)
+
         .toList();
 
     // Add the new event to the list
@@ -38,3 +40,6 @@ void saveEvent(Map<String, dynamic> event, BuildContext context) {
 List<Map<String,dynamic>>getSavedEvents(){
   return storage.read('savedEvents');
 }
+
+
+//In which We are first check the list and after that convert the List datatype and after that we add the data in getX storage
