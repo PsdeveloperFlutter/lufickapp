@@ -83,6 +83,5 @@ flutter:
   assets:
     - android/app/google-services.json
     - assets/images/
-    - lib/RiverPord/
     - lib/Supabase/auth_api/
     - lib/Event Reminder App/Riverpod_Management/

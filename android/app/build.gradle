@@ -18,7 +18,7 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName", "1.0
 
 android {
     namespace "com.example.lufickapp"
-    compileSdk 34  // Use the latest stable version
+    compileSdk 35  // Use the latest stable version
     ndkVersion "25.1.8937393"  // Ensure NDK version matches dependencies
     defaultConfig {
         multiDexEnabled true
@@ -37,17 +37,21 @@ android {
         applicationId "com.example.lufickapp"
         minSdk 24
         targetSdk 34
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled false  // Disable minification temporarily
             shrinkResources false
+            // Add this line to disable R8 tree-shaking for Flutter In-App WebView
+            multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 
     buildFeatures {
         viewBinding true  // Optional: Enables View Binding
@@ -61,7 +65,10 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.7.0')  // Firebase BOM
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.activity:activity:1.8.0'
     // Core library desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation "androidx.biometric:biometric:1.2.0-alpha04"
+
 }

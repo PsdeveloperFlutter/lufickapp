@@ -1,11 +1,13 @@
 buildscript {
+    ext.kotlin_version = '1.9.22'  // Set Kotlin version to match AGP 8.2.2
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.4.2' // Ensure this is the latest version
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:8.4.0'
+
     }
 }
 
