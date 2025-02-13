@@ -34,6 +34,7 @@ class Assets {
   static const String imagesNature2 = 'assets/images/nature2.jpg';
   static const String imagesNature3 = 'assets/images/nature3.jpg';
   static const String imagesNature4 = 'assets/images/nature4.jpg';
+  static const String imagesSearch = 'assets/images/search.png';
   static const String imagesToDoLogo = 'assets/images/ToDoLogo.jpg';
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';

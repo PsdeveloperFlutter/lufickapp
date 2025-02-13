@@ -17,6 +17,7 @@ class GoogleAuth {
                 final String? name = user.displayName;
                 print("User Details \n  Name: $name \n Email: $email");
 
+                if (!context.mounted) return; // Prevent navigation error
                 // Navigate to main page after successful login
                 Navigator.pushReplacementNamed(context, '/mainpage');
             } else {

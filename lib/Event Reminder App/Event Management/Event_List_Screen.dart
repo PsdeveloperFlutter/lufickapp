@@ -447,7 +447,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   SizedBox(height: 18,),
 
 
-
                                   //This is for showing the file on the back side from database
 
                                   event['file_path']!=null

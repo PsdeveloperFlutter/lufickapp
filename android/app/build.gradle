@@ -20,18 +20,6 @@ android {
     namespace "com.example.lufickapp"
     compileSdk 35  // Use the latest stable version
     ndkVersion "25.1.8937393"  // Ensure NDK version matches dependencies
-    defaultConfig {
-        multiDexEnabled true
-    }
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_17  // Changed from 1.8 to 17
-        targetCompatibility JavaVersion.VERSION_17  // Changed from 1.8 to 17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"  // Aligning Kotlin JVM Target with Java
-    }
 
     defaultConfig {
         applicationId "com.example.lufickapp"
@@ -42,16 +30,24 @@ android {
         versionName flutterVersionName
     }
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17  // Changed from 1.8 to 17
+        targetCompatibility JavaVersion.VERSION_17  // Changed from 1.8 to 17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"  // Aligning Kotlin JVM Target with Java
+    }
+
     buildTypes {
         release {
             minifyEnabled false  // Disable minification temporarily
             shrinkResources false
-            // Add this line to disable R8 tree-shaking for Flutter In-App WebView
             multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 
     buildFeatures {
         viewBinding true  // Optional: Enables View Binding
@@ -67,8 +63,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.activity:activity:1.8.0'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0' // Ensure latest version
     // Core library desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation "androidx.biometric:biometric:1.2.0-alpha04"
-
 }

@@ -53,7 +53,7 @@ class VideoControllerNotifier extends StateNotifier<VideoPlayerController?> {
 
 // State provider for password visibility toggle in Login Page
 final Switchvalue = StateProvider<bool>((ref) {
-  return false; // Default: password hidden
+  return true; // Default: password hidden
 });
 //State provider for password visibility toggle in Sign Up Page
 final Switchpassword=StateProvider<bool>((ref){

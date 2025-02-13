@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,9 +30,11 @@ void main() async {
         appId: "1:927174904612:android:51df47f716d24d1b39c1b1",
         messagingSenderId: "927174904612",
         projectId: "lufickinternship-d0d28",
-        storageBucket: "lufickinternship-d0d28.firebasestorage.app",
+        storageBucket: "lufickinternship-d0d28.appspot.com", // ✅ Corrected
+        authDomain: "lufickinternship-d0d28.firebaseapp.com", // ✅ Added
       ),
     );
+
   } catch (e) {
     print('Firebase initialization error: $e');
   }
@@ -82,9 +85,11 @@ class LoginPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Welcome Back!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
+              Center(
+                child: Text(
+                  'Welcome to Event Reminder!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                ),
               ),
               SizedBox(height: 10),
               Text(
@@ -99,29 +104,44 @@ class LoginPage extends ConsumerWidget {
                 decoration: InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter your email',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   prefixIcon: Icon(Icons.email),
                 ),
               ),
               SizedBox(height: 20),
-              Consumer(builder: (context, ref, child) {
-                final isObscured = ref.watch(Switchvalue);
-                return TextField(
-                  controller: passwordController,
-                  obscureText: isObscured,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    prefixIcon: IconButton(
-                      onPressed: () {
-                        ref.read(Switchvalue.notifier).update((state) => !state);
-                      },
-                      icon: Icon(isObscured ? Icons.lock : Icons.lock_open),
+
+
+              Consumer(
+                builder: (context, ref, child) {
+                  final isObscured = ref.watch(Switchvalue);
+                  return TextField(
+                    controller: passwordController,
+                    obscureText: isObscured, // We handle obscuring with custom formatter
+                    inputFormatters: [StarTextInputFormatter(isObscured)],
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      hintText: 'Enter your password',
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                      prefixIcon: IconButton(
+                        icon: Icon( Icons.lock ),
+                        onPressed: () {
+                          ref.read(Switchvalue.notifier).state = !isObscured;
+                        },
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+                        onPressed: () {
+                          ref.read(Switchvalue.notifier).state = !isObscured;
+                        },
+                      ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                },
+              ),
+
+
+
+
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () async {
@@ -132,24 +152,57 @@ class LoginPage extends ConsumerWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
                 child: Text('Login', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
               ),
-              SizedBox(height: 20),
-              ElevatedButton.icon(
+
+              const SizedBox(height: 20), // Space between buttons
+              Row(
+                children: [
+                  const Expanded(
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.2,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "Or login with",
+                      style: TextStyle(color: Colors.black54, fontSize: 14),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 20)
+              ,ElevatedButton.icon(
                 onPressed: () async {
                   final GoogleAuth _googleAuth = GoogleAuth();
                   await _googleAuth.googleLogin(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: Colors.white60, // Google Sign-In button color
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                icon: Icon(Icons.g_mobiledata, size: 24, color: Colors.white),
-                label: Text('Sign in with Google', style: TextStyle(fontSize: 16, color: Colors.white)),
+                icon: Image.asset(
+                  'assets/images/search.png', // Use your Google logo here
+                  height: 24, // Adjust the size as needed
+                ),
+                label: const Text(
+                  'Sign in with Google',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
               ),
+
               SizedBox(height: 20),
               TextButton(
                 onPressed: () {
@@ -243,5 +296,26 @@ class EnterPinScreen extends StatelessWidget {
       content: TextField(controller: pinController, obscureText: true, decoration: InputDecoration(labelText: "Enter PIN")),
       actions: [TextButton(onPressed: () => verifyPin(context), child: Text("Submit"))],
     );
+  }
+}
+
+
+
+class StarTextInputFormatter extends TextInputFormatter {
+  final bool isObscured;
+  StarTextInputFormatter(this.isObscured);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (isObscured) {
+      // Replace text with * but keep the original value intact
+      String maskedText = '*' * newValue.text.length;
+      return newValue.copyWith(
+        text: maskedText,
+        selection: TextSelection.collapsed(offset: newValue.text.length),
+      );
+    }
+    return newValue; // Show actual text when not obscured
   }
 }
