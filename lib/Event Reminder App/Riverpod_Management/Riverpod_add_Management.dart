@@ -57,7 +57,7 @@ final Switchvalue = StateProvider<bool>((ref) {
 });
 //State provider for password visibility toggle in Sign Up Page
 final Switchpassword=StateProvider<bool>((ref){
-  return false;
+  return true;
 });//This is false means hide for Initial
 
 

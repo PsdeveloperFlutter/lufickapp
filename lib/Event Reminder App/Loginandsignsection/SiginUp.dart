@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
@@ -85,9 +86,13 @@ class SignupPage extends ConsumerWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      prefixIcon:IconButton(onPressed: (){
+                      suffixIcon: IconButton(onPressed: (){
                         ref.read(Switchpassword.notifier).update((state) => !state);
-                      }, icon: Icon(ref.watch(Switchpassword)?Icons.lock:Icons.lock_open),),
+
+                      }, icon: Icon(ref.watch(Switchpassword)?Icons.visibility_off:Icons.visibility)),
+                      prefixIcon:IconButton(onPressed: (){
+
+                        }, icon: Icon(Icons.lock),),
                     ),
                   );
                 }),
@@ -97,6 +102,22 @@ class SignupPage extends ConsumerWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    // Function to Validate Email
+                    bool isValidEmail(String email) {
+                      String emailPattern =
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+                      return RegExp(emailPattern).hasMatch(email);
+                    }
+
+                    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+                      Fluttertoast.showToast(msg: "Email & Password cannot be empty!");
+                      return;
+                    }
+                    //This Set the email Check here
+                    if (!isValidEmail(emailController.text.toString())) {
+                      Fluttertoast.showToast(msg: "Invalid Email ID");
+                      return;
+                    }
                     if (nameController.text.isNotEmpty &&
                         emailController.text.isNotEmpty &&
                         passwordController.text.isNotEmpty) {
