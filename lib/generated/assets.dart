@@ -45,6 +45,8 @@ class Assets {
   static const String libThemes = 'lib/themes.dart';
   static const String libWeatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart~';
   static const String libWeatherAPPSearchApiWeather = 'lib/Weather_APP/Search_api_Weather.dart~';
+  static const String loginandsignsectionAuthroized = 'lib/Event Reminder App/Loginandsignsection/authroized.dart';
+  static const String loginandsignsectionChecker = 'lib/Event Reminder App/Loginandsignsection/checker.dart';
   static const String loginandsignsectionGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/GoogleAuth.dart~';
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';

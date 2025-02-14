@@ -11,42 +11,39 @@ class LoggingService {
 
 
   //This is for the Login Purpose make sure of this
-
   static Future<void> login(String email, String password, BuildContext context) async {
     try {
       if (email.isEmpty || password.isEmpty) {
-        showToast(context, "Please Enter Email and Password");
+        showToast(context, "Please enter both email and password.");
         return;
       }
 
-      // Attempt to sign in
+
+
+      // Try to sign in
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       print("✅ Login Successful");
 
-      // Check if the user is authenticated before navigating
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        Get.offNamed('/mainpage');
-      } else {
-        showToast(context, "❌ Login failed: User not authenticated");
-      }
-    } on FirebaseAuthException catch (e) {
-      print("🔥 FirebaseAuthException Caught:");
-      print("❌ Code: ${e.code}");
-      print("❌ Message: ${e.message}");
+      // Navigate to main page
+      // Navigate to main page
+      Navigator.pushReplacementNamed(context, '/mainpage');
 
-      if (e.code == "wrong-password") {
-        showToast(context, "Log in failed: Invalid password");
-      } else if (e.code == "user-not-found") {
-        showToast(context, "Log in failed: No user found with this email");
+
+    } on FirebaseAuthException catch (e) {
+      print("🔥 FirebaseAuthException Caught: ${e.code}");
+
+      if (e.code == "invalid-credential") {
+        showToast(context, "Incorrect password. Please try again.");
+      } else if (e.code == "user-disabled") {
+        showToast(context, "Your account has been disabled.");
       } else if (e.code == "invalid-email") {
-        showToast(context, "Log in failed: Invalid Email ID");
+        showToast(context, "Invalid email format.");
       } else {
         showToast(context, "Login failed: ${e.message}");
       }
     } catch (e) {
-      print("⚠️ Generic Catch Block Error: $e");
-      showToast(context, "Login failed: Something went wrong");
+      print("⚠️ Error: $e");
+      showToast(context, "Something went wrong. Please try again.");
     } finally {
       print("✅ Login process finished.");
     }
@@ -66,7 +63,7 @@ class LoggingService {
       }
     } catch (e) {
       print("Error Occurred in Signup: $e");
-      showToast(context, "Signup failed: $e");
+    //  showToast(context, "Signup failed: $e");
       rethrow;
     } finally {
       print("Signup process finished.");

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 import '../Database/Main_Database_App.dart';
 import '../Event Management/Event_manage_UI.dart';
@@ -22,7 +24,7 @@ final GetStorage setpinStorage = GetStorage();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // FireBase Initialize
+  // ✅ Initialize Firebase
   try {
     await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -30,36 +32,47 @@ void main() async {
         appId: "1:927174904612:android:51df47f716d24d1b39c1b1",
         messagingSenderId: "927174904612",
         projectId: "lufickinternship-d0d28",
-        storageBucket: "lufickinternship-d0d28.appspot.com", // ✅ Corrected
-        authDomain: "lufickinternship-d0d28.firebaseapp.com", // ✅ Added
+        storageBucket: "lufickinternship-d0d28.appspot.com",
+        authDomain: "lufickinternship-d0d28.firebaseapp.com",
       ),
     );
 
+    // ✅ Initialize Firebase App Check (IMPORTANT)
+    await FirebaseAppCheck.instance
+    // Your personal reCaptcha public key goes here:
+        .activate(
+      androidProvider: AndroidProvider.playIntegrity,
+      appleProvider: AppleProvider.deviceCheck,
+    );
+
+
   } catch (e) {
-    print('Firebase initialization error: $e');
+    print('🔥 Firebase initialization error: $e');
   }
 
-  // Initialize GetStorage
+  // ✅ Initialize GetStorage
   await GetStorage.init();
 
-  // Initialize GetX
+  // ✅ Initialize GetX Theme Controller
   final ThemeController themeController = Get.put(ThemeController());
 
-  // Initialize Database
+  // ✅ Initialize SQLite Database
   final db = await DatabaseHelper.instance.database;
 
-  tz.initializeTimeZones(); // ✅ Initialize timezones before scheduling notifications
-  await LocalNotification.init(); // ✅ Initialize local notifications
+  // ✅ Initialize Timezones & Notifications
+  tz.initializeTimeZones();
+  await LocalNotification.init();
 
+  User ? user = FirebaseAuth.instance.currentUser;
+
+  // ✅ Run the app
   runApp(ProviderScope(
     child: GetMaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
-
-      // Setting up the Routes from here
-      initialRoute: '/login',
+      initialRoute: user != null ? '/mainpage' : '/login',  // 👈 Check if user is logged in
       routes: {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
@@ -69,6 +82,7 @@ void main() async {
     ),
   ));
 }
+
 
 // 📌 This is the Login Page
 class LoginPage extends ConsumerWidget {
@@ -116,8 +130,8 @@ class LoginPage extends ConsumerWidget {
                   final isObscured = ref.watch(Switchvalue);
                   return TextField(
                     controller: passwordController,
-                    obscureText: isObscured, // We handle obscuring with custom formatter
-                    inputFormatters: [StarTextInputFormatter(isObscured)],
+                    obscureText: isObscured,
+                    obscuringCharacter: '*',// We handle obscuring with custom formatter
                     decoration: InputDecoration(
                       labelText: 'Password',
                       hintText: 'Enter your password',
@@ -300,22 +314,3 @@ class EnterPinScreen extends StatelessWidget {
 }
 
 
-
-class StarTextInputFormatter extends TextInputFormatter {
-  final bool isObscured;
-  StarTextInputFormatter(this.isObscured);
-
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (isObscured) {
-      // Replace text with * but keep the original value intact
-      String maskedText = '*' * newValue.text.length;
-      return newValue.copyWith(
-        text: maskedText,
-        selection: TextSelection.collapsed(offset: newValue.text.length),
-      );
-    }
-    return newValue; // Show actual text when not obscured
-  }
-}
