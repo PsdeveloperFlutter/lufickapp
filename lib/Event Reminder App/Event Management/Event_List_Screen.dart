@@ -1,3 +1,4 @@
+import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_date_picker_timeline/flutter_date_picker_timeline.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -131,46 +132,61 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
             ),
           ),
           SizedBox(height: 12,),
-          ExpansionTile(title: Text("Calendar"),children: [
-            Container(
-              padding: const EdgeInsets.only(top: 11, bottom: 11),
-              decoration: BoxDecoration(color: const Color(0xFFF5F5F5)),
-              child: FlutterDatePickerTimeline(
-                startDate: DateTime(2025, 01, 01),
-                endDate: DateTime(2025, 12, 30),
-                initialSelectedDate: DateTime(2025, 01, 01),
-                  onSelectedDateChange: (dateTime) {
-                    setState(() {
-                      selectedDatetl = dateTime;
 
-                      // Backup the original list before filtering
-                      List<Map<String,dynamic>> originalEvents = List.from(filteredEvents);
+
+          ExpansionTile(
+            title: Text("Calendar"),
+            onExpansionChanged: (isExpanded) {
+              if (isExpanded) {
+                setState(() {
+                  selectedDatetl = DateTime(DateTime.now().year, DateTime.now().month, 1);
+                });
+              }
+            },
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 11, bottom: 11),
+                decoration: BoxDecoration(color: const Color(0xFFF5F5F5)),
+                child: TableCalendar(
+                  firstDay: DateTime(2025, 01, 01),
+                  lastDay: DateTime(2025, 12, 30),
+                  focusedDay: selectedDatetl ?? DateTime(DateTime.now().year, DateTime.now().month, 1), // Opens in the current month
+                  calendarFormat: CalendarFormat.month,
+                  selectedDayPredicate: (day) => isSameDay(selectedDatetl, day),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      selectedDatetl = selectedDay;
+
+                      // Ensure 'filteredEvents' is properly defined
+                      List<Map<String, dynamic>> originalEvents = List.from(filteredEvents);
 
                       // Filter events based on the selected date
                       filteredEvents = originalEvents.where((event) {
-                        DateTime eventDate = DateTime.parse(event['date_time']); // Convert String to DateTime
-                        return eventDate.year == dateTime?.year &&
-                            eventDate.month == dateTime?.month &&
-                            eventDate.day == dateTime?.day;
+                        DateTime eventDate = DateTime.parse(event['date_time']);
+                        return isSameDay(eventDate, selectedDay);
                       }).toList();
 
                       // If no events match, restore the full event list
                       if (filteredEvents.isEmpty) {
-                        filteredEvents = originalEvents;
+                        filteredEvents = List.from(originalEvents);
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("No events found for this date. Restoring full list."))
+                          SnackBar(content: Text("No events found for this date. Restoring full list.")),
                         );
                       }
 
                       // Refresh UI
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        return ref.refresh(eventsProvider);
+                        ref.refresh(eventsProvider);
                       });
                     });
-                  }
-              )
-            )
-          ],),
+                  },
+                ),
+              ),
+            ],
+          )
+,
+
+
           SizedBox(height: 12,),
           Expanded(
             child: eventsAsyncValue.when(
