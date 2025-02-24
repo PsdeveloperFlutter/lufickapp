@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get_storage/get_storage.dart'; // Make sure to import GetStorage
+import 'package:get_storage/get_storage.dart';
 
-// Define the custom tags provider as per your requirement
 final customTagsProvider = StateNotifierProvider<CustomTagsNotifier, List<String>>((ref) {
   return CustomTagsNotifier();
 });
 
-// Notifier to manage custom tags
 class CustomTagsNotifier extends StateNotifier<List<String>> {
   CustomTagsNotifier() : super([]) {
-    // Initialize tags from GetStorage, ensure correct type using List<String>.from
     final savedTags = box.read<List<dynamic>>('customTags') ?? [];
-    state = List<String>.from(savedTags);  // Safely cast to List<String>
+    state = List<String>.from(savedTags);
   }
 
   void addTag(String tag) {
-    state = [...state, tag]; // Add new tag
-    box.write('customTags', state); // Save the updated tags list to GetStorage
+    state = [...state, tag];
+    box.write('customTags', state);
   }
 
   void removeTag(String tag) {
-    state = state.where((t) => t != tag).toList(); // Remove tag
-    box.write('customTags', state); // Save the updated tags list to GetStorage
+    state = state.where((t) => t != tag).toList();
+    box.write('customTags', state);
   }
 }
 
-final box = GetStorage(); // GetStorage instance to save and retrieve data
+final box = GetStorage();
+final List<String> defaultCategories = ["Work", "Personal", "Meeting", "Shopping"];
 
-// Widget to display and manage custom tags
 class CustomTagsWidget extends ConsumerStatefulWidget {
   @override
   _CustomTagsWidgetState createState() => _CustomTagsWidgetState();
@@ -46,23 +43,16 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> customTags = ref.watch(customTagsProvider); // Directly watch the tags provider
+    final List<String> customTags = ref.watch(customTagsProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Input field to add a new custom tag
         TextField(
           controller: _tagController,
           decoration: InputDecoration(
-            hintStyle: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-            labelStyle: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
+            hintStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+            labelStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
             hintText: "Enter a custom Category",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -74,26 +64,38 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
               onPressed: () {
                 if (_tagController.text.isNotEmpty) {
                   ref.read(customTagsProvider.notifier).addTag(_tagController.text.trim());
-                  _tagController.clear(); // Clear the text field after adding the tag
+                  _tagController.clear();
                 }
               },
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
 
-        // Displaying custom tags as Chips
+        Text("Default Categories:", style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500)),
+        Wrap(
+          spacing: 8.0,
+          children: defaultCategories.map((category) {
+            return ChoiceChip(
+              label: Text(category, style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400)),
+              selected: customTags.contains(category),
+              onSelected: (bool selected) {
+                if (selected) {
+                  ref.read(customTagsProvider.notifier).addTag(category);
+                } else {
+                  ref.read(customTagsProvider.notifier).removeTag(category);
+                }
+              },
+            );
+          }).toList(),
+        ),
+        SizedBox(height: 10),
+
         Wrap(
           spacing: 8.0,
           children: customTags.map((tag) {
             return Chip(
-              label: Text(
-                tag,
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              label: Text(tag, style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400)),
               onDeleted: () => ref.read(customTagsProvider.notifier).removeTag(tag),
             );
           }).toList(),

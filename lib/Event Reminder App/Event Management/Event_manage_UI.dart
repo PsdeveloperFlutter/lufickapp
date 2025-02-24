@@ -155,7 +155,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
           pickedTime.minute,
         );
 
-        _eventDateTimeController.text = DateFormat('yyyy-MM-dd HH:mm').format(combined);
+        bool is24HourFormat =MediaQuery.of(context).alwaysUse24HourFormat;
+
+        _eventDateTimeController.text = DateFormat(is24HourFormat ? 'dd-MM-yyyy HH:mm' : 'dd-MM-yyyy hh:mm a').format(combined);
       }
     }
   }
@@ -228,34 +230,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             const SizedBox(height: 16),
 
-            //Expansion Title Widget for Managing the Category of the Event
-
-            ExpansionTile(title: Text("Category",style:GoogleFonts.poppins(fontStyle: FontStyle.italic,fontSize: 20,fontWeight: FontWeight.w500),),
-                children: [
-                  Container(
-                    width: 300,
-                    height: 180,
-                    child: ListView.builder(itemBuilder: (context,index){
-                      return
-                        GestureDetector(
-                          onTap: (){
-
-                            setState(() {
-                              categoriesvalue=categories[index];
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You Select ${categories[index]} Category")));
-                          },
-                          child: Card(
-                            elevation: 5,
-                            child: ListTile(
-                              title: Text(categories[index],style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                              trailing: Icon(Icons.select_all),
-                            ),
-                          ),
-                        );
-                    },itemCount: categories.length,),
-                  ),
-                ]),
 
             SizedBox(height: 16,),
 
@@ -281,7 +255,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
 
 
-            }, child: Text("Set Notification",
+            }, child: Text("Schedule Notification",
                 style: GoogleFonts.poppins(
                   fontSize: 15,
                   fontWeight: FontWeight.w800
@@ -290,71 +264,117 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             SizedBox(height: 16,),
 
-            Padding(
+
+
+      Row(
+        children:[
+
+          Padding(
               padding: const EdgeInsets.only(left:26.0),
-              child: Text("Priority",style: GoogleFonts.poppins(fontSize: 20,fontWeight: FontWeight.bold),),
-            )
-            // Radio Button
-            ,
-            SizedBox(height: 7,),
-            Row(
-              children: [
-                Radio<PriorityLevel>(
-                  value: PriorityLevel.high,
-                  groupValue: selectedPriority,
-                  onChanged: (PriorityLevel? value) {
-                    // Update the state using the provider's notifier
-                    ref.read(radioButtonProvider.notifier).state = value;
-                  },
-                ),
-                 Text("High",style: GoogleFonts.poppins(
-                   fontSize: 13,
-                   fontWeight: FontWeight.w600
-                 ),),
+              child: Text("Priority",style: GoogleFonts.poppins(fontSize: 16,fontWeight: FontWeight.w500),)
+          )
+          // Radio Button
+          ,
+                SizedBox(width:18),
 
-                Radio<PriorityLevel>(
-                  value: PriorityLevel.medium,
-                  groupValue: selectedPriority,
-                  onChanged: (PriorityLevel? value) {
-                    // Update the state using the provider's notifier
-                    ref.read(radioButtonProvider.notifier).state = value;
-                  },
+          DropdownButton<PriorityLevel>(
+            hint: Text("Select Priority", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
+            value: selectedPriority, // Ensure selectedPriority is not null
+            items: PriorityLevel.values.map((priority) {
+              return DropdownMenuItem<PriorityLevel>(
+                value: priority,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Radio<PriorityLevel>(
+                      value: priority,
+                      groupValue: selectedPriority,
+                      onChanged: (PriorityLevel? value) {
+                        ref.read(radioButtonProvider.notifier).state = value;
+                      },
+                    ),
+                    Text(priority.name.toUpperCase(), style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
+                  ],
                 ),
-                 Text("Medium", style: GoogleFonts.poppins(
-                   fontSize: 13,
-                   fontWeight: FontWeight.w600
-                 ),),
+              );
+            }).toList(),
+            onChanged: (PriorityLevel? newValue) {
+              if (newValue != null) {
+                ref.read(radioButtonProvider.notifier).state = newValue;
+              }
+            },
+          ),
 
-                Radio<PriorityLevel>(
-                  value: PriorityLevel.low,
-                  groupValue: selectedPriority,
-                  onChanged: (PriorityLevel? value) {
-                    // Update the state using the provider's notifier
-                    ref.read(radioButtonProvider.notifier).state = value;
-                  },
-                ),
-                Text("Low",style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                ),),
-              ],
-            ),
+        ]
+      ),
+      // Row(
+            //   children: [
+            //     Radio<PriorityLevel>(
+            //       value: PriorityLevel.high,
+            //       groupValue: selectedPriority,
+            //       onChanged: (PriorityLevel? value) {
+            //         // Update the state using the provider's notifier
+            //         ref.read(radioButtonProvider.notifier).state = value;
+            //       },
+            //     ),
+            //      Text("High",style: GoogleFonts.poppins(
+            //        fontSize: 13,
+            //        fontWeight: FontWeight.w600
+            //      ),),
+            //
+            //     Radio<PriorityLevel>(
+            //       value: PriorityLevel.medium,
+            //       groupValue: selectedPriority,
+            //       onChanged: (PriorityLevel? value) {
+            //         // Update the state using the provider's notifier
+            //         ref.read(radioButtonProvider.notifier).state = value;
+            //       },
+            //     ),
+            //      Text("Medium", style: GoogleFonts.poppins(
+            //        fontSize: 13,
+            //        fontWeight: FontWeight.w600
+            //      ),),
+            //
+            //     Radio<PriorityLevel>(
+            //       value: PriorityLevel.low,
+            //       groupValue: selectedPriority,
+            //       onChanged: (PriorityLevel? value) {
+            //         // Update the state using the provider's notifier
+            //         ref.read(radioButtonProvider.notifier).state = value;
+            //       },
+            //     ),
+            //     Text("Low",style: GoogleFonts.poppins(
+            //       fontSize: 13,
+            //       fontWeight: FontWeight.w600,
+            //     ),),
+            //   ],
+            // ),
 
             // Display the selected option
 
-            SizedBox(height: 12,),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+            SizedBox(height: 16,),
+            Center(
               child: Text("Selected Priority: ${selectedPriority?.name??"Not Selected"}",style: GoogleFonts.poppins
                 (fontSize: 13,fontWeight: FontWeight.bold),),
             ),
 
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 22),
+
             // Media Selection Row
+            // Add header text
+            Center(
+              child: Text(
+                "Upload Related Files",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 22,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+
                 _buildMediaButton(Icons.photo_album, "Photo", () => _pickImage(context)),
                 _buildMediaButton(Icons.video_call,"Video" , () => _pickVideo(context)),
                 _buildMediaButton(Icons.file_copy,"File", () => _pickFile(context)),
@@ -407,7 +427,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       //This is the Sending Data to the Database
 
 
-     newEvent.connect(); //call the function which connect the database to our project
+     newEvent.connect(context); //call the function which connect the database to our project
 
                   }
                 },

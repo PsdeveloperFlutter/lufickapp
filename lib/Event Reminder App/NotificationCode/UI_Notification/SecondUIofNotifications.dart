@@ -189,7 +189,8 @@ class NotificationScreenState extends State<NotificationScreen> {
       SnackBar(content: Text('Notification canceled')),
     );
   }
-
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,24 +211,138 @@ class NotificationScreenState extends State<NotificationScreen> {
               style: GoogleFonts.aBeeZee(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            TextButton(
-              onPressed: () => _selectDate(context),
-              child: Text(
-                selectedDate == null
-                    ? 'Select Date'
-                    : 'Selected Date: ${DateFormat('dd-MM-yyyy').format(selectedDate!)}',
-                style: GoogleFonts.poppins(),
+            TextField(
+              controller: _dateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Select Date',
+                labelStyle: TextStyle(
+                  color: Colors.blueGrey,
+                ),
+                hintText: 'Tap to choose a date',
+                hintStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                prefixIcon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.blue,
+                ),
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.blue,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey[400]!,
+                    width: 1.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               ),
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        primaryColor: Colors.blue,
+                        colorScheme: ColorScheme.light(primary: Colors.blue),
+                        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    _dateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+                  });
+                }
+              },
             ),
             SizedBox(height: 20),
-            TextButton(
-              onPressed: () => _selectTime(context),
-              child: Text(
-                selectedTime == null
-                    ? 'Select Time'
-                    : 'Selected Time: ${selectedTime!.format(context)}',
-                style: GoogleFonts.poppins(),
+            TextField(
+              controller: _timeController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Select Time',
+                labelStyle: TextStyle(
+                  color: Colors.blueGrey,
+                ),
+                hintText: 'Tap to choose a time',
+                hintStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                prefixIcon: Icon(
+                  Icons.access_time,
+                  color: Colors.blue,
+                ),
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.blue,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey[400]!,
+                    width: 1.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               ),
+              onTap: () async {
+                TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        primaryColor: Colors.blue,
+                        colorScheme: ColorScheme.light(primary: Colors.blue),
+                        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+                if (pickedTime != null) {
+                  setState(() {
+                    _timeController.text = pickedTime.format(context);
+                  });
+                }
+              },
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -239,6 +354,7 @@ class NotificationScreenState extends State<NotificationScreen> {
             ),
           ],
         ),
+
       ),
     );
   }

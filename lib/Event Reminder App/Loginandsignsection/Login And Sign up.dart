@@ -84,13 +84,20 @@ void main() async {
 }
 
 
-// 📌 This is the Login Page
+
+
+final isValidEmailProvider = StateProvider<bool>((ref) => true);
+final switchValueProvider = StateProvider<bool>((ref) => true);
+
 class LoginPage extends ConsumerWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isValidEmail = ref.watch(isValidEmailProvider);
+    final isObscured = ref.watch(switchValueProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -112,6 +119,8 @@ class LoginPage extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 30),
+
+              // Email Input Field
               TextField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -120,43 +129,43 @@ class LoginPage extends ConsumerWidget {
                   hintText: 'Enter your email',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   prefixIcon: Icon(Icons.email),
+                  suffixIcon: isValidEmail
+                      ? null
+                      : Tooltip(
+                    message: "Invalid Email ID",
+                    child: Icon(Icons.info, color: Colors.red),
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-
-
-              Consumer(
-                builder: (context, ref, child) {
-                  final isObscured = ref.watch(Switchvalue);
-                  return TextField(
-                    controller: passwordController,
-                    obscureText: isObscured,
-                    obscuringCharacter: '*',// We handle obscuring with custom formatter
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      prefixIcon: IconButton(
-                        icon: Icon( Icons.lock ),
-                        onPressed: () {
-                          ref.read(Switchvalue.notifier).state = !isObscured;
-                        },
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
-                        onPressed: () {
-                          ref.read(Switchvalue.notifier).state = !isObscured;
-                        },
-                      ),
-                    ),
-                  );
+                onChanged: (value) {
+                  ref.read(isValidEmailProvider.notifier).state =
+                      RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value);
                 },
               ),
 
+              SizedBox(height: 20),
 
-
+              // Password Input Field
+              TextField(
+                controller: passwordController,
+                obscureText: isObscured,
+                obscuringCharacter: '*',
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Enter your password',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  prefixIcon: Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () {
+                      ref.read(switchValueProvider.notifier).state = !isObscured;
+                    },
+                  ),
+                ),
+              ),
 
               SizedBox(height: 30),
+
+              // Login Button
               ElevatedButton(
                 onPressed: () async {
                   final email = emailController.text.trim();
@@ -171,7 +180,9 @@ class LoginPage extends ConsumerWidget {
                 child: Text('Login', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
               ),
 
-              const SizedBox(height: 20), // Space between buttons
+              const SizedBox(height: 20),
+
+              // Divider for Google Sign-In
               Row(
                 children: [
                   const Expanded(
@@ -196,8 +207,10 @@ class LoginPage extends ConsumerWidget {
                 ],
               ),
 
-              SizedBox(height: 20)
-              ,ElevatedButton.icon(
+              SizedBox(height: 20),
+
+              // Google Sign-In Button
+              ElevatedButton.icon(
                 onPressed: () async {
                   final GoogleAuth _googleAuth = GoogleAuth();
                   await _googleAuth.googleLogin(context);
@@ -218,15 +231,18 @@ class LoginPage extends ConsumerWidget {
               ),
 
               SizedBox(height: 20),
+
+              // Sign Up Navigation
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/signup');
                 },
                 child: Text('Don’t have an account? Sign Up', style: TextStyle(color: Colors.blue)),
               ),
+
               SizedBox(height: 10),
 
-              // 📌 Set Pin & Enter Pin Section
+              // Set Pin & Enter Pin Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -258,6 +274,182 @@ class LoginPage extends ConsumerWidget {
     );
   }
 }
+
+
+// 📌 This is the Login Page
+// class LoginPage extends ConsumerWidget {
+//   final TextEditingController emailController = TextEditingController();
+//   final TextEditingController passwordController = TextEditingController();
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.center,
+//             children: [
+//               Center(
+//                 child: Text(
+//                   'Welcome to Event Reminder!',
+//                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+//               Text(
+//                 'Login to continue managing your events.',
+//                 style: TextStyle(fontSize: 16, color: Colors.black54),
+//                 textAlign: TextAlign.center,
+//               ),
+//               SizedBox(height: 30),
+//               TextField(
+//                 controller: emailController,
+//                 keyboardType: TextInputType.emailAddress,
+//                 decoration: InputDecoration(
+//                   labelText: 'Email',
+//                   hintText: 'Enter your email',
+//                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+//                   prefixIcon: Icon(Icons.email),
+//                 ),
+//               ),
+//               SizedBox(height: 20),
+//
+//
+//               Consumer(
+//                 builder: (context, ref, child) {
+//                   final isObscured = ref.watch(Switchvalue);
+//                   return TextField(
+//                     controller: passwordController,
+//                     obscureText: isObscured,
+//                     obscuringCharacter: '*',// We handle obscuring with custom formatter
+//                     decoration: InputDecoration(
+//                       labelText: 'Password',
+//                       hintText: 'Enter your password',
+//                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+//                       prefixIcon: IconButton(
+//                         icon: Icon( Icons.lock ),
+//                         onPressed: () {
+//                           ref.read(Switchvalue.notifier).state = !isObscured;
+//                         },
+//                       ),
+//                       suffixIcon: IconButton(
+//                         icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+//                         onPressed: () {
+//                           ref.read(Switchvalue.notifier).state = !isObscured;
+//                         },
+//                       ),
+//                     ),
+//                   );
+//                 },
+//               ),
+//
+//
+//
+//
+//               SizedBox(height: 30),
+//               ElevatedButton(
+//                 onPressed: () async {
+//                   final email = emailController.text.trim();
+//                   final password = passwordController.text.trim();
+//                   await LoggingService.login(email, password, context);
+//                 },
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: Colors.blue,
+//                   minimumSize: Size(double.infinity, 50),
+//                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//                 ),
+//                 child: Text('Login', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+//               ),
+//
+//               const SizedBox(height: 20), // Space between buttons
+//               Row(
+//                 children: [
+//                   const Expanded(
+//                     child: Divider(
+//                       color: Colors.grey,
+//                       thickness: 1.2,
+//                     ),
+//                   ),
+//                   const Padding(
+//                     padding: EdgeInsets.symmetric(horizontal: 10),
+//                     child: Text(
+//                       "Or login with",
+//                       style: TextStyle(color: Colors.black54, fontSize: 14),
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: Divider(
+//                       color: Colors.grey,
+//                       thickness: 1.2,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//
+//               SizedBox(height: 20)
+//               ,ElevatedButton.icon(
+//                 onPressed: () async {
+//                   final GoogleAuth _googleAuth = GoogleAuth();
+//                   await _googleAuth.googleLogin(context);
+//                 },
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: Colors.white60, // Google Sign-In button color
+//                   minimumSize: const Size(double.infinity, 50),
+//                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//                 ),
+//                 icon: Image.asset(
+//                   'assets/images/search.png', // Use your Google logo here
+//                   height: 24, // Adjust the size as needed
+//                 ),
+//                 label: const Text(
+//                   'Sign in with Google',
+//                   style: TextStyle(fontSize: 16, color: Colors.black),
+//                 ),
+//               ),
+//
+//               SizedBox(height: 20),
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.pushNamed(context, '/signup');
+//                 },
+//                 child: Text('Don’t have an account? Sign Up', style: TextStyle(color: Colors.blue)),
+//               ),
+//               SizedBox(height: 10),
+//
+//               // 📌 Set Pin & Enter Pin Section
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 children: [
+//                   GestureDetector(
+//                     onTap: () {
+//                       showModalBottomSheet(
+//                         context: context,
+//                         builder: (context) => SetPinScreen(),
+//                       );
+//                     },
+//                     child: Text("Set Pin", style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold)),
+//                   ),
+//                   GestureDetector(
+//                     onTap: () {
+//                       showDialog(
+//                         context: context,
+//                         builder: (context) => EnterPinScreen(),
+//                       );
+//                     },
+//                     child: Text("Enter Pin", style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold)),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // 📌 Set Pin Screen
 class SetPinScreen extends StatefulWidget {

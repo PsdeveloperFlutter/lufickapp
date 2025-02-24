@@ -37,7 +37,8 @@ class LoggingService {
       } else if (e.code == "user-disabled") {
         showToast(context, "Your account has been disabled.");
       } else if (e.code == "invalid-email") {
-        showToast(context, "Invalid email format.");
+        _showInvalidEmailMessage(context);
+
       } else {
         showToast(context, "Login failed: ${e.message}");
       }
@@ -82,5 +83,23 @@ class LoggingService {
     } finally {
       print("Logout process finished.");
     }
+  }
+
+
+  //This here we setup the show Invalid Email Message Option make sure of this
+
+  static void _showInvalidEmailMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red.shade100,
+        content: Row(
+          children: [
+            Icon(Icons.info, color: Colors.red), // ✅ Red info icon
+            SizedBox(width: 8),
+            Text("Invalid Email ID", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
   }
 }

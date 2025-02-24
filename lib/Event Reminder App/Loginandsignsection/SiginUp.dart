@@ -8,11 +8,12 @@ import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 
 
+
 //Now We are working on the Password hide show Functionality with Riverpod and use the StateProvider in this code and make sure of that Do good State Management
 
 
 //Code End here
-
+final isValidEmailProvider = StateProvider<bool>((ref) => true);
 class SignupPage extends ConsumerWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -60,19 +61,32 @@ class SignupPage extends ConsumerWidget {
               SizedBox(height: 20),
 
               // Email Text Field
-              TextField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter your email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  prefixIcon: Icon(Icons.email),
-                ),
-              ),
-              SizedBox(height: 20),
+
+
+    TextField(
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        hintText: 'Enter your email',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        prefixIcon: Icon(Icons.email),
+        suffixIcon: ref.watch(isValidEmailProvider)
+            ? null
+            : Tooltip(
+          message: "Invalid Email ID",
+          child: Icon(Icons.info, color: Colors.red),
+        ),
+      ),
+      onChanged: (value) {
+        ref.read(isValidEmailProvider.notifier).state =
+            RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value);
+      },
+    ),
+
+    SizedBox(height: 20),
 
                 Consumer(builder: (context, ref, child) {
                   return

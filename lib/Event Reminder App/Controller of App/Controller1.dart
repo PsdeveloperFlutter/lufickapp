@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Database/Main_Database_App.dart';
 
@@ -33,7 +36,7 @@ class AttachWithDB {
     this.customInterval,
   });
 
-  void connect() async {
+  void connect(BuildContext context) async {
     final DatabaseHelper databaseHelper = DatabaseHelper.instance;
     try {
       final eventData = {
@@ -54,6 +57,14 @@ class AttachWithDB {
       int id = await databaseHelper.insertEvent(eventData);
       if (id != -1) {
         print('✅ Event added with ID: $id');
+        
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Event Created Sucessfully")));
+
+        Timer(Duration(seconds: 2),(){
+          // Get TabController and switch to first tab
+          DefaultTabController.of(context)?.animateTo(0); // If using DefaultTabController
+
+        });
       } else {
         print('❌ Failed to insert event');
       }
