@@ -125,6 +125,18 @@ class EventCreationUI extends ConsumerStatefulWidget {
 }
 
 class EventCreationUIState extends ConsumerState<EventCreationUI> {
+
+
+  //This is for the Notification Purpose make sure of that
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  DateTime? selectedDate = DateTime.now();
+  TimeOfDay? selectedTime = TimeOfDay.now();
+
+
+
+
+
  TextEditingController _controllerpriority = TextEditingController();//Controller for the Priority Selection make sure of that
   dynamic categoriesvalue;
   final TextEditingController _eventNameController = TextEditingController();
@@ -236,34 +248,173 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             CustomTagsWidget(),
 
+
+
+
+
             SizedBox(height: 14,),
 
 
+            Center(
+              child: Text(
+                "Select Date and Time",
+                style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+            ),
 
-            //set the Notifications
-            TextButton(onPressed: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context){
-             return NotificationScreen(
-              name: _eventNameController.text.toString(),
-              category: categoriesvalue.toString(),
-              location: _eventLocationController.text.toString(),
-              description: _eventDescriptionController.text.toString(),
-               priority: selectedPriority.toString(),
+            SizedBox(height:15),
+            TextField(
+              controller: _dateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Select Date',
+                labelStyle: TextStyle(
+                  color: Colors.blueGrey,
+                ),
+                hintText: 'Tap to choose a date',
+                hintStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                prefixIcon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.blue,
+                ),
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.blue,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey[400]!,
+                    width: 1.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              ),
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        primaryColor: Colors.blue,
+                        colorScheme: ColorScheme.light(primary: Colors.blue),
+                        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    _dateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+                    selectedDate = pickedDate;
+                  });
+                }
+              },
+            ),
 
-             );
-           }));
+            SizedBox(height: 20),
+
+            TextField(
+              controller: _timeController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Select Time',
+                labelStyle: TextStyle(
+                  color: Colors.blueGrey,
+                ),
+                hintText: 'Tap to choose a time',
+                hintStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                prefixIcon: Icon(
+                  Icons.access_time,
+                  color: Colors.blue,
+                ),
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.blue,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey[400]!,
+                    width: 1.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              ),
+              onTap: () async {
+                TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        primaryColor: Colors.blue,
+                        colorScheme: ColorScheme.light(primary: Colors.blue),
+                        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+                if (pickedTime != null) {
+                  setState(() {
+                    selectedTime = pickedTime;
+                    _timeController.text = pickedTime.format(context);
+                  });
+                }
+              },
+            ),
+
+            SizedBox(height:15),
+            Center(
+              child: ElevatedButton(
+                onPressed: _scheduleNotification,
+                child: Text(
+                  'Schedule Notification',
+                  style: GoogleFonts.poppins(),
+                ),
+              ),
+            ),
 
 
 
-
-            }, child: Text("Schedule Notification",
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w800
-                ),)),
-
-
-            SizedBox(height: 16,),
+            SizedBox(height: 18,),
 
 
 
@@ -509,6 +660,50 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
     }
   }
 
+
+  void _scheduleNotification() {
+    if (selectedDate == null || selectedTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select a date and time')),
+      );
+      return;
+    }
+
+    if (_eventNameController.text.isEmpty||
+        _eventLocationController.text.isEmpty ||
+        _eventDescriptionController.text.isEmpty ) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill all event details')),
+      );
+      return;
+    }
+
+    final scheduledDateTime = DateTime(
+      selectedDate!.year,
+      selectedDate!.month,
+      selectedDate!.day,
+      selectedTime!.hour,
+      selectedTime!.minute,
+    );
+
+    final formattedDate =
+    DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
+
+    // Call the Schedule Notification Function
+    scheduleNotification(
+      scheduledDateTime,
+      'Notification at $formattedDate',
+     _eventNameController.text.toString(),
+     _eventLocationController.text.toString(),
+      _eventDescriptionController.text.toString(),
+     categoriesvalue.toString(),
+    );
+
+    // Show the result
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Notification scheduled for $formattedDate')),
+    );
+  }
 }
 
 
@@ -573,6 +768,7 @@ Widget _buildMediaButton(IconData icon, String label, VoidCallback onPressed) {
     ],
   );
 }
+
 
 
 
