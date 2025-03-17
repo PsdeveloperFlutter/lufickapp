@@ -274,6 +274,7 @@ class NotificationScreenState extends State<NotificationScreen> {
                 if (pickedDate != null) {
                   setState(() {
                     _dateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+                    selectedDate=pickedDate;
                   });
                 }
               },
@@ -339,6 +340,7 @@ class NotificationScreenState extends State<NotificationScreen> {
                 );
                 if (pickedTime != null) {
                   setState(() {
+                    selectedTime=pickedTime;
                     _timeController.text = pickedTime.format(context);
                   });
                 }

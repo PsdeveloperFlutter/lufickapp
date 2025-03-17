@@ -125,6 +125,7 @@ class EventCreationUI extends ConsumerStatefulWidget {
 }
 
 class EventCreationUIState extends ConsumerState<EventCreationUI> {
+ TextEditingController _controllerpriority = TextEditingController();//Controller for the Priority Selection make sure of that
   dynamic categoriesvalue;
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _eventDateTimeController = TextEditingController();
@@ -165,7 +166,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
   @override
   Widget build(BuildContext context) {
     // // Watch the state of the radio button provider
-    final selectedPriority = ref.watch(radioButtonProvider);
+    var selectedPriority = ref.watch(radioButtonProvider);
 
 
     return SingleChildScrollView(
@@ -266,49 +267,75 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
 
 
-      Row(
-        children:[
 
-          Padding(
-              padding: const EdgeInsets.only(left:26.0),
-              child: Text("Priority",style: GoogleFonts.poppins(fontSize: 16,fontWeight: FontWeight.w500),)
-          )
-          // Radio Button
-          ,
-                SizedBox(width:18),
-
-          DropdownButton<PriorityLevel>(
-            hint: Text("Select Priority", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
-            value: selectedPriority, // Ensure selectedPriority is not null
-            items: PriorityLevel.values.map((priority) {
-              return DropdownMenuItem<PriorityLevel>(
-                value: priority,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Radio<PriorityLevel>(
-                      value: priority,
-                      groupValue: selectedPriority,
-                      onChanged: (PriorityLevel? value) {
-                        ref.read(radioButtonProvider.notifier).state = value;
-                      },
-                    ),
-                    Text(priority.name.toUpperCase(), style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
-                  ],
+            TextField(
+              controller: _controllerpriority,
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: 'Enter something...',
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: Colors.blueAccent, width: 2),
                 ),
-              );
-            }).toList(),
-            onChanged: (PriorityLevel? newValue) {
-              if (newValue != null) {
-                ref.read(radioButtonProvider.notifier).state = newValue;
-              }
-            },
-          ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: Colors.grey, width: 1),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              ),
+            ),
 
-        ]
-      ),
-      // Row(
+            SizedBox(height: 16),
+
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 26.0),
+                  child: Text("Priority", style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500)),
+                ),
+
+                SizedBox(width: 18),
+
+                DropdownButton<PriorityLevel>(
+                  hint: Text("Select Priority", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
+                  value: selectedPriority,
+                  items: PriorityLevel.values.map((priority) {
+                    return DropdownMenuItem<PriorityLevel>(
+                      value: priority,
+                      child: Row(
+                        children: [
+                          Radio<PriorityLevel>(
+                            value: priority,
+                            groupValue: selectedPriority,
+                            onChanged: (PriorityLevel? value) {
+                              if (value != null) {
+                                setState(() {
+                                  selectedPriority = value;
+                                  _controllerpriority.text = value.name.toUpperCase(); // Update TextField with selected value
+                                });
+                                ref.read(radioButtonProvider.notifier).state = value;
+                              }
+                            },
+                          ),
+                          Text(priority.name.toUpperCase(), style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (PriorityLevel? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        selectedPriority = newValue;
+                        _controllerpriority.text = newValue.name.toUpperCase(); // Update TextField
+                      });
+                      ref.read(radioButtonProvider.notifier).state = newValue;
+                    }
+                  },
+                ),
+              ],
+            ),
+
+            // Row(
             //   children: [
             //     Radio<PriorityLevel>(
             //       value: PriorityLevel.high,
@@ -354,13 +381,10 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
             // Display the selected option
 
             SizedBox(height: 16,),
-            Center(
-              child: Text("Selected Priority: ${selectedPriority?.name??"Not Selected"}",style: GoogleFonts.poppins
-                (fontSize: 13,fontWeight: FontWeight.bold),),
-            ),
 
 
-            const SizedBox(height: 22),
+
+            const SizedBox(height: 16),
 
             // Media Selection Row
             // Add header text
@@ -383,7 +407,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             SizedBox(height: 12,),
             Center(child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade500
+                ,minimumSize: Size(250,45)),
                 onPressed: (){
 
                   if(_eventDateTimeController.text.isEmpty){
