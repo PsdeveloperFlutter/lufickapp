@@ -25,7 +25,7 @@ class CustomTagsNotifier extends StateNotifier<List<String>> {
 }
 
 final box = GetStorage();
-final List<String> defaultCategories = ["Work", "Personal", "Meeting", "Shopping"];
+final List<String> defaultCategories = ["Work", "Personal", "Meeting", ];
 
 class CustomTagsWidget extends ConsumerStatefulWidget {
   @override
@@ -41,6 +41,7 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
     super.dispose();
   }
 
+  TextEditingController Categorycontroller=TextEditingController();
   @override
   Widget build(BuildContext context) {
     final List<String> customTags = ref.watch(customTagsProvider);
@@ -48,6 +49,18 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        TextField(
+          controller: Categorycontroller,
+          readOnly: true,
+          decoration: InputDecoration(
+            hintStyle: GoogleFonts.poppins(fontSize: 15,fontWeight: FontWeight.w600)
+                ,hintText: "Select Categroy",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+        ),
+        SizedBox(height: 15,),
         TextField(
           controller: _tagController,
           decoration: InputDecoration(
@@ -62,6 +75,7 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
             suffixIcon: IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
+                Categorycontroller.text=_tagController.text.toString();
                 if (_tagController.text.isNotEmpty) {
                   ref.read(customTagsProvider.notifier).addTag(_tagController.text.trim());
                   _tagController.clear();
@@ -81,6 +95,9 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
               selected: customTags.contains(category),
               onSelected: (bool selected) {
                 if (selected) {
+                  setState(() {
+                    Categorycontroller.text=category;
+                  });
                   ref.read(customTagsProvider.notifier).addTag(category);
                 } else {
                   ref.read(customTagsProvider.notifier).removeTag(category);
