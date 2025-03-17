@@ -26,7 +26,9 @@ class EventsScreen extends ConsumerStatefulWidget {
 class _EventsScreenState extends ConsumerState<EventsScreen> {
 
 
+
   // Selected date for the Flutter TimeLine
+  DateTime focusedDay = DateTime.now(); // Declare this in your state
   DateTime? selectedDatetl;
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
@@ -86,23 +88,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       return ref.refresh(eventsProvider);
     });
     return Scaffold(
-       floatingActionButton: Padding(
-        padding: EdgeInsets.only(right: 60),
-        child: FloatingActionButton(
-          backgroundColor: Colors.green.shade500,
-          onPressed: () {
-            setState(() {
-              isSorted = true; // Always enable sorting when button is pressed
-              isAscending = !isAscending; // Toggle sorting order
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-               return  ref.refresh(eventsProvider);
-              });
-            });
-          },
-          child: Icon(Icons.sort, color: Colors.white),
-        ),
-      ),
-      body: Column(
+      resizeToAvoidBottomInset: false, // Ensures the UI adjusts when the keyboard appears
+          body: Column(
 
         children: [
 
@@ -143,42 +130,30 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
               }
             },
             children: [
-              Container(
-                padding: const EdgeInsets.only(top: 11, bottom: 11),
-                decoration: BoxDecoration(color: const Color(0xFFF5F5F5)),
-                child: TableCalendar(
-                  firstDay: DateTime(2025, 01, 01),
-                  lastDay: DateTime(2025, 12, 30),
-                  focusedDay: selectedDatetl ?? DateTime(DateTime.now().year, DateTime.now().month, 1), // Opens in the current month
-                  calendarFormat: CalendarFormat.month,
-                  selectedDayPredicate: (day) => isSameDay(selectedDatetl, day),
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      selectedDatetl = selectedDay;
-
-                      // Ensure 'filteredEvents' is properly defined
-                      List<Map<String, dynamic>> originalEvents = List.from(filteredEvents);
-
-                      // Filter events based on the selected date
-                      filteredEvents = originalEvents.where((event) {
-                        DateTime eventDate = DateTime.parse(event['date_time']);
-                        return isSameDay(eventDate, selectedDay);
-                      }).toList();
-
-                      // If no events match, restore the full event list
-                      if (filteredEvents.isEmpty) {
-                        filteredEvents = List.from(originalEvents);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("No events found for this date. Restoring full list.")),
-                        );
-                      }
-
-                      // Refresh UI
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ref.refresh(eventsProvider);
+              SingleChildScrollView(
+                child: Container(
+                  height: 411,
+                  decoration: BoxDecoration(color: const Color(0xFFF5F5F5)),
+                  child:TableCalendar(
+                    firstDay: DateTime(2025, 01, 01),
+                    lastDay: DateTime(2030, 12, 31),
+                    focusedDay: focusedDay, // Ensure this variable exists
+                    calendarFormat: CalendarFormat.month,
+                    pageAnimationEnabled: true,
+                    selectedDayPredicate: (day) => isSameDay(selectedDatetl, day),
+                    onPageChanged: (newFocusedDay) {
+                      setState(() {
+                        focusedDay = newFocusedDay; // Update focused month
                       });
-                    });
-                  },
+                    },
+                    onDaySelected: (selectedDay, newFocusedDay) {
+                      setState(() {
+                        selectedDatetl = selectedDay;
+                        focusedDay = newFocusedDay; // Ensure month changes when selecting a date
+                      });
+                    },
+                  )
+
                 ),
               ),
             ],
@@ -668,6 +643,19 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green.shade500,
+        onPressed: () {
+          setState(() {
+            isSorted = true; // Always enable sorting when button is pressed
+            isAscending = !isAscending; // Toggle sorting order
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              return  ref.refresh(eventsProvider);
+            });
+          });
+        },
+        child: Icon(Icons.sort, color: Colors.white),
       ),
 
     );
