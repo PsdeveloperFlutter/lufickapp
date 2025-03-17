@@ -86,8 +86,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       return ref.refresh(eventsProvider);
     });
     return Scaffold(
-
-      floatingActionButton: Padding(
+       floatingActionButton: Padding(
         padding: EdgeInsets.only(right: 60),
         child: FloatingActionButton(
           backgroundColor: Colors.green.shade500,

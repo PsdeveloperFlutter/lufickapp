@@ -32,15 +32,15 @@ class Mainpage_event_management extends StatelessWidget {
     return  DefaultTabController(
       length: 2,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: (){
-          final ThemeController themeController = Get.find();
-          themeController.toggletheme();
-        },child: Icon(Icons.toggle_off,color: Colors.white,),backgroundColor: Colors.green,),
 
 
         appBar: AppBar(
           toolbarHeight: 30,
           actions: [
+            IconButton(onPressed: (){
+              final ThemeController themeController = Get.find();
+              themeController.toggletheme();
+            }, icon: Icon(themeController.changemode==1?Icons.nightlight_round:Icons.wb_sunny_outlined,color:themeController.changemode==1?Colors.grey.shade900:Colors.yellow.shade500)),
             IconButton(onPressed: (){
 
               //Logic Here of Retrieve of data from GetxStorage and show send in database
@@ -96,7 +96,7 @@ class Mainpage_event_management extends StatelessWidget {
             ],
           ),
           title:Text(
-            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 19),
+            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),
             'Event Reminder App',
           ),
         ),
@@ -272,7 +272,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
               controller: _controllerpriority,
               readOnly: true,
               decoration: InputDecoration(
-                hintText: 'Enter something...',
+                hintText: 'Select Priority',
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                   borderSide: BorderSide(color: Colors.blueAccent, width: 2),
@@ -405,7 +405,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
               ],
             ),
 
-            SizedBox(height: 12,),
+            SizedBox(height: 16,),
             Center(child: ElevatedButton(
 
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade500
