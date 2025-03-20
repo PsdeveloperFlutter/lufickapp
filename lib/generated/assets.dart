@@ -12,6 +12,7 @@ class Assets {
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
   static const String databaseMainDatabaseApp = 'lib/Event Reminder App/Database/Main_Database_App.dart';
   static const String ecommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart';
+  static const String ecommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart';
   static const String event ManagementCalendar = 'lib/Event Reminder App/Event Management/Calendar.dart';
   static const String event ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart';
   static const String event ManagementEventListScreen = 'lib/Event Reminder App/Event Management/Event_List_Screen.dart';

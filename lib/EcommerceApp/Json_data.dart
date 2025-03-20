@@ -207,12 +207,12 @@ final typeValues = EnumValues({
 class ProductList {
   String id;
   String trackingId;
-  String productName;
+  String productName; //done
   bool productListExternal;
-  BrandName brandName;
+  BrandName brandName; //done
   String url;
   bool showPriceMarker;
-  List<Price> prices;
+  List<Price> prices; //all done
   Availability availability;
   List<Swatch> swatches;
   List<dynamic> productMarkers;
@@ -575,19 +575,31 @@ class _FetchProductListState extends State<FetchProductList> {
             itemCount: menwear.plpList.productList.length,
             itemBuilder: (context, index) {
               final product = menwear.plpList.productList[index];
+
               return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-               
-                  widgets.Image.network(product.swatches[0].productImage),
-                  widgets.Image.network(product.images[0].url),
-              ListTile(
-              title: Text(product.productName),
-              subtitle: Text(product.brandName.toString()),
-              ),
-]
+
+
+
+                  widgets.Image.network("${product.modelImage}"),
+                  Text("${product.productName.toString().split('.').last}"),
+                  Text("${product.brandName.toString().split('.').last}"), // Removes 'BrandName.' prefix
+                  ExpansionTile(title: Text("Prices"),
+                  children: [
+                     Text("${product.prices[0].price}"),
+                    Text("${product.prices[0].maxPrice}"),
+                    Text("${product.prices[0].minPrice}"),
+                    Text("${product.prices[0].formattedPrice}"),
+                    Text("${product.prices[0].priceType}"),
+                  ],)
+
+                ],
               );
             },
           );
+
         },
       ),
     );

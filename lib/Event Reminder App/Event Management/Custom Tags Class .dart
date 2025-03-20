@@ -98,6 +98,7 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
                   setState(() {
                     Categorycontroller.text=category;
                   });
+                  ref.read(customTagsProvider.notifier).removeTag(category);
                   ref.read(customTagsProvider.notifier).addTag(category);
                 } else {
                   ref.read(customTagsProvider.notifier).removeTag(category);

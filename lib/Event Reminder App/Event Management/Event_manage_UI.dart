@@ -137,7 +137,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
 
 
- TextEditingController _controllerpriority = TextEditingController();//Controller for the Priority Selection make sure of that
   dynamic categoriesvalue;
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _eventDateTimeController = TextEditingController();
@@ -255,11 +254,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
             SizedBox(height: 14,),
 
 
-            Center(
-              child: Text(
-                "Select Date and Time",
-                style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              "Select Date and Time",
+              style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold),
             ),
 
             SizedBox(height:15),
@@ -401,49 +398,18 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
               },
             ),
 
-            SizedBox(height:15),
-            Center(
-              child: ElevatedButton(
-                onPressed: _scheduleNotification,
-                child: Text(
-                  'Schedule Notification',
-                  style: GoogleFonts.poppins(),
-                ),
-              ),
-            ),
-
-
-
-            SizedBox(height: 18,),
+            SizedBox(height:22),
 
 
 
 
-            TextField(
-              controller: _controllerpriority,
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: 'Select Priority',
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 2),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                  borderSide: BorderSide(color: Colors.grey, width: 1),
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              ),
-            ),
 
-            SizedBox(height: 16),
 
-            Row(
+
+
+            Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 26.0),
-                  child: Text("Priority", style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500)),
-                ),
+                Text("Select Priority", style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500)),
 
                 SizedBox(width: 18),
 
@@ -460,10 +426,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                             groupValue: selectedPriority,
                             onChanged: (PriorityLevel? value) {
                               if (value != null) {
-                                setState(() {
-                                  selectedPriority = value;
-                                  _controllerpriority.text = value.name.toUpperCase(); // Update TextField with selected value
-                                });
+
                                 ref.read(radioButtonProvider.notifier).state = value;
                               }
                             },
@@ -477,8 +440,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     if (newValue != null) {
                       setState(() {
                         selectedPriority = newValue;
-                        _controllerpriority.text = newValue.name.toUpperCase(); // Update TextField
-                      });
+                        });
                       ref.read(radioButtonProvider.notifier).state = newValue;
                     }
                   },
@@ -579,6 +541,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Priority")));
                   }
                   else {
+
+                    //First notification set up and after that Database set with data
+                    _scheduleNotification();
 
                     // ✅ Pass Validated Data to AttachWithDB Class (Maintaining Your Structure)
                     AttachWithDB newEvent = AttachWithDB(
@@ -737,7 +702,7 @@ Widget _buildTextField(TextEditingController controller, String label, IconData 
     maxLines: maxLines,
     decoration: InputDecoration(
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(5.0),
       ),
       suffixIcon: Icon(icon, color: Colors.blue.shade700
       ),
