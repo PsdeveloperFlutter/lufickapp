@@ -3,6 +3,8 @@ class Assets {
   Assets._();
 
   static const String aIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart';
+  static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
+  static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
   static const String appGoogleServices = 'android/app/google-services.json';
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
@@ -44,10 +46,10 @@ class Assets {
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
+  static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libEcommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart~';
   static const String libEcommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart~';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
