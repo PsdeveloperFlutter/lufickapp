@@ -14,6 +14,8 @@ class _SimpleFabState extends State<SimpleFab> {
      floatingActionButton: FloatingActionButton(
          onPressed: () {},
          child:SpeedDial(
+           spacing: 12,
+           closeManually: true,
            overlayColor: Colors.blue.shade500,
            overlayOpacity:0.4,
            animatedIcon: AnimatedIcons.menu_close,
