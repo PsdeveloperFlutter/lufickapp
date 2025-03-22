@@ -6,6 +6,7 @@ class Assets {
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
+  static const String animationInFlutterSideBarMenu = 'lib/Animation_in_Flutter/SideBarMenu.dart';
   static const String appGoogleServices = 'android/app/google-services.json';
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';

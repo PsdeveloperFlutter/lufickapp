@@ -12,7 +12,7 @@ class _SimpleFabState extends State<SimpleFab> {
   Widget build(BuildContext context) {
     return Scaffold(
      floatingActionButton: FloatingActionButton(
-         onPressed: () {},
+          onPressed: () {},
          child:SpeedDial(
            spacing: 12,
            closeManually: true,
