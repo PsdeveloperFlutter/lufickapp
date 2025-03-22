@@ -529,63 +529,67 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
             ),
 
             SizedBox(height: 16,),
-            Center(child: ElevatedButton(
+            GestureDetector(
+               onTap: (){
+
+                 if(_eventDateTimeController.text.isEmpty){
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Date and Time")));
+                 }
+                 else if(_eventNameController.text.isEmpty){
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Name")));
+                 }
+                 else if(_eventLocationController.text.isEmpty){
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Location")));
+                 }
+                 else if(_eventDescriptionController.text.isEmpty){
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Description")));
+                 }
+                 else if(selectedPriority==null){
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Priority")));
+                 }
+                 else {
+
+                   //First notification set up and after that Database set with data
+                   _scheduleNotification();
+
+                   // ✅ Pass Validated Data to AttachWithDB Class (Maintaining Your Structure)
+                   AttachWithDB newEvent = AttachWithDB(
+                     name: _eventNameController.text.trim(),
+                     date: _eventDateTimeController.text.trim(),
+                     description: _eventDescriptionController.text.trim(),
+                     location: _eventLocationController.text.trim(),
+                     category: categoriesvalue.toString(),
+                     priority: selectedPriority.toString(),
+                     file: file,  // Keep structure (can add file picker)
+                     image: image, // Keep structure (can add image)
+                     video: video, // Keep structure (can add video)
+                     customCategory: categories, // Keep structure (pass category list)
+                   );
+
+                   print(
+                       "${newEvent.name}"+"${newEvent.date}"+
+                           "${newEvent.description}"+
+                           "${newEvent.location}"+ "${newEvent.category}"+
+                           "${newEvent.priority}"+ "${newEvent.file}"+
+                           "${newEvent.image}"+ "${newEvent.video}"+
+                           "${newEvent.customCategory}");
+                   //This is the Sending Data to the Database
 
 
+                   newEvent.connect(context); //call the function which connect the database to our project
 
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade500
-                ,minimumSize: Size(350,45)),
-                onPressed: (){
-
-                  if(_eventDateTimeController.text.isEmpty){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Date and Time")));
-                  }
-                  else if(_eventNameController.text.isEmpty){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Name")));
-                  }
-                  else if(_eventLocationController.text.isEmpty){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Location")));
-                  }
-                  else if(_eventDescriptionController.text.isEmpty){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Event Description")));
-                  }
-                  else if(selectedPriority==null){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Priority")));
-                  }
-                  else {
-
-                    //First notification set up and after that Database set with data
-                    _scheduleNotification();
-
-                    // ✅ Pass Validated Data to AttachWithDB Class (Maintaining Your Structure)
-                    AttachWithDB newEvent = AttachWithDB(
-                      name: _eventNameController.text.trim(),
-                      date: _eventDateTimeController.text.trim(),
-                      description: _eventDescriptionController.text.trim(),
-                      location: _eventLocationController.text.trim(),
-                      category: categoriesvalue.toString(),
-                      priority: selectedPriority.toString(),
-                      file: file,  // Keep structure (can add file picker)
-                      image: image, // Keep structure (can add image)
-                      video: video, // Keep structure (can add video)
-                      customCategory: categories, // Keep structure (pass category list)
-                    );
-
-                            print(
-     "${newEvent.name}"+"${newEvent.date}"+
-     "${newEvent.description}"+
-     "${newEvent.location}"+ "${newEvent.category}"+
-     "${newEvent.priority}"+ "${newEvent.file}"+
-     "${newEvent.image}"+ "${newEvent.video}"+
-     "${newEvent.customCategory}");
-      //This is the Sending Data to the Database
-
-
-     newEvent.connect(context); //call the function which connect the database to our project
-
-                  }
-                },
-                child: Text("Submit",style: TextStyle(color: Colors.white),)),)
+                 }
+               },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.green.shade500,
+                  borderRadius: BorderRadius.circular(7)
+                ),
+                width: 300,
+                height: 48,
+                child:Center(child: Text("Submit",style: TextStyle(color:Colors.white,fontSize: 20),))
+              ),
+            )
           ],
         ),
 

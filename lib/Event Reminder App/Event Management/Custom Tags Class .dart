@@ -49,43 +49,8 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
-          controller: Categorycontroller,
-          readOnly: true,
-          decoration: InputDecoration(
-            hintStyle: GoogleFonts.poppins(fontSize: 15,fontWeight: FontWeight.w600)
-                ,hintText: "Select Categroy",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-        ),
+        Text("Select Categroy",style: TextStyle(color: Colors.black,fontSize: 17),),
         SizedBox(height: 15,),
-        TextField(
-          controller: _tagController,
-          decoration: InputDecoration(
-            hintStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
-            labelStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
-            hintText: "Enter a custom Category",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide.none,
-            ),
-            labelText: "Add Custom Category",
-            suffixIcon: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Categorycontroller.text=_tagController.text.toString();
-                if (_tagController.text.isNotEmpty) {
-                  ref.read(customTagsProvider.notifier).addTag(_tagController.text.trim());
-                  _tagController.clear();
-                }
-              },
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-
         Text("Default Categories:", style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500)),
         Wrap(
           spacing: 8.0,
@@ -118,6 +83,33 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
             );
           }).toList(),
         ),
+        SizedBox(height: 10,),
+        TextField(
+          controller: _tagController,
+          decoration: InputDecoration(
+            hintStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+            labelStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+            hintText: "Enter a custom Category",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide.none,
+            ),
+            labelText: "Add Custom Category",
+            suffixIcon: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Categorycontroller.text=_tagController.text.toString();
+                if (_tagController.text.isNotEmpty) {
+                  ref.read(customTagsProvider.notifier).addTag(_tagController.text.trim());
+                  _tagController.clear();
+                }
+              },
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+
+
       ],
     );
   }
