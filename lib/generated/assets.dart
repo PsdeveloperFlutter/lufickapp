@@ -4,6 +4,7 @@ class Assets {
 
   static const String aIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
+  static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
   static const String appGoogleServices = 'android/app/google-services.json';
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
@@ -25,6 +26,7 @@ class Assets {
   static const String event ManagementVideoPlayer = 'lib/Event Reminder App/Event Management/Video_Player.dart';
   static const String event Reminder AppController of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart~';
   static const String event Reminder AppEvent ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart~';
+  static const String event Reminder AppEvent ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart~';
   static const String event Reminder AppLoginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart~';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
   static const String firebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
@@ -47,9 +49,11 @@ class Assets {
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
+  static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libEcommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart~';
   static const String libEcommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart~';
+  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
