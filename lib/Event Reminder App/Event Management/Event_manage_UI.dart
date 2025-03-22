@@ -417,13 +417,13 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
                 Container(
                   decoration: BoxDecoration(
-                    color:Colors.white,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.white60)
                   ),
                   width:300,
                   child: Center(
                     child: DropdownButton<PriorityLevel>(
+                      isExpanded: true,
                       hint: Text("Select Priority", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
                       value: selectedPriority,
                       items: PriorityLevel.values.map((priority) {
@@ -583,11 +583,11 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.green.shade500,
-                  borderRadius: BorderRadius.circular(7)
+                  borderRadius: BorderRadius.circular(5)
                 ),
                 width: 300,
                 height: 48,
-                child:Center(child: Text("Submit",style: TextStyle(color:Colors.white,fontSize: 20),))
+                child:Center(child: Text("Submit",style: TextStyle(color:Colors.white,fontSize: 15),))
               ),
             )
           ],

@@ -39,7 +39,7 @@ class CustomTagsWidget extends ConsumerStatefulWidget {
 class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
-
+   String fetchvalue=" ";
   @override
   void dispose() {
     _tagController.dispose();
@@ -56,7 +56,7 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
       children: [
         Text(
           "Select Category",
-          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.w300),
+          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 10),
 
@@ -65,7 +65,6 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
           controller: categoryController,
           readOnly: true,
           decoration: InputDecoration(
-            hintText: "Selected category will appear here",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -150,6 +149,9 @@ class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
                   final tag = _tagController.text.trim();
                   if (tag.isNotEmpty) {
                     categoryController.text = tag; // Update text field
+                    setState(() {
+                      fetchvalue=categoryController.text.toString();
+                    });
                     ref.read(customTagsProvider.notifier).addTag(tag);
                     _tagController.clear();
                     Navigator.pop(context); // Close the dialog after adding
