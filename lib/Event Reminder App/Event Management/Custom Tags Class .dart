@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get_storage/get_storage.dart';
 
-final customTagsProvider = StateNotifierProvider<CustomTagsNotifier, List<String>>((ref) {
+final box = GetStorage();
+
+final customTagsProvider =
+StateNotifierProvider<CustomTagsNotifier, List<String>>((ref) {
   return CustomTagsNotifier();
 });
 
@@ -14,8 +17,10 @@ class CustomTagsNotifier extends StateNotifier<List<String>> {
   }
 
   void addTag(String tag) {
-    state = [...state, tag];
-    box.write('customTags', state);
+    if (!state.contains(tag)) {
+      state = [...state, tag];
+      box.write('customTags', state);
+    }
   }
 
   void removeTag(String tag) {
@@ -24,8 +29,7 @@ class CustomTagsNotifier extends StateNotifier<List<String>> {
   }
 }
 
-final box = GetStorage();
-final List<String> defaultCategories = ["Work", "Personal", "Meeting", ];
+final List<String> defaultCategories = ["Work", "Personal", "Meeting"];
 
 class CustomTagsWidget extends ConsumerStatefulWidget {
   @override
@@ -34,83 +38,149 @@ class CustomTagsWidget extends ConsumerStatefulWidget {
 
 class _CustomTagsWidgetState extends ConsumerState<CustomTagsWidget> {
   final TextEditingController _tagController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
 
   @override
   void dispose() {
     _tagController.dispose();
+    categoryController.dispose();
     super.dispose();
   }
 
-  TextEditingController Categorycontroller=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final List<String> customTags = ref.watch(customTagsProvider);
+    final customTags = ref.watch(customTagsProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Select Categroy",style: TextStyle(color: Colors.black,fontSize: 17),),
-        SizedBox(height: 15,),
-        Text("Default Categories:", style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500)),
-        Wrap(
-          spacing: 8.0,
-          children: defaultCategories.map((category) {
-            return ChoiceChip(
-              label: Text(category, style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400)),
-              selected: customTags.contains(category),
-              onSelected: (bool selected) {
-                if (selected) {
-                  setState(() {
-                    Categorycontroller.text=category;
-                  });
-                  ref.read(customTagsProvider.notifier).removeTag(category);
-                  ref.read(customTagsProvider.notifier).addTag(category);
-                } else {
-                  ref.read(customTagsProvider.notifier).removeTag(category);
-                }
-              },
-            );
-          }).toList(),
+        Text(
+          "Select Category",
+          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.w300),
         ),
         SizedBox(height: 10),
 
-        Wrap(
-          spacing: 8.0,
-          children: customTags.map((tag) {
-            return Chip(
-              label: Text(tag, style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400)),
-              onDeleted: () => ref.read(customTagsProvider.notifier).removeTag(tag),
-            );
-          }).toList(),
-        ),
-        SizedBox(height: 10,),
+        /// TextField to Display Selected Category
         TextField(
-          controller: _tagController,
+          controller: categoryController,
+          readOnly: true,
           decoration: InputDecoration(
-            hintStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
-            labelStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
-            hintText: "Enter a custom Category",
+            hintText: "Selected category will appear here",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide.none,
-            ),
-            labelText: "Add Custom Category",
-            suffixIcon: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Categorycontroller.text=_tagController.text.toString();
-                if (_tagController.text.isNotEmpty) {
-                  ref.read(customTagsProvider.notifier).addTag(_tagController.text.trim());
-                  _tagController.clear();
-                }
-              },
             ),
           ),
         ),
-        SizedBox(height: 10),
 
+        SizedBox(height: 15),
+
+        /// Default Categories Section
+        Text(
+          "Default Categories:",
+          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Wrap(
+                spacing: 8.0,
+                children: defaultCategories.map((category) {
+                  return ChoiceChip(
+                    label: Text(
+                      category,
+                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400),
+                    ),
+                    selected: categoryController.text == category,
+                    onSelected: (bool selected) {
+                      if (selected) {
+                        categoryController.text = category; // Update selected category
+                      } else {
+                        categoryController.clear(); // Clear when unselected
+                      }
+                    },
+                  );
+                }).toList(),
+              ),
+              IconButton(onPressed: (){
+                showCustomCategoryDialog(context,ref,categoryController);
+              }, icon: Icon(Icons.add))
+            ],
+          ),
+        ),
+        SizedBox(height: 15),
 
       ],
     );
   }
+
+
+
+
+
+
+
+//This is the code of the Show Dialog Box Make sure of that
+  void showCustomCategoryDialog(BuildContext context, WidgetRef ref, TextEditingController categoryController) {
+    final TextEditingController _tagController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: Text(
+            "Add Custom Category",
+            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          content: TextField(
+            controller: _tagController,
+            decoration: InputDecoration(
+              hintStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+              labelStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+              hintText: "Enter a custom Category",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              labelText: "Add Custom Category",
+              suffixIcon: IconButton(
+                icon: Icon(Icons.add, color: Colors.green),
+                onPressed: () {
+                  final tag = _tagController.text.trim();
+                  if (tag.isNotEmpty) {
+                    categoryController.text = tag; // Update text field
+                    ref.read(customTagsProvider.notifier).addTag(tag);
+                    _tagController.clear();
+                    Navigator.pop(context); // Close the dialog after adding
+                  }
+                },
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close dialog
+              },
+              child: Text(
+                "Cancel",
+                style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
+
+
+
+
+
+
+
+
+
