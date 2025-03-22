@@ -408,42 +408,54 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
 
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Select Priority", style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500)),
 
                 SizedBox(width: 18),
 
-                DropdownButton<PriorityLevel>(
-                  hint: Text("Select Priority", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
-                  value: selectedPriority,
-                  items: PriorityLevel.values.map((priority) {
-                    return DropdownMenuItem<PriorityLevel>(
-                      value: priority,
-                      child: Row(
-                        children: [
-                          Radio<PriorityLevel>(
-                            value: priority,
-                            groupValue: selectedPriority,
-                            onChanged: (PriorityLevel? value) {
-                              if (value != null) {
+                Container(
+                  decoration: BoxDecoration(
+                    color:Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white60)
+                  ),
+                  width:300,
+                  child: Center(
+                    child: DropdownButton<PriorityLevel>(
+                      hint: Text("Select Priority", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
+                      value: selectedPriority,
+                      items: PriorityLevel.values.map((priority) {
+                        return DropdownMenuItem<PriorityLevel>(
+                          value: priority,
+                          child: Row(
+                            children: [
+                              Radio<PriorityLevel>(
+                                value: priority,
+                                groupValue: selectedPriority,
+                                onChanged: (PriorityLevel? value) {
+                                  if (value != null) {
 
-                                ref.read(radioButtonProvider.notifier).state = value;
-                              }
-                            },
+                                    ref.read(radioButtonProvider.notifier).state = value;
+                                  }
+                                },
+                              ),
+                              Text(priority.name.toUpperCase(), style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text(priority.name.toUpperCase(), style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600)),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (PriorityLevel? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedPriority = newValue;
-                        });
-                      ref.read(radioButtonProvider.notifier).state = newValue;
-                    }
-                  },
+                        );
+                      }).toList(),
+                      onChanged: (PriorityLevel? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedPriority = newValue;
+                            });
+                          ref.read(radioButtonProvider.notifier).state = newValue;
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -501,11 +513,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
             // Media Selection Row
             // Add header text
-            Center(
-              child: Text(
-                "Upload Related Files",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              "Upload Related Files",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 22,),
             Row(
@@ -521,8 +531,10 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
             SizedBox(height: 16,),
             Center(child: ElevatedButton(
 
+
+
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade500
-                ,minimumSize: Size(250,45)),
+                ,minimumSize: Size(350,45)),
                 onPressed: (){
 
                   if(_eventDateTimeController.text.isEmpty){
