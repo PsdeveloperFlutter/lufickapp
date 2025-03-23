@@ -8,58 +8,56 @@ class ProgressButton extends StatefulWidget {
 }
 
 class _ProgressButtonState extends State<ProgressButton> {
+  bool isLoading = false; // ✅ Initialize isLoading to false
+
   @override
   Widget build(BuildContext context) {
-    bool isloading=true;
-    return
-        Scaffold(
-          body:
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(32),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 24),
-                      minimumSize: Size.fromHeight(72),
-                      shape: StadiumBorder()),
-                      onPressed: ()async{
-                        if(isloading)return;
+    return Scaffold(
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(32),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              textStyle: TextStyle(fontSize: 24),
+              minimumSize: Size.fromHeight(72),
+              shape: StadiumBorder(),
+            ),
+            onPressed: isLoading ? null : () async { // ✅ Disable button while loading
+              setState(() {
+                isLoading = true;
+              });
 
+              await Future.delayed(Duration(seconds: 5));
 
-                        setState(() {
-                          isloading=true;
-                        });
-
-                        await Future.delayed(Duration(seconds: 5));
-                        setState(() {
-                          isloading=false;
-                        });
-                      }, child: isloading?
-
-                  Row(
-                    children: [
-                      CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 24,),
-                      Text("Please Wait....")
-                    ],
-                  ):Text("Login")
-
+              setState(() {
+                isLoading = false;
+              });
+            },
+            child: isLoading
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.center, // ✅ Center align content
+              children: [
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 3,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(width: 16),
+                Text("Please Wait...")
+              ],
+            )
+                : Text("Login"),
           ),
-        );
+        ),
+      ),
+    );
   }
 }
 
-
-void main(){
-runApp(MaterialApp(home:ProgressButton()));
+void main() {
+  runApp(MaterialApp(home: ProgressButton()));
 }

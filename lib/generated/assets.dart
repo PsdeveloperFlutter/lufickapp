@@ -4,6 +4,7 @@ class Assets {
 
   static const String aIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart';
   static const String animationInFlutterAnimatedProgressButton = 'lib/Animation_in_Flutter/AnimatedProgressButton.dart';
+  static const String animationInFlutterAnimatedProgressButton2 = 'lib/Animation_in_Flutter/AnimatedProgressButton2.dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
@@ -52,10 +53,10 @@ class Assets {
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
-  static const String libAnimationInFlutterSideBarMenu = 'lib/Animation_in_Flutter/SideBarMenu.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libEcommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart~';
   static const String libEcommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart~';
+  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
