@@ -16,8 +16,10 @@ class _SimpleStatelessWidgetState extends State<SimpleStatelessWidget> {
       body: Column(
         children: [
           Center(
-            child:Lottie.network('https://lottie.host/embed/004b9814-b2e8-426e-a563-8fac6364f82d/iDewLckLKF.lottie'
-            ,height: 200,width: 200),
+            child:Lottie.network(
+                'https://assets9.lottiefiles.com/packages/lf20_CTaizi.json',
+                errorBuilder: (context, error, stackTrace) => Text("Failed to load animation")
+            ),
 
           ),
         ],
