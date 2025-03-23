@@ -10,7 +10,6 @@ class ProgressButtons extends StatefulWidget {
 }
 
 class _ProgressButtonsState extends State<ProgressButtons> {
-  ButtonState state = ButtonState.init;
 
   @override
   Widget build(BuildContext context) {
