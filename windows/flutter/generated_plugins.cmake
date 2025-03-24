@@ -13,6 +13,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   flutter_timezone
   flutter_tts
   local_auth_windows
+  rive_common
   share_plus
   url_launcher_windows
 )
