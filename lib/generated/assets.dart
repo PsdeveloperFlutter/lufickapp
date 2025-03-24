@@ -10,6 +10,7 @@ class Assets {
   static const String animationInFlutterLottiefile = 'lib/Animation_in_Flutter/Lottiefile.dart';
   static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
   static const String animationInFlutterSideBarMenu = 'lib/Animation_in_Flutter/SideBarMenu.dart';
+  static const String animationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart';
   static const String appGoogleServices = 'android/app/google-services.json';
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
@@ -57,7 +58,6 @@ class Assets {
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libEcommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart~';
   static const String libEcommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart~';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
