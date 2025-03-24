@@ -7,6 +7,7 @@ class Assets {
   static const String animationInFlutterAnimatedProgressButton2 = 'lib/Animation_in_Flutter/AnimatedProgressButton2.dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
   static const String animationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart';
+  static const String animationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterLottiefile = 'lib/Animation_in_Flutter/Lottiefile.dart';
   static const String animationInFlutterRiveAnimation = 'lib/Animation_in_Flutter/RiveAnimation.dart';
@@ -59,6 +60,7 @@ class Assets {
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
+  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
