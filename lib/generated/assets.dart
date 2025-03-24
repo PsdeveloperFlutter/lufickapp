@@ -6,6 +6,7 @@ class Assets {
   static const String animationInFlutterAnimatedProgressButton = 'lib/Animation_in_Flutter/AnimatedProgressButton.dart';
   static const String animationInFlutterAnimatedProgressButton2 = 'lib/Animation_in_Flutter/AnimatedProgressButton2.dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
+  static const String animationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterLottiefile = 'lib/Animation_in_Flutter/Lottiefile.dart';
   static const String animationInFlutterRiveAnimation = 'lib/Animation_in_Flutter/RiveAnimation.dart';
@@ -21,8 +22,6 @@ class Assets {
   static const String controller of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart';
   static const String dataBaseDatabaseFile = 'lib/Flutter_Social_App/DataBase/DatabaseFile.dart';
   static const String databaseMainDatabaseApp = 'lib/Event Reminder App/Database/Main_Database_App.dart';
-  static const String ecommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart';
-  static const String ecommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart';
   static const String event ManagementCalendar = 'lib/Event Reminder App/Event Management/Calendar.dart';
   static const String event ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart';
   static const String event ManagementEventListScreen = 'lib/Event Reminder App/Event Management/Event_List_Screen.dart';
@@ -56,12 +55,10 @@ class Assets {
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
+  static const String libAnimationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart~';
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
-  static const String libEcommerceAppJsonData = 'lib/EcommerceApp/Json_data.dart~';
-  static const String libEcommerceAppUIFile = 'lib/EcommerceApp/UI_File.dart~';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';

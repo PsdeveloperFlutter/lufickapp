@@ -27,5 +27,5 @@ class _textanimationState extends State<textanimation> {
   }
 }
 void main(){
-  runApp(MaterialApp(home:textanimation());
+  runApp(MaterialApp(home:textanimation()));
 }
