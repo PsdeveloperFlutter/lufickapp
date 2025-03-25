@@ -3,6 +3,7 @@ class Assets {
   Assets._();
 
   static const String aIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart';
+  static const String animationInFlutterAnimated List = 'lib/Animation_in_Flutter/Animated List.dart';
   static const String animationInFlutterAnimatedProgressButton = 'lib/Animation_in_Flutter/AnimatedProgressButton.dart';
   static const String animationInFlutterAnimatedProgressButton2 = 'lib/Animation_in_Flutter/AnimatedProgressButton2.dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
