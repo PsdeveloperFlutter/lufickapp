@@ -9,6 +9,7 @@ class Assets {
   static const String animationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart';
   static const String animationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
+  static const String animationInFlutterFlipping Card = 'lib/Animation_in_Flutter/Flipping Card.dart';
   static const String animationInFlutterLottiefile = 'lib/Animation_in_Flutter/Lottiefile.dart';
   static const String animationInFlutterRiveAnimation = 'lib/Animation_in_Flutter/RiveAnimation.dart';
   static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
@@ -57,10 +58,10 @@ class Assets {
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
   static const String libAnimationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart~';
+  static const String libAnimationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart~';
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
