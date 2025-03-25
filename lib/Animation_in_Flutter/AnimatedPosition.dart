@@ -1,52 +1,56 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
-class animatedPosition extends StatefulWidget {
-  const animatedPosition({super.key});
+class AnimatedPositionExample extends StatefulWidget {
+  const AnimatedPositionExample({super.key});
 
   @override
-  State<animatedPosition> createState() => _animatedPositionState();
+  State<AnimatedPositionExample> createState() => _AnimatedPositionExampleState();
 }
 
-class _animatedPositionState extends State<animatedPosition> {
+class _AnimatedPositionExampleState extends State<AnimatedPositionExample> {
+  double lvalue = 50;
+  double rvalue = 50;
+
+  void _moveBox() {
+    setState(() {
+      // Randomly change left and right values
+      lvalue = Random().nextDouble() * 200;
+      rvalue = Random().nextDouble() * 200;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    double lvalue=200;
-    double rvalue=200;
     return Scaffold(
-      body:Stack(
+      appBar: AppBar(title: Text("Animated Positioned Example")),
+      body: Stack(
         children: [
-          AnimatedPositioned(child:
-          Container(
-            width: 200,
-            height: 200,
-            color: Colors.blue.shade500,
-          ), duration: Duration(milliseconds: 300),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
             curve: Curves.bounceIn,
-             left: lvalue,
+            left: lvalue,
             right: rvalue,
-
+            child: Container(
+              width: 100,
+              height: 100,
+              color: Colors.blue,
+            ),
           ),
           Positioned(
             bottom: 50,
             left: 100,
             child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                 lvalue==200?Random().nextDouble()*200:lvalue=200;
-                 rvalue==200?Random().nextDouble()*200:rvalue=200;
-
-                });
-              },
+              onPressed: _moveBox,
               child: Text("Move Box"),
             ),
           ),
         ],
-      ) ,
+      ),
     );
   }
 }
-void main(){
-  runApp(MaterialApp(home:animatedPosition(),));
+
+void main() {
+  runApp(MaterialApp(home: AnimatedPositionExample()));
 }

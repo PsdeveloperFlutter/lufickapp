@@ -6,6 +6,7 @@ class Assets {
   static const String animationInFlutterAnimated List = 'lib/Animation_in_Flutter/Animated List.dart';
   static const String animationInFlutterAnimated Switcher = 'lib/Animation_in_Flutter/Animated Switcher.dart';
   static const String animationInFlutterAnimatedPosition = 'lib/Animation_in_Flutter/AnimatedPosition.dart';
+  static const String animationInFlutterAnimatedPositioned = 'lib/Animation_in_Flutter/AnimatedPositioned.dart';
   static const String animationInFlutterAnimatedProgressButton = 'lib/Animation_in_Flutter/AnimatedProgressButton.dart';
   static const String animationInFlutterAnimatedProgressButton2 = 'lib/Animation_in_Flutter/AnimatedProgressButton2.dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
@@ -59,13 +60,14 @@ class Assets {
   static const String imagesToDoLogo (2) = 'assets/images/ToDoLogo (2).jpg';
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
+  static const String libAnimationInFlutterAnimated Switcher = 'lib/Animation_in_Flutter/Animated Switcher.dart~';
+  static const String libAnimationInFlutterAnimatedPosition = 'lib/Animation_in_Flutter/AnimatedPosition.dart~';
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
   static const String libAnimationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart~';
   static const String libAnimationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart~';
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
