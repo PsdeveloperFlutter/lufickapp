@@ -9,9 +9,11 @@ class Assets {
   static const String animationInFlutterAnimatedPositioned = 'lib/Animation_in_Flutter/AnimatedPositioned.dart';
   static const String animationInFlutterAnimatedProgressButton = 'lib/Animation_in_Flutter/AnimatedProgressButton.dart';
   static const String animationInFlutterAnimatedProgressButton2 = 'lib/Animation_in_Flutter/AnimatedProgressButton2.dart';
+  static const String animationInFlutterAnimation Builder with Tween  = 'lib/Animation_in_Flutter/Animation Builder with Tween .dart';
   static const String animationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart';
   static const String animationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart';
   static const String animationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart';
+  static const String animationInFlutterAnimationRotation = 'lib/Animation_in_Flutter/AnimationRotation.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterFlipping Card = 'lib/Animation_in_Flutter/Flipping Card.dart';
   static const String animationInFlutterLottiefile = 'lib/Animation_in_Flutter/Lottiefile.dart';
@@ -61,7 +63,6 @@ class Assets {
   static const String imagesWeather = 'assets/images/weather.png';
   static const String libAIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart~';
   static const String libAnimationInFlutterAnimated Switcher = 'lib/Animation_in_Flutter/Animated Switcher.dart~';
-  static const String libAnimationInFlutterAnimatedPosition = 'lib/Animation_in_Flutter/AnimatedPosition.dart~';
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
   static const String libAnimationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart~';
   static const String libAnimationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart~';
