@@ -4,6 +4,7 @@ class Assets {
 
   static const String aIChatBotMainChatBot = 'lib/AI_Chat_Bot/main_chat_bot.dart';
   static const String animationInFlutterAnimated List = 'lib/Animation_in_Flutter/Animated List.dart';
+  static const String animationInFlutterAnimated List  = 'lib/Animation_in_Flutter/Animated List .dart';
   static const String animationInFlutterAnimated Switcher = 'lib/Animation_in_Flutter/Animated Switcher.dart';
   static const String animationInFlutterAnimatedPosition = 'lib/Animation_in_Flutter/AnimatedPosition.dart';
   static const String animationInFlutterAnimatedPositioned = 'lib/Animation_in_Flutter/AnimatedPositioned.dart';
@@ -14,12 +15,14 @@ class Assets {
   static const String animationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart';
   static const String animationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart';
   static const String animationInFlutterAnimationRotation = 'lib/Animation_in_Flutter/AnimationRotation.dart';
+  static const String animationInFlutterColorTween = 'lib/Animation_in_Flutter/ColorTween.dart';
   static const String animationInFlutterFabButton = 'lib/Animation_in_Flutter/Fab_Button.dart';
   static const String animationInFlutterFlipping Card = 'lib/Animation_in_Flutter/Flipping Card.dart';
   static const String animationInFlutterLottiefile = 'lib/Animation_in_Flutter/Lottiefile.dart';
   static const String animationInFlutterRiveAnimation = 'lib/Animation_in_Flutter/RiveAnimation.dart';
   static const String animationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart';
   static const String animationInFlutterSideBarMenu = 'lib/Animation_in_Flutter/SideBarMenu.dart';
+  static const String animationInFlutterSizeTween = 'lib/Animation_in_Flutter/SizeTween.dart';
   static const String animationInFlutterTextAnimation = 'lib/Animation_in_Flutter/TextAnimation.dart';
   static const String animationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart';
   static const String appGoogleServices = 'android/app/google-services.json';
@@ -66,6 +69,7 @@ class Assets {
   static const String libAnimationInFlutterAnimation1 = 'lib/Animation_in_Flutter/Animation1.dart~';
   static const String libAnimationInFlutterAnimationContainer = 'lib/Animation_in_Flutter/AnimationContainer.dart~';
   static const String libAnimationInFlutterAnimationOpacity = 'lib/Animation_in_Flutter/AnimationOpacity.dart~';
+  static const String libAnimationInFlutterAnimationRotation = 'lib/Animation_in_Flutter/AnimationRotation.dart~';
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
