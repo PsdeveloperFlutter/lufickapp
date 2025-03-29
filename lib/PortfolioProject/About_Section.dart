@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(MaterialApp(
@@ -32,66 +33,71 @@ class AboutScreen extends StatefulWidget {
   _AboutScreenState createState() => _AboutScreenState();
 }
 
-class _AboutScreenState extends State<AboutScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<Color?> animationsColor;
+class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin {
+  late AnimationController _rotationController;
+  late Animation<double> _rotationAnimation;
 
+  late AnimationController _colorController;
+  late Animation<Color?> _colorAnimation;
 
-  late AnimationController animationControllerofsize;
+  late AnimationController _sizeController;
+  late Animation<double> _sizeAnimation;
 
-  late Animation<double> animationsSize;
-
-
+  bool _isExpanded = false;
 
   @override
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
+    // Step 1: Rotation Animation (First Animation)
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+
+    _rotationAnimation = Tween<double>(begin: 0, end: pi * 2)
+        .animate(CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut))
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _colorController.forward(); // Start color animation after rotation completes
+        }
+      });
+
+    // Step 2: Color Animation
+    _colorController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
     );
 
-    animationsColor = ColorTween(begin: Colors.pink, end: Colors.blue)
-        .animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.yellow)
+        .animate(CurvedAnimation(parent: _colorController, curve: Curves.easeInOut))
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _sizeController.forward(); // Start size animation after color animation completes
+        }
+      });
 
-    // Delayed animation start after navigation
-    Future.delayed(Duration(seconds: 5), () {
-      _animationController.forward();
-    });
-
-    _animationController.addListener(() {
-      setState(() {});
-    });
-
-
-
-
-    //Here I set the Animation for the Size make sure of that When the USER Came here so the size will starting change make sure of that
-
-
-    animationControllerofsize = AnimationController(
+    // Step 3: Size Animation
+    _sizeController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
     );
 
-    animationsSize = Tween<double>(begin: 100, end: 200)
-        .animate(CurvedAnimation(parent: animationControllerofsize, curve: Curves.easeInOut));
-    //here set the future delayed option here make sure of that
-    Future.delayed(Duration(seconds: 3), () {
-      animationControllerofsize.forward();
+    _sizeAnimation = Tween<double>(begin: 100, end: 460).animate(
+      CurvedAnimation(parent: _sizeController, curve: Curves.easeInOut),
+    );
+
+    // Start the first animation when the screen appears
+    Future.delayed(Duration(milliseconds: 300), () {
+      _rotationController.forward();
     });
-
-    animationControllerofsize.addListener(() {
-      setState(() {});
-    });
-
-
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _rotationController.dispose();
+    _colorController.dispose();
+    _sizeController.dispose();
     super.dispose();
   }
 
@@ -100,63 +106,81 @@ class _AboutScreenState extends State<AboutScreen> with SingleTickerProviderStat
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            AnimatedContainer(
-              duration: Duration(seconds: 1),
-              curve: Curves.easeInOut,
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: animationsSize.value,
-              margin: EdgeInsets.only(top: 50),
-              decoration: BoxDecoration(
-                color: animationsColor.value,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: EdgeInsets.only(top: 80, left: 20, right: 20),
-              child: animationsSize.value>100
-                  ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Dev Guru",
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Flutter Developer | AI Enthusiast",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "I am a passionate Flutter developer with expertise in AI integrations, state management, and UI/UX design. I love creating modern and interactive mobile applications.",
-                    style: TextStyle(fontSize: 14, color: Colors.white70),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              )
-                  : null,
-            ),
-            Positioned(
-              top: 20,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
+        child: AnimatedBuilder(
+          animation: Listenable.merge([_rotationController, _colorController, _sizeController]),
+          builder: (context, child) {
+            return Transform.rotate(
+              angle: _rotationAnimation.value, // Rotation Animation
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      curve: Curves.easeInOut,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: _sizeAnimation.value,
+                      margin: EdgeInsets.only(top: 50),
+                      decoration: BoxDecoration(
+                        color: _colorAnimation.value,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: EdgeInsets.only(top: 80, left: 20, right: 20),
+                      child: _sizeAnimation.value > 100
+                          ? SingleChildScrollView(
+                            child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                            Text(
+                              "Priyanshu Satija",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Flutter Developer | AI Enthusiast",
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "I am a passionate Flutter developer with expertise in AI integrations, state management, and UI/UX design. I love creating modern and interactive mobile applications and also working with Smooth Animations and Currently Working as Flutter Developer in Min Product Base Company Lufick Technology Pvt Ltd ",
+                              style: TextStyle(fontSize: 14, color: Colors.black),
+                              textAlign: TextAlign.center,
+                            ),
+                                                ],
+                                              ),
+                          )
+                          : null,
+                    ),
 
-                    animationControllerofsize.animateTo(animationsSize.value > 100 ? 100 : MediaQuery.of(context).size.height * 0.6);
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/images/profile.jpg'),
+
+                    Positioned(
+                      bottom: 410,
+                      left: 50,
+                      right: 50,
+                      child:
+                        CircleAvatar(
+                         backgroundColor: Colors.purpleAccent,
+                          radius: 50,
+                          child: Center(
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/IMG-20250322-WA0060.jpg',
+                               width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

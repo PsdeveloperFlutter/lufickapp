@@ -58,6 +58,9 @@ class Assets {
   static const String imagesFluttersocial = 'assets/images/fluttersocial.jpg';
   static const String imagesIMG20240302171902 = 'assets/images/IMG20240302171902.jpg';
   static const String imagesIMG20240731231330976 = 'assets/images/IMG_20240731_231330_976.jpg';
+  static const String imagesIMG20250322WA0055 = 'assets/images/IMG-20250322-WA0055.jpg';
+  static const String imagesIMG20250322WA0059 = 'assets/images/IMG-20250322-WA0059.jpg';
+  static const String imagesIMG20250322WA0060 = 'assets/images/IMG-20250322-WA0060.jpg';
   static const String imagesNature1. = 'assets/images/nature1..jpg';
   static const String imagesNature2 = 'assets/images/nature2.jpg';
   static const String imagesNature3 = 'assets/images/nature3.jpg';
@@ -75,6 +78,7 @@ class Assets {
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
+  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
@@ -95,6 +99,7 @@ class Assets {
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
   static const String portfolioProjectAboutSection = 'lib/PortfolioProject/About_Section.dart';
+  static const String portfolioProjectBackgroundAnimation = 'lib/PortfolioProject/Background_Animation.dart';
   static const String portfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
   static const String riverPodNotificationRiverPod = 'lib/Event Reminder App/NotificationCode/RiverPod_Notification/RiverPod.dart';
