@@ -94,6 +94,7 @@ class Assets {
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
+  static const String portfolioProjectAboutSection = 'lib/PortfolioProject/About_Section.dart';
   static const String portfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
   static const String riverPodNotificationRiverPod = 'lib/Event Reminder App/NotificationCode/RiverPod_Notification/RiverPod.dart';

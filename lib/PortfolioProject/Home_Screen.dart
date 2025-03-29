@@ -4,6 +4,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'About_Section.dart';
+
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -14,7 +16,7 @@ final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
 });
 
 /// 🎨 Theme Notifier for Dark Mode
-class ThemeNotifier extends StateNotifier<ThemeMode> {
+ class ThemeNotifier extends StateNotifier<ThemeMode> {
   ThemeNotifier() : super(ThemeMode.light) {
     _loadTheme();
   }
@@ -36,6 +38,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
   Future<void> _saveTheme(ThemeMode theme) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isDark', theme == ThemeMode.dark);
+
   }
 }
 
@@ -78,16 +81,16 @@ class _ZoomDrawerScreenState extends State<ZoomDrawerScreen> {
       mainScreen: const HomeScreenProject(),
       borderRadius: 24.0,
       showShadow: true,
-      angle: -18.0,
-      duration: Duration(seconds: 10),
+      angle: -10.0,
+      duration: Duration(seconds: 3),
       slideWidth: MediaQuery.of(context).size.width * 0.7,
-      openCurve: Curves.easeInCirc,
-      closeCurve: Curves.easeIn,
+      openCurve: Curves.bounceIn,
+      closeCurve: Curves.bounceInOut,
       drawerShadowsBackgroundColor: Color(0xff000000),
       clipMainScreen: EditableText.debugDeterministicCursor,
-  menuBackgroundColor: Colors.greenAccent.shade200,
+  menuBackgroundColor: Colors.lightBlueAccent,
       shadowLayer1Color: Colors.yellowAccent,
-      shadowLayer2Color: Colors.purple.shade50,
+      shadowLayer2Color: Colors.purpleAccent,
 
       //    mainScreenOverlayColor: Colors.green.shade200,
     );
@@ -208,6 +211,12 @@ class HomeScreenProject extends ConsumerWidget {
             backgroundColor: Colors.yellow,
             child: const Icon(Icons.info),
             label: "About Me",
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return AboutScreen();
+
+              }));
+            }
           ),
           SpeedDialChild(
             backgroundColor: Colors.greenAccent,
