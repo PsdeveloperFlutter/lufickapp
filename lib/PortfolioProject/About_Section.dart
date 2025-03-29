@@ -69,7 +69,7 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
       duration: Duration(seconds: 2),
     );
 
-    _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.yellow)
+    _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.blue.shade500)
         .animate(CurvedAnimation(parent: _colorController, curve: Curves.easeInOut))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -104,7 +104,6 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
         child: AnimatedBuilder(
           animation: Listenable.merge([_rotationController, _colorController, _sizeController]),
