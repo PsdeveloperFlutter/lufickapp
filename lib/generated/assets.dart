@@ -99,6 +99,7 @@ class Assets {
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
   static const String portfolioProjectAboutSection = 'lib/PortfolioProject/About_Section.dart';
+  static const String portfolioProjectAnimationBackground = 'lib/PortfolioProject/Animation_Background.dart';
   static const String portfolioProjectBackgroundAnimation = 'lib/PortfolioProject/Background_Animation.dart';
   static const String portfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';

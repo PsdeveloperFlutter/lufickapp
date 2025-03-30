@@ -1,33 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:particles_fly/particles_fly.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomeScreen(),
-  ));
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AboutScreen()),
-            );
-          },
-          child: Text("Go to About Section"),
-        ),
-      ),
-    );
-  }
-}
+import 'Background_Animation.dart';
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -70,7 +46,7 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
       duration: Duration(seconds: 2),
     );
 
-    _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.blue.shade500)
+    _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.deepPurple.shade200)
         .animate(CurvedAnimation(parent: _colorController, curve: Curves.easeInOut))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -81,7 +57,7 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
     // Step 3: Size Animation
     _sizeController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(milliseconds: 800),
     );
 
     _sizeAnimation = Tween<double>(begin: 100, end: 460).animate(
@@ -105,6 +81,9 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:AppBar(
+        title: Text('About Me'),
+      ),
       floatingActionButton: SpeedDial(
         spacing: 12,
         closeManually: false,
@@ -112,17 +91,7 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
         overlayOpacity: 0.4,
         animatedIcon: AnimatedIcons.menu_close,
         children: [
-          SpeedDialChild(
-              backgroundColor: Colors.yellow,
-              child: const Icon(Icons.info),
-              label: "About Me",
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return AboutScreen();
 
-                }));
-              }
-          ),
           SpeedDialChild(
             backgroundColor: Colors.greenAccent,
             child: const Icon(Icons.design_services),
@@ -154,6 +123,33 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
               child: SingleChildScrollView(
                 child: Stack(
                   children: [
+                    // Particles Background
+                    Positioned.fill(
+                      child: ParticlesFly(
+                        connectDots: true,
+                        numberOfParticles: 100,
+                        isRandomColor: true,
+                        isRandSize:true,
+                        lineColor: Colors.greenAccent,
+                        maxParticleSize: 20.0,
+                        particleColor: Colors.cyanAccent.shade700,
+                       speedOfParticles: 15.0,
+                        randColorList: [
+                          Colors.blue.shade700,
+                        Colors.redAccent.shade700,
+                        Colors.deepOrange.shade700,
+                        Colors.yellowAccent.shade700,
+                        Colors.greenAccent.shade700,
+                        Colors.blueGrey.shade700,
+                        Colors.brown.shade700,
+                        Colors.tealAccent.shade700,
+                        Colors.purpleAccent.shade700,
+                        Colors.pinkAccent.shade700,
+                        ],
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    ),
                     AnimatedContainer(
                       duration: Duration(seconds: 1),
                       curve: Curves.easeInOut,
@@ -170,6 +166,7 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
                             child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
+                           SizedBox(height: 20,),
                             Text(
                               "Priyanshu Satija",
                               style: TextStyle(
@@ -197,23 +194,20 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
 
 
                     Positioned(
-                      bottom: 410,
+                      bottom: 370,
                       left: 50,
                       right: 50,
                       child:
-                        CircleAvatar(
-                         backgroundColor: Colors.purpleAccent,
-                          radius: 50,
-                          child: Center(
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/IMG-20250322-WA0060.jpg',
-                               width: 100,
-                              fit: BoxFit.cover,
-                            ),
+                        Center(
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/images/IMG-20250322-WA0060.jpg',
+                             width: 102,
+                            height: 130,
+                            fit: BoxFit.cover,
                           ),
+                        ),
 
-                          ),
                         ),
                       ),
                   ],

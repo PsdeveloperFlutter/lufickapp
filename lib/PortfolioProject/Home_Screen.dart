@@ -5,6 +5,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'About_Section.dart';
+import 'Animation_Background.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -111,16 +112,24 @@ class DrawerMenu extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             Material(
-              child: const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blueGrey),
-                child: Text("Portfolio Menu", style: TextStyle(color: Colors.white, fontSize: 22)),
+              child: DrawerHeader(
+                decoration: const BoxDecoration(color: Colors.green),
+                child:
+              ClipRect(
+                clipBehavior: Clip.antiAlias,
+                child: ClipOval(
+                  child: Image.asset('assets/images/IMG-20250322-WA0055.jpg',
+
+                  ),
+                ),
+              )
               ),
             ),
-            _drawerItem(Icons.info, "About Me", context),
-            _drawerItem(Icons.design_services, "Services", context),
-            _drawerItem(Icons.developer_mode, "Projects", context),
-            _drawerItem(Icons.phone, "Contact Me", context),
-            _drawerItem(Icons.file_present, "Resume", context),
+            _drawerItem(Icons.info, "About Me", context,AboutScreen()),
+            _drawerItem(Icons.design_services, "Services", context,AnimatedContainerScreenservice()),
+            _drawerItem(Icons.developer_mode, "Projects", context,AboutScreen()),
+            _drawerItem(Icons.phone, "Contact Me", context,AboutScreen()),
+            _drawerItem(Icons.file_present, "Resume", context,AboutScreen()),
           ],
         ),
       ),
@@ -130,11 +139,12 @@ class DrawerMenu extends StatelessWidget {
 
 
 //This is the Function of the DrawerItem in the ListView I Pass this function make sure of that
-  Widget _drawerItem(IconData icon, String title, BuildContext context) {
+  Widget _drawerItem(IconData icon, String title, BuildContext context, Widget widgets) {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
       title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 18)),
       onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>widgets));
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$title clicked")));
       },
     );
@@ -179,12 +189,13 @@ class HomeScreenProject extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('assets/images/fluttersocial.jpg'),
+              radius: 80,
+              backgroundImage: AssetImage('assets/images/IMG-20250322-WA0060.jpg'
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
-              "Dev Guru",
+              "Priyanshu Satija",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
@@ -193,6 +204,12 @@ class HomeScreenProject extends ConsumerWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            const Text(
+              "Hi, I'm Priyanshu, a passionate Flutter developer with a strong interest in AI. I'm always eager to learn new things and share my knowledge with others. I'm currently working as a software engineer at a startup, where I'm responsible for developing and maintaining mobile applications.",
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
             ElevatedButton(
               onPressed: () {},
               child: const Text("Hire Me"),
@@ -222,6 +239,11 @@ class HomeScreenProject extends ConsumerWidget {
             backgroundColor: Colors.greenAccent,
             child: const Icon(Icons.design_services),
             label: "Service",
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return AnimatedContainerScreenservice();
+              }));
+            }
           ),
           SpeedDialChild(
             backgroundColor: Colors.blueAccent.shade200,
