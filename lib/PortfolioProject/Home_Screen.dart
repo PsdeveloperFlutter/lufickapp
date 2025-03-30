@@ -202,7 +202,7 @@ class HomeScreenProject extends ConsumerWidget {
       ),
       floatingActionButton: SpeedDial(
         spacing: 12,
-        closeManually: true,
+        closeManually: false,
         overlayColor: Colors.white,
         overlayOpacity: 0.4,
         animatedIcon: AnimatedIcons.menu_close,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -104,6 +105,46 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: SpeedDial(
+        spacing: 12,
+        closeManually: false,
+        overlayColor: Colors.white,
+        overlayOpacity: 0.4,
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+              backgroundColor: Colors.yellow,
+              child: const Icon(Icons.info),
+              label: "About Me",
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return AboutScreen();
+
+                }));
+              }
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.greenAccent,
+            child: const Icon(Icons.design_services),
+            label: "Service",
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.blueAccent.shade200,
+            child: const Icon(Icons.developer_mode),
+            label: "Project",
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.redAccent.shade200,
+            child: const Icon(Icons.phone, color: Colors.greenAccent),
+            label: "Contact Me",
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.purple.shade200,
+            child: const Icon(Icons.file_present, color: Colors.white),
+            label: "Resume",
+          ),
+        ],
+      ),
       body: Center(
         child: AnimatedBuilder(
           animation: Listenable.merge([_rotationController, _colorController, _sizeController]),
