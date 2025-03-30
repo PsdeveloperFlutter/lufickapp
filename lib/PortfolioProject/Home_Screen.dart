@@ -89,9 +89,9 @@ class _ZoomDrawerScreenState extends State<ZoomDrawerScreen> {
       closeCurve: Curves.bounceInOut,
       drawerShadowsBackgroundColor: Color(0xff000000),
       clipMainScreen: EditableText.debugDeterministicCursor,
-  menuBackgroundColor: Colors.lightBlueAccent,
-      shadowLayer1Color: Colors.yellowAccent,
-      shadowLayer2Color: Colors.purpleAccent,
+      menuBackgroundColor: Color(0xffE5E5EA),
+      shadowLayer1Color: Colors.yellowAccent.shade200,
+      shadowLayer2Color: Colors.purpleAccent.shade200,
 
       //    mainScreenOverlayColor: Colors.green.shade200,
     );

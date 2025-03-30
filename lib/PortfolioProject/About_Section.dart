@@ -182,7 +182,7 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
                             ),
                             SizedBox(height: 20),
                             Text(
-                              "I am a passionate Flutter developer with expertise in AI integrations, state management, and UI/UX design. I love creating modern and interactive mobile applications and also working with Smooth Animations and Currently Working as Flutter Developer in Min Product Base Company Lufick Technology Pvt Ltd ",
+                              "I am a passionate Flutter developer with expertise in AI integrations, state management, and UI/UX design. I love creating modern and interactive mobile applications and also working with Smooth Animations and Currently Working as Flutter Developer in Min Product Base Company Lufick Technology Pvt Ltd .",
                               style: TextStyle(fontSize: 14, color: Colors.black),
                               textAlign: TextAlign.center,
                             ),
