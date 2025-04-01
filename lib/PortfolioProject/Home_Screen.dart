@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:typewritertext/typewritertext.dart';
 import 'About_Section.dart';
 import 'Animation_Background.dart';
-
+import 'package:flip_card/flip_card.dart';
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -118,7 +118,7 @@ class DrawerMenu extends StatelessWidget {
               ClipRect(
                 clipBehavior: Clip.antiAlias,
                 child: ClipOval(
-                  child: Image.asset('assets/images/IMG-20250322-WA0055.jpg',
+                  child: Image.asset('assets/images/ghibli-transformed-1743487333821.png',
 
                   ),
                 ),
@@ -154,11 +154,30 @@ class DrawerMenu extends StatelessWidget {
 
 //This is the Main Screen of the Ui of Home Screen Make sure of that
 /// 📌 Portfolio Home Screen with Speed Dial & Theme Toggle
-class HomeScreenProject extends ConsumerWidget {
+class HomeScreenProject extends ConsumerStatefulWidget {
   const HomeScreenProject({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _HomeScreenProjectState createState() => _HomeScreenProjectState();
+}
+
+class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with SingleTickerProviderStateMixin{
+
+   late AnimationController sizecontroller;
+   late Animation<double>sizeanimation;
+
+
+
+   void initState(){
+   super.initState();
+   sizecontroller=AnimationController(vsync: this,duration: Duration(seconds: 5));
+   sizeanimation=Tween<double>(begin: 0,end: 100).animate(
+     CurvedAnimation(parent: sizecontroller, curve: Curves.bounceInOut),
+   );
+   sizecontroller.forward();
+   }
+  @override
+  Widget build(BuildContext context) {
     final themeNotifier = ref.read(themeProvider.notifier);
 
     return Scaffold(
@@ -188,39 +207,68 @@ class HomeScreenProject extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircleAvatar(
-              radius: 80,
-              backgroundImage: AssetImage('assets/images/IMG-20250322-WA0060.jpg'
+            AnimatedBuilder(
+
+                animation:sizecontroller
+                , builder: (context,child){
+              return FlipCard(
+
+                back:CircleAvatar(
+                  radius: sizeanimation.value,
+                  backgroundImage: AssetImage('assets/images/ghibli-transformed-1743487333821.png'),
+                ),
+                front: CircleAvatar(
+                  radius: sizeanimation.value,
+                  backgroundImage: AssetImage('assets/images/IMG-20250322-WA0060.jpg'
+                  ),
+                ),
+              );
+            })
+            , SizedBox(height: 10),
+            SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+
+                       const Text(
+                        "Priyanshu Satija",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                    const SizedBox(height: 5),
+                    const Text(
+                      "Flutter Developer | AI Enthusiast",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Hi, I'm Priyanshu, a passionate Flutter developer with a strong interest in AI. I'm always eager to learn new things and share my knowledge with others. I'm currently working as a software engineer at a startup, where I'm responsible for developing and maintaining mobile applications.",
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("Hire Me"),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              "Priyanshu Satija",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 5),
-            const Text(
-              "Flutter Developer | AI Enthusiast",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 10),
-            const Text(
-              "Hi, I'm Priyanshu, a passionate Flutter developer with a strong interest in AI. I'm always eager to learn new things and share my knowledge with others. I'm currently working as a software engineer at a startup, where I'm responsible for developing and maintaining mobile applications.",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text("Hire Me"),
-            ),
+            )
+
           ],
         ),
       ),
       floatingActionButton: SpeedDial(
         spacing: 12,
         closeManually: false,
-        overlayColor: Colors.white,
         overlayOpacity: 0.4,
         animatedIcon: AnimatedIcons.menu_close,
         children: [

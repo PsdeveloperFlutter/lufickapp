@@ -56,11 +56,16 @@ class Assets {
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String getx StorageThem e Change getxController = 'lib/Event Reminder App/Getx Storage/Them e Change getxController.dart';
   static const String imagesFluttersocial = 'assets/images/fluttersocial.jpg';
+  static const String imagesGhibliTransformed1743486559031 = 'assets/images/ghibli-transformed-1743486559031.png';
+  static const String imagesGhibliTransformed1743487186081 = 'assets/images/ghibli-transformed-1743487186081.png';
+  static const String imagesGhibliTransformed1743487333821 = 'assets/images/ghibli-transformed-1743487333821.png';
+  static const String imagesGhibliTransformed1743487452397 = 'assets/images/ghibli-transformed-1743487452397.png';
   static const String imagesIMG20240302171902 = 'assets/images/IMG20240302171902.jpg';
   static const String imagesIMG20240731231330976 = 'assets/images/IMG_20240731_231330_976.jpg';
   static const String imagesIMG20250322WA0055 = 'assets/images/IMG-20250322-WA0055.jpg';
   static const String imagesIMG20250322WA0059 = 'assets/images/IMG-20250322-WA0059.jpg';
   static const String imagesIMG20250322WA0060 = 'assets/images/IMG-20250322-WA0060.jpg';
+  static const String imagesIMG20250331WA0020 = 'assets/images/IMG-20250331-WA0020.jpg';
   static const String imagesNature1. = 'assets/images/nature1..jpg';
   static const String imagesNature2 = 'assets/images/nature2.jpg';
   static const String imagesNature3 = 'assets/images/nature3.jpg';
@@ -78,7 +83,6 @@ class Assets {
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
-  static const String libGeneratedAssets = 'lib/generated/assets.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
