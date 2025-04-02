@@ -7,6 +7,8 @@ import 'package:typewritertext/typewritertext.dart';
 import 'About_Section.dart';
 import 'Animation_Background.dart';
 import 'package:flip_card/flip_card.dart';
+
+import 'Contact_File.dart';
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -128,7 +130,7 @@ class DrawerMenu extends StatelessWidget {
             _drawerItem(Icons.info, "About Me", context,AboutScreen()),
             _drawerItem(Icons.design_services, "Services", context,AnimatedContainerScreenservice()),
             _drawerItem(Icons.developer_mode, "Projects", context,AboutScreen()),
-            _drawerItem(Icons.phone, "Contact Me", context,AboutScreen()),
+            _drawerItem(Icons.phone, "Contact Me", context,ContactPage()),
             _drawerItem(Icons.file_present, "Resume", context,AboutScreen()),
           ],
         ),
@@ -145,7 +147,6 @@ class DrawerMenu extends StatelessWidget {
       title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 18)),
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context)=>widgets));
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$title clicked")));
       },
     );
   }
@@ -302,6 +303,11 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
             backgroundColor: Colors.redAccent.shade200,
             child: const Icon(Icons.phone, color: Colors.greenAccent),
             label: "Contact Me",
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ContactPage();
+              }));
+            }
           ),
           SpeedDialChild(
             backgroundColor: Colors.purple.shade200,

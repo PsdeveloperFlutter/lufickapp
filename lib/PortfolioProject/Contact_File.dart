@@ -27,31 +27,53 @@ class _ContactPageState extends State<ContactPage> {
         title: Text("Contact Me"),
         centerTitle: true,
       ),
-      body: AnimatedOpacity(
-        duration: Duration(seconds: 1),
-        opacity: _opacity,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildAnimatedTextField("Your Name", Icons.person),
-                  SizedBox(height: 15),
-                  _buildAnimatedTextField("Your Email", Icons.email, keyboardType: TextInputType.emailAddress),
-                  SizedBox(height: 15),
-                  _buildAnimatedTextField("Subject", Icons.subject),
-                  SizedBox(height: 15),
-                  _buildAnimatedTextField("Message", Icons.message, maxLines: 5),
-                  SizedBox(height: 20),
-                  _buildAnimatedSubmitButton()
-                ],
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          /// Profile Image at the Top Center
+          Positioned(
+            top: 20,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage("assets/images/ghibli-transformed-1743487333821.png"),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-        ),
+
+          /// Contact Form with Animation
+          AnimatedOpacity(
+            duration: Duration(seconds: 1),
+            opacity: _opacity,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 140, left: 16, right: 16),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildAnimatedTextField("Your Name", Icons.person),
+                      SizedBox(height: 15),
+                      _buildAnimatedTextField("Your Email", Icons.email, keyboardType: TextInputType.emailAddress),
+                      SizedBox(height: 15),
+                      _buildAnimatedTextField("Subject", Icons.subject),
+                      SizedBox(height: 15),
+                      _buildAnimatedTextField("Message", Icons.message, maxLines: 5),
+                      SizedBox(height: 20),
+                      _buildAnimatedSubmitButton()
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
