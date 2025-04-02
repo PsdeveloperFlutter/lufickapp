@@ -105,6 +105,7 @@ class Assets {
   static const String portfolioProjectAboutSection = 'lib/PortfolioProject/About_Section.dart';
   static const String portfolioProjectAnimationBackground = 'lib/PortfolioProject/Animation_Background.dart';
   static const String portfolioProjectBackgroundAnimation = 'lib/PortfolioProject/Background_Animation.dart';
+  static const String portfolioProjectContactFile = 'lib/PortfolioProject/Contact_File.dart';
   static const String portfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
   static const String riverPodNotificationRiverPod = 'lib/Event Reminder App/NotificationCode/RiverPod_Notification/RiverPod.dart';
