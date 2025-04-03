@@ -9,6 +9,7 @@ import 'Animation_Background.dart';
 import 'package:flip_card/flip_card.dart';
 
 import 'Contact_File.dart';
+import 'Project_Screen.dart';
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -129,7 +130,7 @@ class DrawerMenu extends StatelessWidget {
             ),
             _drawerItem(Icons.info, "About Me", context,AboutScreen()),
             _drawerItem(Icons.design_services, "Services", context,AnimatedContainerScreenservice()),
-            _drawerItem(Icons.developer_mode, "Projects", context,AboutScreen()),
+            _drawerItem(Icons.developer_mode, "Projects", context,ProjectsScreen()),
             _drawerItem(Icons.phone, "Contact Me", context,ContactPage()),
             _drawerItem(Icons.file_present, "Resume", context,AboutScreen()),
           ],
@@ -275,7 +276,7 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
         children: [
           SpeedDialChild(
             backgroundColor: Colors.yellow,
-            child: const Icon(Icons.info),
+            child: const Icon(Icons.info,color: Colors.black,),
             label: "About Me",
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -286,7 +287,7 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
           ),
           SpeedDialChild(
             backgroundColor: Colors.greenAccent,
-            child: const Icon(Icons.design_services),
+            child: const Icon(Icons.design_services,color: Colors.black,),
             label: "Service",
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -296,12 +297,17 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
           ),
           SpeedDialChild(
             backgroundColor: Colors.blueAccent.shade200,
-            child: const Icon(Icons.developer_mode),
+            child: const Icon(Icons.developer_mode,color: Colors.black,),
             label: "Project",
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return ProjectsScreen();
+              }));
+            }
           ),
           SpeedDialChild(
             backgroundColor: Colors.redAccent.shade200,
-            child: const Icon(Icons.phone, color: Colors.greenAccent),
+            child: const Icon(Icons.phone,color: Colors.black,),
             label: "Contact Me",
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -311,7 +317,7 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
           ),
           SpeedDialChild(
             backgroundColor: Colors.purple.shade200,
-            child: const Icon(Icons.file_present, color: Colors.white),
+            child: const Icon(Icons.file_present,color: Colors.black,),
             label: "Resume",
           ),
         ],

@@ -84,6 +84,7 @@ class Assets {
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libMain = 'lib/main.dart';
+  static const String libPortfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart~';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
   static const String libWeatherAPPCurrentWeatherAPI = 'lib/Weather_APP/Current_Weather_API.dart~';
@@ -107,6 +108,7 @@ class Assets {
   static const String portfolioProjectBackgroundAnimation = 'lib/PortfolioProject/Background_Animation.dart';
   static const String portfolioProjectContactFile = 'lib/PortfolioProject/Contact_File.dart';
   static const String portfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart';
+  static const String portfolioProjectProjectScreen = 'lib/PortfolioProject/Project_Screen.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
   static const String riverPodNotificationRiverPod = 'lib/Event Reminder App/NotificationCode/RiverPod_Notification/RiverPod.dart';
   static const String riverpodManagementRiverpodAddManagement = 'lib/Event Reminder App/Riverpod_Management/Riverpod_add_Management.dart';

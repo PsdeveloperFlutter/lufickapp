@@ -1,3 +1,4 @@
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -108,161 +109,321 @@ class _AnimatedContainerScreenState extends State<AnimatedContainerScreenservice
               Positioned(
                 top:100,
                 left:5,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, child) {
-                          return Transform.translate(
-                            offset: _translateAnimation.value,
-                            child: Container(
-                              width: _sizeAnimation.value-90,
-                              height: _sizeAnimation.value,
-                              decoration: BoxDecoration(
-                                color: _colorAnimation.value,
-                                borderRadius: BorderRadius.circular(12),
+                child: FlipCard(
+                  direction: FlipDirection.HORIZONTAL,
+                  front:Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) {
+                            return Transform.translate(
+                              offset: _translateAnimation.value,
+                              child: Container(
+                                  width: _sizeAnimation.value-90,
+                                  height: _sizeAnimation.value,
+                                  decoration: BoxDecoration(
+                                    color: _colorAnimation.value,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 88,),
+                                        Center(
+                                          child: Text(
+                                            "Service",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(FontAwesomeIcons.mobileAlt, color: Colors.black),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                "I Provide Service of Full Stack Mobile Development",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(FontAwesomeIcons.code, color: Colors.black),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                "Create full Stack Mobile App with UI/UX Design and Backend Development",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 20),
+                                        Center(
+                                          child: Text(
+                                            "Skills",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(FontAwesomeIcons.tools, color: Colors.black),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                "Flutter and Dart for frontend, Node.js and Sqflite for backend. Experience with Web Dev (HTML, CSS, JS), Oracle DB, and Kotlin Native with Jetpack Compose. Check my projects in the Project Section!",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+
+
+                                            ),
+
+                                          ],
+                                        ),
+
+
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(FontAwesomeIcons.solidHeart, color: Colors.redAccent),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                "State Management Experienced in BLoC, GetX, and Riverpod for efficient state management in Flutter applications.  Proficient in handling complex app architectures using MultiBlocProvider, Cubit, and reactive state updates.  Implemented BLoC pattern in multiple projects, including event-driven UI updates and optimized performance.",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(FontAwesomeIcons.code, color: Colors.blueAccent),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                "HTML, CSS, JavaScript Strong understanding of HTML5, CSS3, and JavaScript ES6+ for frontend web development.  Experience in responsive web design with Flexbox, Grid, and Media Queries.  Hands-on with JavaScript DOM manipulation, API integration, and event handling.",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(FontAwesomeIcons.server, color: Colors.greenAccent),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Text(
+                                                "Node.js Skilled in Node.js backend development with Express.js for RESTful API creation.  Worked with MongoDB, Firebase, and SQLite for database management.  Experience in JWT authentication, middleware, and server-side rendering.",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+
+
+                                      ],
+                                    ),
+                                  )
+
                               ),
-                             child: SingleChildScrollView(
-                               child: Column(
-                                 children: [
-                                   SizedBox(height: 88,),
-                                   Center(
-                                     child: Text(
-                                       "Service",
-                                       style: GoogleFonts.poppins(
-                                         fontSize: 25,
-                                         fontWeight: FontWeight.bold,
-                                         color: Colors.black,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  back: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) {
+                            return Transform.translate(
+                              offset: _translateAnimation.value,
+                              child: Container(
+                                width: _sizeAnimation.value-90,
+                                height: _sizeAnimation.value,
+                                decoration: BoxDecoration(
+                                  color: _colorAnimation.value,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                               child: SingleChildScrollView(
+                                 child: Column(
+                                   children: [
+                                     SizedBox(height: 88,),
+                                     Center(
+                                       child: Text(
+                                         "Service",
+                                         style: GoogleFonts.poppins(
+                                           fontSize: 25,
+                                           fontWeight: FontWeight.bold,
+                                           color: Colors.black,
+                                         ),
                                        ),
                                      ),
-                                   ),
-                                   SizedBox(height: 10),
-                                   Row(
-                                     children: [
-                                       Icon(FontAwesomeIcons.mobileAlt, color: Colors.black),
-                                       SizedBox(width: 10),
-                                       Expanded(
-                                         child: Text(
-                                           "I Provide Service of Full Stack Mobile Development",
-                                           style: GoogleFonts.roboto(
-                                             fontSize: 16,
-                                             color: Colors.black,
+                                     SizedBox(height: 10),
+                                     Row(
+                                       children: [
+                                         Icon(FontAwesomeIcons.mobileAlt, color: Colors.black),
+                                         SizedBox(width: 10),
+                                         Expanded(
+                                           child: Text(
+                                             "I Provide Service of Full Stack Mobile Development",
+                                             style: GoogleFonts.roboto(
+                                               fontSize: 16,
+                                               color: Colors.black,
+                                             ),
                                            ),
                                          ),
-                                       ),
-                                     ],
-                                   ),
-                                   SizedBox(height: 10),
-                                   Row(
-                                     children: [
-                                       Icon(FontAwesomeIcons.code, color: Colors.black),
-                                       SizedBox(width: 10),
-                                       Expanded(
-                                         child: Text(
-                                           "Create full Stack Mobile App with UI/UX Design and Backend Development",
-                                           style: GoogleFonts.roboto(
-                                             fontSize: 16,
-                                             color: Colors.black,
+                                       ],
+                                     ),
+                                     SizedBox(height: 10),
+                                     Row(
+                                       children: [
+                                         Icon(FontAwesomeIcons.code, color: Colors.black),
+                                         SizedBox(width: 10),
+                                         Expanded(
+                                           child: Text(
+                                             "Create full Stack Mobile App with UI/UX Design and Backend Development",
+                                             style: GoogleFonts.roboto(
+                                               fontSize: 16,
+                                               color: Colors.black,
+                                             ),
                                            ),
                                          ),
-                                       ),
-                                     ],
-                                   ),
-                                   SizedBox(height: 20),
-                                   Center(
-                                     child: Text(
-                                       "Skills",
-                                       style: GoogleFonts.poppins(
-                                         fontSize: 25,
-                                         fontWeight: FontWeight.bold,
-                                         color: Colors.black,
+                                       ],
+                                     ),
+                                     SizedBox(height: 20),
+                                     Center(
+                                       child: Text(
+                                         "Skills",
+                                         style: GoogleFonts.poppins(
+                                           fontSize: 25,
+                                           fontWeight: FontWeight.bold,
+                                           color: Colors.black,
+                                         ),
                                        ),
                                      ),
-                                   ),
-                                   SizedBox(height: 10),
-                                   Row(
-                                     children: [
-                                       Icon(FontAwesomeIcons.tools, color: Colors.black),
-                                       SizedBox(width: 10),
-                                       Expanded(
-                                         child: Text(
-                                           "Flutter and Dart for frontend, Node.js and Sqflite for backend. Experience with Web Dev (HTML, CSS, JS), Oracle DB, and Kotlin Native with Jetpack Compose. Check my projects in the Project Section!",
-                                           style: GoogleFonts.roboto(
-                                             fontSize: 16,
-                                             color: Colors.black,
+                                     SizedBox(height: 10),
+                                     Row(
+                                       children: [
+                                         Icon(FontAwesomeIcons.tools, color: Colors.black),
+                                         SizedBox(width: 10),
+                                         Expanded(
+                                           child: Text(
+                                             "Flutter and Dart for frontend, Node.js and Sqflite for backend. Experience with Web Dev (HTML, CSS, JS), Oracle DB, and Kotlin Native with Jetpack Compose. Check my projects in the Project Section!",
+                                             style: GoogleFonts.roboto(
+                                               fontSize: 16,
+                                               color: Colors.black,
+                                             ),
                                            ),
+
+
                                          ),
 
-
-                                       ),
-
-                                     ],
-                                   ),
+                                       ],
+                                     ),
 
 
-                                   SizedBox(height: 10),
-                                   Row(
-                                     children: [
-                                       Icon(FontAwesomeIcons.solidHeart, color: Colors.redAccent),
-                                       SizedBox(width: 10),
-                                       Expanded(
-                                         child: Text(
-                                           "State Management Experienced in BLoC, GetX, and Riverpod for efficient state management in Flutter applications.  Proficient in handling complex app architectures using MultiBlocProvider, Cubit, and reactive state updates.  Implemented BLoC pattern in multiple projects, including event-driven UI updates and optimized performance.",
-                                           style: GoogleFonts.roboto(
-                                             fontSize: 14,
-                                             color: Colors.black,
+                                     SizedBox(height: 10),
+                                     Row(
+                                       children: [
+                                         Icon(FontAwesomeIcons.solidHeart, color: Colors.redAccent),
+                                         SizedBox(width: 10),
+                                         Expanded(
+                                           child: Text(
+                                             "State Management Experienced in BLoC, GetX, and Riverpod for efficient state management in Flutter applications.  Proficient in handling complex app architectures using MultiBlocProvider, Cubit, and reactive state updates.  Implemented BLoC pattern in multiple projects, including event-driven UI updates and optimized performance.",
+                                             style: GoogleFonts.roboto(
+                                               fontSize: 14,
+                                               color: Colors.black,
+                                             ),
                                            ),
                                          ),
-                                       ),
-                                     ],
-                                   ),
-                                   SizedBox(height: 10),
-                                   Row(
-                                     children: [
-                                       Icon(FontAwesomeIcons.code, color: Colors.blueAccent),
-                                       SizedBox(width: 10),
-                                       Expanded(
-                                         child: Text(
-                                           "HTML, CSS, JavaScript Strong understanding of HTML5, CSS3, and JavaScript ES6+ for frontend web development.  Experience in responsive web design with Flexbox, Grid, and Media Queries.  Hands-on with JavaScript DOM manipulation, API integration, and event handling.",
-                                           style: GoogleFonts.roboto(
-                                             fontSize: 14,
-                                             color: Colors.black,
+                                       ],
+                                     ),
+                                     SizedBox(height: 10),
+                                     Row(
+                                       children: [
+                                         Icon(FontAwesomeIcons.code, color: Colors.blueAccent),
+                                         SizedBox(width: 10),
+                                         Expanded(
+                                           child: Text(
+                                             "HTML, CSS, JavaScript Strong understanding of HTML5, CSS3, and JavaScript ES6+ for frontend web development.  Experience in responsive web design with Flexbox, Grid, and Media Queries.  Hands-on with JavaScript DOM manipulation, API integration, and event handling.",
+                                             style: GoogleFonts.roboto(
+                                               fontSize: 14,
+                                               color: Colors.black,
+                                             ),
                                            ),
                                          ),
-                                       ),
-                                     ],
-                                   ),
-                                   SizedBox(height: 10),
-                                   Row(
-                                     children: [
-                                       Icon(FontAwesomeIcons.server, color: Colors.greenAccent),
-                                       SizedBox(width: 10),
-                                       Expanded(
-                                         child: Text(
-                                           "Node.js Skilled in Node.js backend development with Express.js for RESTful API creation.  Worked with MongoDB, Firebase, and SQLite for database management.  Experience in JWT authentication, middleware, and server-side rendering.",
-                                           style: GoogleFonts.roboto(
-                                             fontSize: 14,
-                                             color: Colors.black,
+                                       ],
+                                     ),
+                                     SizedBox(height: 10),
+                                     Row(
+                                       children: [
+                                         Icon(FontAwesomeIcons.server, color: Colors.greenAccent),
+                                         SizedBox(width: 10),
+                                         Expanded(
+                                           child: Text(
+                                             "Node.js Skilled in Node.js backend development with Express.js for RESTful API creation.  Worked with MongoDB, Firebase, and SQLite for database management.  Experience in JWT authentication, middleware, and server-side rendering.",
+                                             style: GoogleFonts.roboto(
+                                               fontSize: 14,
+                                               color: Colors.black,
+                                             ),
                                            ),
                                          ),
-                                       ),
-                                     ],
-                                   ),
+                                       ],
+                                     ),
 
 
 
-                                 ],
-                               ),
-                             )
+                                   ],
+                                 ),
+                               )
 
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
