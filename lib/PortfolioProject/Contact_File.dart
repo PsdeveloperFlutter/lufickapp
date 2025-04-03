@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flip_card/flip_card.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:math';
+
+import 'package:particles_fly/particles_fly.dart';
 
 class ContactPage extends StatefulWidget {
   @override
@@ -9,40 +9,24 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> with SingleTickerProviderStateMixin {
+  final _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
-  late Animation<Offset> _translateAnimation;
-  late Animation<double> _sizeAnimation;
-  late Animation<Color?> _colorAnimation;
-  final GlobalKey<FlipCardState> flipKey = GlobalKey<FlipCardState>();
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 5),
     );
 
-    _translateAnimation = Tween<Offset>(
-      begin: Offset(0, 100),
-      end: Offset(0, 0),
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _animation = Tween<double>(begin: -pi / 2, end: 0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
 
-    _sizeAnimation = Tween<double>(
-      begin: 200,
-      end: 250,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _colorAnimation = ColorTween(
-      begin: Colors.blueAccent,
-      end: Colors.white,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _controller.forward();
-
-    // Delay and then trigger the flip animation
-    Future.delayed(Duration(milliseconds: 500), () {
-      flipKey.currentState?.toggleCard();
+    Future.delayed(Duration(seconds:2), () {
+      _controller.forward();
     });
   }
 
@@ -59,91 +43,125 @@ class _ContactPageState extends State<ContactPage> with SingleTickerProviderStat
         title: Text("Contact Me"),
         centerTitle: true,
       ),
-      body: Positioned(
-        top: 100,
-        left: 5,
-        child: FlipCard(
-          key: flipKey, // Set key for flip animation
-          direction: FlipDirection.HORIZONTAL,
-          front: _buildAnimatedContainer(),
-          back: _buildAnimatedContainer(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAnimatedContainer() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Transform.translate(
-                offset: _translateAnimation.value,
-                child: Container(
-                  width: _sizeAnimation.value - 90,
-                  height: _sizeAnimation.value,
-                  decoration: BoxDecoration(
-                    color: _colorAnimation.value,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 88),
-                        _buildSectionTitle("Service"),
-                        _buildInfoRow(FontAwesomeIcons.mobileAlt, "I Provide Service of Full Stack Mobile Development"),
-                        _buildInfoRow(FontAwesomeIcons.code, "Create full Stack Mobile App with UI/UX Design and Backend Development"),
-                        _buildSectionTitle("Skills"),
-                        _buildInfoRow(FontAwesomeIcons.tools, "Flutter and Dart for frontend, Node.js and Sqflite for backend. Experience with Web Dev (HTML, CSS, JS), Oracle DB, and Kotlin Native with Jetpack Compose. Check my projects in the Project Section!"),
-                        _buildInfoRow(FontAwesomeIcons.solidHeart, "State Management Experienced in BLoC, GetX, and Riverpod for efficient state management in Flutter applications."),
-                        _buildInfoRow(FontAwesomeIcons.code, "HTML, CSS, JavaScript Strong understanding of HTML5, CSS3, and JavaScript ES6+ for frontend web development."),
-                        _buildInfoRow(FontAwesomeIcons.server, "Node.js Skilled in Node.js backend development with Express.js for RESTful API creation."),
-                      ],
-                    ),
+      body: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001) // Perspective
+              ..rotateX(_animation.value)
+              ..rotateY(_animation.value / 2)
+              ..rotateZ(_animation.value / 4),
+            alignment: Alignment.center,
+            child: child,
+          );
+        },
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            ParticlesFly(
+              connectDots: true,
+              numberOfParticles: 100,
+              isRandomColor: true,
+              isRandSize:true,
+              awayAnimationCurve: Curves.bounceInOut,
+              lineStrokeWidth: 0.5,
+              lineColor: Colors.white,
+              maxParticleSize: 20.0,
+              particleColor: Colors.cyanAccent.shade700,
+              speedOfParticles: 10.0,
+              randColorList: [
+                Colors.blue.shade700,
+                Colors.redAccent.shade700,
+                Colors.deepOrange.shade700,
+                Colors.yellowAccent.shade700,
+                Colors.greenAccent.shade700,
+                Colors.blueGrey.shade700,
+                Colors.brown.shade700,
+                Colors.purpleAccent.shade700,
+                Colors.pinkAccent.shade700,
+              ],
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Positioned(
+              top: 20,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/ghibli-transformed-1743487333821.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Center(
-      child: Text(
-        title,
-        style: GoogleFonts.poppins(
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 140, left: 16, right: 16),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTextField("Your Name", Icons.person),
+                      SizedBox(height: 15),
+                      _buildTextField("Your Email", Icons.email, keyboardType: TextInputType.emailAddress),
+                      SizedBox(height: 15),
+                      _buildTextField("Subject", Icons.subject),
+                      SizedBox(height: 15),
+                      _buildTextField("Message", Icons.message, maxLines: 5),
+                      SizedBox(height: 20),
+                      _buildSubmitButton()
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.black),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: GoogleFonts.roboto(
-                fontSize: 14,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ],
+  Widget _buildTextField(String hintText, IconData icon, {TextInputType keyboardType = TextInputType.text, int maxLines = 1}) {
+    return TextFormField(
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon),
+        hintText: hintText,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        filled: true,
+        fillColor: Colors.grey[200],
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter $hintText';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Message Sent Successfully!")),
+            );
+          }
+        },
+        child: Text("Send Message", style: TextStyle(fontSize: 18)),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
       ),
     );
   }
