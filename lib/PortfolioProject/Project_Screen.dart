@@ -54,7 +54,7 @@ class _ProjectsScreenState extends State<ProjectsScreen>
               transform: Matrix4.identity()
                 ..rotateZ(_rotationAnimation.value)
                 ..setEntry(3, 2, 0.001)
-                ..rotateX(_rotationAnimation.value / 2),
+                ..rotateX(_rotationAnimation.value ),
               child: Container(
                 width: 200,
                 height: 200,
