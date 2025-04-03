@@ -147,7 +147,10 @@ class DrawerMenu extends StatelessWidget {
       leading: Icon(icon, color: Colors.white),
       title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 18)),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>widgets));
+
+       Future.delayed(Duration(milliseconds: 500),(){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=>widgets));
+       });
       },
     );
   }
