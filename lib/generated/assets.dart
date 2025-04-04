@@ -28,6 +28,7 @@ class Assets {
   static const String animationInFlutterTranslateApp = 'lib/Animation_in_Flutter/TranslateApp.dart';
   static const String animationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart';
   static const String appGoogleServices = 'android/app/google-services.json';
+  static const String assetsNew Resume PRIYANSHU SATIJA = 'assets/New Resume PRIYANSHU SATIJA.pdf';
   static const String authApiApi work = 'lib/Supabase/auth_api/Api work.dart';
   static const String authApiPhoneAuthentication = 'lib/Supabase/auth_api/PhoneAuthentication.dart';
   static const String backendDatabase of Application = 'lib/Todo_Application/Backend/Database of Application.dart';
@@ -109,6 +110,7 @@ class Assets {
   static const String portfolioProjectContactFile = 'lib/PortfolioProject/Contact_File.dart';
   static const String portfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart';
   static const String portfolioProjectProjectScreen = 'lib/PortfolioProject/Project_Screen.dart';
+  static const String portfolioProjectResumePage = 'lib/PortfolioProject/Resume_Page.dart';
   static const String practice section for supabaseEmailauth = 'lib/Supabase/Practice section for supabase/Emailauth.dart';
   static const String riverPodNotificationRiverPod = 'lib/Event Reminder App/NotificationCode/RiverPod_Notification/RiverPod.dart';
   static const String riverpodManagementRiverpodAddManagement = 'lib/Event Reminder App/Riverpod_Management/Riverpod_add_Management.dart';

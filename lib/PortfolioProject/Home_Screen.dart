@@ -10,6 +10,7 @@ import 'package:flip_card/flip_card.dart';
 
 import 'Contact_File.dart';
 import 'Project_Screen.dart';
+import 'Resume_Page.dart';
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -132,7 +133,7 @@ class DrawerMenu extends StatelessWidget {
             _drawerItem(Icons.design_services, "Services", context,AnimatedContainerScreenservice()),
             _drawerItem(Icons.developer_mode, "Projects", context,ProjectsScreen()),
             _drawerItem(Icons.phone, "Contact Me", context,ContactPage()),
-            _drawerItem(Icons.file_present, "Resume", context,AboutScreen()),
+            _drawerItem(Icons.file_present, "Resume", context,SimplePdfViewer()),
           ],
         ),
       ),
@@ -322,6 +323,11 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
             backgroundColor: Colors.purple.shade200,
             child: const Icon(Icons.file_present,color: Colors.black,),
             label: "Resume",
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return SimplePdfViewer();
+              }));
+            }
           ),
         ],
       ),
