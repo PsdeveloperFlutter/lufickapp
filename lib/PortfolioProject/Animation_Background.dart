@@ -1,9 +1,15 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lufickapp/PortfolioProject/Background_Animation.dart';
 import 'package:particles_fly/particles_fly.dart';
+
+import 'About_Section.dart';
+import 'Contact_File.dart';
+import 'Project_Screen.dart';
+import 'Resume_Page.dart';
 
 void main() {
   runApp(MyApp());
@@ -69,6 +75,57 @@ class _AnimatedContainerScreenState extends State<AnimatedContainerScreenservice
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      floatingActionButton: SpeedDial(
+        spacing: 12,
+        closeManually: false,
+        overlayOpacity: 0.4,
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+              backgroundColor: Colors.yellow,
+              child: const Icon(Icons.info,color: Colors.black,),
+              label: "About Me",
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return AboutScreen();
+
+                }));
+              }
+          ),
+
+          SpeedDialChild(
+              backgroundColor: Colors.blueAccent.shade200,
+              child: const Icon(Icons.developer_mode,color: Colors.black,),
+              label: "Project",
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return ProjectsScreen();
+                }));
+              }
+          ),
+          SpeedDialChild(
+              backgroundColor: Colors.redAccent.shade200,
+              child: const Icon(Icons.phone,color: Colors.black,),
+              label: "Contact Me",
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ContactPage();
+                }));
+              }
+          ),
+          SpeedDialChild(
+              backgroundColor: Colors.purple.shade200,
+              child: const Icon(Icons.file_present,color: Colors.black,),
+              label: "Resume",
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return SimplePdfViewer();
+                }));
+              }
+          ),
+        ],
+      ),
       appBar: AppBar(
         title: Text('Services '),
       ),

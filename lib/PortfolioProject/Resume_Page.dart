@@ -2,10 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/services.dart' show Uint8List, rootBundle;
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:open_file/open_file.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+
+import 'About_Section.dart';
+import 'Animation_Background.dart';
+import 'Contact_File.dart';
+import 'Project_Screen.dart';
 class SimplePdfViewer extends StatefulWidget {
   const SimplePdfViewer({super.key});
 
@@ -52,6 +58,8 @@ class _SimplePdfViewerState extends State<SimplePdfViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+
       appBar: AppBar(title: const Text("Resume")),
       body: Column(
         children: [
