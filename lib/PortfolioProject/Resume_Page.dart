@@ -1,9 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show Uint8List, rootBundle;
+import 'package:open_file/open_file.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:share_plus/share_plus.dart';
 class SimplePdfViewer extends StatefulWidget {
   const SimplePdfViewer({super.key});
 
@@ -90,6 +92,27 @@ class _SimplePdfViewerState extends State<SimplePdfViewer> {
                 label: const Text('Back'),
               ),
               const Spacer(),
+
+
+              InkWell(
+                  onTap: (){
+                   Share.shareXFiles([XFile(localPath!)]);
+                  },
+                  child: Icon(Icons.share,)),
+              const Spacer(),
+
+              InkWell(
+                  onTap: ()async{
+                    Uint8List bytes = (await rootBundle.load('assets/New Resume PRIYANSHU SATIJA.pdf')).buffer.asUint8List() as Uint8List;
+                    final downloadsDir = await getApplicationDocumentsDirectory();
+                    final filepath = File("${downloadsDir.path}/New Resume PRIYANSHU SATIJA.pdf");
+                    File file = File(filepath.path);
+                    await file.writeAsBytes(bytes as List<int>, flush: true);
+                    OpenFile.open(filepath.path);
+                  },
+                  child: Icon(Icons.download,)),
+              const Spacer(),
+
               ElevatedButton.icon(
                 onPressed: () async {
                  gotonextpage();
