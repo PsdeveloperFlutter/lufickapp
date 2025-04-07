@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -11,7 +12,9 @@ import 'package:flip_card/flip_card.dart';
 import 'Contact_File.dart';
 import 'Project_Screen.dart';
 import 'Resume_Page.dart';
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -209,67 +212,69 @@ class _HomeScreenProjectState extends ConsumerState<HomeScreenProject> with Sing
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AnimatedBuilder(
-
-                animation:sizecontroller
-                , builder: (context,child){
-              return FlipCard(
-
-                back:CircleAvatar(
-                  radius: sizeanimation.value,
-                  backgroundImage: AssetImage('assets/images/ghibli-transformed-1743487333821.png'),
-                ),
-                front: CircleAvatar(
-                  radius: sizeanimation.value,
-                  backgroundImage: AssetImage('assets/images/IMG-20250322-WA0060.jpg'
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+          
+                  animation:sizecontroller
+                  , builder: (context,child){
+                return FlipCard(
+          
+                  back:CircleAvatar(
+                    radius: sizeanimation.value,
+                    backgroundImage: AssetImage('assets/images/ghibli-transformed-1743487333821.png'),
+                  ),
+                  front: CircleAvatar(
+                    radius: sizeanimation.value,
+                    backgroundImage: AssetImage('assets/images/IMG-20250322-WA0060.jpg'
+                    ),
+                  ),
+                );
+              })
+              , SizedBox(height: 10),
+              SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+          
+                         const Text(
+                          "Priyanshu Satija",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+          
+                      const SizedBox(height: 5),
+                      const Text(
+                        "Flutter Developer | AI Enthusiast",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Hi, I'm Priyanshu, a passionate Flutter developer with a strong interest in AI. I'm always eager to learn new things and share my knowledge with others. I'm currently working as a software engineer at a startup, where I'm responsible for developing and maintaining mobile applications.",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text("Hire Me"),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            })
-            , SizedBox(height: 10),
-            SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-
-                       const Text(
-                        "Priyanshu Satija",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                    const SizedBox(height: 5),
-                    const Text(
-                      "Flutter Developer | AI Enthusiast",
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Hi, I'm Priyanshu, a passionate Flutter developer with a strong interest in AI. I'm always eager to learn new things and share my knowledge with others. I'm currently working as a software engineer at a startup, where I'm responsible for developing and maintaining mobile applications.",
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text("Hire Me"),
-                    ),
-                  ],
-                ),
-              ),
-            )
-
-          ],
+              )
+          
+            ],
+          ),
         ),
       ),
       floatingActionButton: SpeedDial(

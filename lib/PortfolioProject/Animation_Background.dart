@@ -139,7 +139,7 @@ class _AnimatedContainerScreenState extends State<AnimatedContainerScreenservice
               Positioned(
                 child: ParticlesFly(
                   connectDots: true,
-                  numberOfParticles: 100,
+                  numberOfParticles: 50,
                   isRandomColor: true,
                   isRandSize:true,
                   awayAnimationCurve: Curves.bounceInOut,

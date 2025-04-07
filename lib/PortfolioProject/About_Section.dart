@@ -127,13 +127,13 @@ class _AboutScreenState extends State<AboutScreen> with TickerProviderStateMixin
                     Positioned.fill(
                       child: ParticlesFly(
                         connectDots: true,
-                        numberOfParticles: 100,
+                        numberOfParticles: 50,
                         isRandomColor: true,
                         isRandSize:true,
                         lineColor: Colors.greenAccent,
-                        maxParticleSize: 20.0,
+                        maxParticleSize: 18.0,
                         particleColor: Colors.cyanAccent.shade700,
-                       speedOfParticles: 15.0,
+                       speedOfParticles: 10.0,
                         randColorList: [
                           Colors.blue.shade700,
                         Colors.redAccent.shade700,

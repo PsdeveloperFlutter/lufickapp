@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:math';
@@ -15,11 +17,33 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> with SingleTickerProviderStateMixin {
+  TextEditingController controllername=TextEditingController();
+  TextEditingController controllereamil=TextEditingController();
+  TextEditingController controllersubject=TextEditingController();
+  TextEditingController controllermessage=TextEditingController();
+
+
   final _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  @override
+  //This is the code of the firebase with the firestore and set the contact data from UI TO BACKEND
+  Future<void> adddata(String name, String email, String subject, String message) async {
+    try {
+      final docref = FirebaseFirestore.instance.collection('notes').doc();
+      await docref.set({
+        'id': docref.id,
+        'name': name,
+        'email': email,
+        'subject': subject,
+        'message': message,
+      }).then((value) => print("Data Added Successfully"));
+    } catch (e) {
+      print("Error in Storing data");
+    }
+  }
+
+@override
   void initState() {
     super.initState();
     _controller = AnimationController(
@@ -119,7 +143,7 @@ class _ContactPageState extends State<ContactPage> with SingleTickerProviderStat
           children: [
             ParticlesFly(
               connectDots: true,
-              numberOfParticles: 100,
+              numberOfParticles: 50,
               isRandomColor: true,
               isRandSize:true,
               awayAnimationCurve: Curves.bounceInOut,
@@ -164,13 +188,13 @@ class _ContactPageState extends State<ContactPage> with SingleTickerProviderStat
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTextField("Your Name", Icons.person),
+                      _buildTextField("Your Name", Icons.person,controller: controllername),
                       SizedBox(height: 15),
-                      _buildTextField("Your Email", Icons.email, keyboardType: TextInputType.emailAddress),
+                      _buildTextField("Your Email", Icons.email, keyboardType: TextInputType.emailAddress,controller: controllereamil),
                       SizedBox(height: 15),
-                      _buildTextField("Subject", Icons.subject),
+                      _buildTextField("Subject", Icons.subject,controller: controllersubject),
                       SizedBox(height: 15),
-                      _buildTextField("Message", Icons.message, maxLines: 5),
+                      _buildTextField("Message", Icons.message, maxLines: 5,controller: controllermessage),
                       SizedBox(height: 20),
                       _buildSubmitButton()
                     ],
@@ -184,8 +208,15 @@ class _ContactPageState extends State<ContactPage> with SingleTickerProviderStat
     );
   }
 
-  Widget _buildTextField(String hintText, IconData icon, {TextInputType keyboardType = TextInputType.text, int maxLines = 1}) {
+  Widget _buildTextField(
+      String hintText,
+      IconData icon, {
+        TextInputType keyboardType = TextInputType.text,
+        int maxLines = 1,
+        required TextEditingController controller,
+      }) {
     return TextFormField(
+      controller: controller,
       keyboardType: keyboardType,
       maxLines: maxLines,
       decoration: InputDecoration(
@@ -204,6 +235,7 @@ class _ContactPageState extends State<ContactPage> with SingleTickerProviderStat
     );
   }
 
+
   Widget _buildSubmitButton() {
     return SizedBox(
       width: double.infinity,
@@ -211,6 +243,10 @@ class _ContactPageState extends State<ContactPage> with SingleTickerProviderStat
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
+            adddata(controllername.text,
+                controllereamil.text,
+                controllersubject.text,
+                controllermessage.text);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Message Sent Successfully!")),
             );
