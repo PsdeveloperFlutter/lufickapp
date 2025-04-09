@@ -85,6 +85,9 @@ class Assets {
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
   static const String libMain = 'lib/main.dart';
+  static const String libPortfolioProjectContactFile = 'lib/PortfolioProject/Contact_File.dart~';
+  static const String libPortfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart~';
+  static const String libPortfolioProjectProjectScreen = 'lib/PortfolioProject/Project_Screen.dart~';
   static const String libPortfolioProjectResumePage = 'lib/PortfolioProject/Resume_Page.dart~';
   static const String libReginstration = 'lib/Reginstration.dart';
   static const String libThemes = 'lib/themes.dart';
@@ -95,6 +98,8 @@ class Assets {
   static const String loginandsignsectionGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/GoogleAuth.dart~';
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
+  static const String loginandsignwithNodejsLogin = 'lib/LoginandsignwithNodejs/login.dart';
+  static const String loginandsignwithNodejsLoginSignupNodejs = 'lib/LoginandsignwithNodejs/Login_signup_nodejs.dart';
   static const String lufickappAssetsNew Resume PRIYANSHU SATIJA = 'assets/New Resume PRIYANSHU SATIJA.pdf';
   static const String lufickappLibMain = 'lib/main.dart~';
   static const String notificationCodeLocalNotification = 'lib/Event Reminder App/NotificationCode/Local_Notification.dart';
