@@ -98,8 +98,12 @@ class Assets {
   static const String loginandsignsectionGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/GoogleAuth.dart~';
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
+  static const String loginandsignwithNodejsDeleteData = 'lib/LoginandsignwithNodejs/Delete_data.dart';
+  static const String loginandsignwithNodejsGetData = 'lib/LoginandsignwithNodejs/get_data.dart';
   static const String loginandsignwithNodejsLogin = 'lib/LoginandsignwithNodejs/login.dart';
   static const String loginandsignwithNodejsLoginSignupNodejs = 'lib/LoginandsignwithNodejs/Login_signup_nodejs.dart';
+  static const String loginandsignwithNodejsSendData = 'lib/LoginandsignwithNodejs/send_data.dart';
+  static const String loginandsignwithNodejsUpdateData = 'lib/LoginandsignwithNodejs/update_data.dart';
   static const String lufickappAssetsNew Resume PRIYANSHU SATIJA = 'assets/New Resume PRIYANSHU SATIJA.pdf';
   static const String lufickappLibMain = 'lib/main.dart~';
   static const String notificationCodeLocalNotification = 'lib/Event Reminder App/NotificationCode/Local_Notification.dart';
