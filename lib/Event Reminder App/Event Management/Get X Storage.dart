@@ -24,8 +24,22 @@ void saveEvent(Map<String, dynamic> event, BuildContext context) {
 
     // Show a success message
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Data Backup successfully!")),
+      SnackBar(
+        duration: const Duration(seconds: 5), // Optional: customize duration
+        content: Row(
+          children: const [
+            CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 2,
+            ),
+            SizedBox(width: 16),
+            Text("Data Backup successfully!"),
+          ],
+        ), // Optional styling
+        behavior: SnackBarBehavior.floating, // Optional: floating effect
+      ),
     );
+
   } catch (e) {
     // Log the exception and rethrow it
     print("Exception occurred: $e");

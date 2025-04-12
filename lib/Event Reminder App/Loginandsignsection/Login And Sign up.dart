@@ -14,7 +14,7 @@ import '../Event Management/Event_manage_UI.dart';
 import '../Getx Storage/Them e Change getxController.dart';
 import '../NotificationCode/Local_Notification.dart';
 import '../NotificationCode/UI_Notification/UI_Notification.dart';
-import '../Riverpod_Management/Riverpod_add_Management.dart';
+
 import 'Firebase Functionality/GoogleAuth.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 import 'SiginUp.dart';
@@ -56,8 +56,6 @@ void main() async {
   // ✅ Initialize GetX Theme Controller
   final ThemeController themeController = Get.put(ThemeController());
 
-  // ✅ Initialize SQLite Database
-  final db = await DatabaseHelper.instance.database;
 
   // ✅ Initialize Timezones & Notifications
   tz.initializeTimeZones();

@@ -41,12 +41,24 @@ class Mainpage_event_management extends StatelessWidget {
               final ThemeController themeController = Get.find();
               themeController.toggletheme();
             }, icon: Icon(themeController.changemode==1?Icons.nightlight_round:Icons.wb_sunny_outlined,color:themeController.changemode==1?Colors.grey.shade900:Colors.yellow.shade500)),
-            IconButton(onPressed: (){
 
-              //Logic Here of Retrieve of data from GetxStorage and show send in database
-
-              //First of Retrieve the data from Get X Storage and after send the data to database
-
+      PopupMenuButton<String>(
+        onSelected: (value) {
+          if (value == 'Set Pin') {
+            // Handle Set Pin logic here
+          } else if (value == 'Backup Data') {
+            // Handle Backup Data logic here
+          }
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+          const PopupMenuItem<String>(
+            value: 'Set Pin',
+            child: Text('Set Pin'),
+          ),
+          PopupMenuItem<String>(
+            value: 'Backup Data',
+            child: const Text('Backup Data'),
+            onTap: (){
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -85,9 +97,10 @@ class Mainpage_event_management extends StatelessWidget {
                 },
               );
 
-
-
-            }, icon: Icon(Icons.restart_alt,color: Colors.blue.shade500,))
+            },
+          ),
+        ],
+      ),
           ],
           bottom: const TabBar(
             tabs: [
