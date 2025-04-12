@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import'package:get_storage/get_storage.dart';
+import 'package:path_provider/path_provider.dart';
 final GetStorage storage=GetStorage();
 
-void saveEvent(Map<String, dynamic> event, BuildContext context) {
+Future<void> saveEvent(Map<String, dynamic> event, BuildContext context) async {
   try {
     print("Code run here successfully");
 
@@ -22,23 +26,63 @@ void saveEvent(Map<String, dynamic> event, BuildContext context) {
     // Write the updated list back to storage
     storage.write('savedEvents', savedEvent);
 
-    // Show a success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5), // Optional: customize duration
-        content: Row(
-          children: const [
-            CircularProgressIndicator(
-              color: Colors.white,
-              strokeWidth: 2,
-            ),
-            SizedBox(width: 16),
-            Text("Data Backup successfully!"),
-          ],
-        ), // Optional styling
-        behavior: SnackBarBehavior.floating, // Optional: floating effect
-      ),
-    );
+
+
+    try {
+      // ✅ Backup logic begins here
+
+      // Define the folder path where you want to store the backup
+      String folderpath = '/storage/emulated/0/Download/eventreminder';
+
+      // Step 1: Create the folder if it doesn't exist
+      final Directory backupDir = Directory(folderpath);
+      if (!await backupDir.exists()) {
+        await backupDir.create(recursive: true);
+      }
+
+      // Step 2: Convert event list to JSON and save as bytes (UTF-8 encoded)
+      File backupFile = File('$folderpath/backup.json');
+      await backupFile.writeAsBytes(utf8.encode(jsonEncode(savedEvent)));
+
+      // Step 3: Show Snackbar with loader and file path
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              const CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+              const SizedBox(width: 16),
+              Expanded(child: Text("Data Backup successful!")),
+            ],
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.green,
+        ),
+      );
+
+
+      // Step 3: Show Snackbar with loader and file path
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Expanded(child: Text(" Path: ${backupFile.path}")),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.green,
+        ),
+      );
+
+
+    } catch (e) {
+      print("Exception occurred: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to save backup: $e")),
+      );
+    }
+
+
 
   } catch (e) {
     // Log the exception and rethrow it
