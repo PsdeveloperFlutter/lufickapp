@@ -47,7 +47,7 @@ Future<void> saveEvent(Map<String, dynamic> event, BuildContext context) async {
       // Step 3: Show Snackbar with loader and file path
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: const Duration(seconds: 5),
+          duration: const Duration(seconds: 3),
           content: Row(
             children: [
               const CircularProgressIndicator(
@@ -55,11 +55,11 @@ Future<void> saveEvent(Map<String, dynamic> event, BuildContext context) async {
                 strokeWidth: 2,
               ),
               const SizedBox(width: 16),
-              Expanded(child: Text("Data Backup successful!")),
+              Expanded(child: Text("Data Backup Processing!")),
             ],
           ),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.green,
+
         ),
       );
 
@@ -67,10 +67,10 @@ Future<void> saveEvent(Map<String, dynamic> event, BuildContext context) async {
       // Step 3: Show Snackbar with loader and file path
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: const Duration(seconds: 5),
-          content: Expanded(child: Text(" Path: ${backupFile.path}")),
+          duration: const Duration(seconds: 3),
+          content: Expanded(child: Text(" Data Save Successfully 	Backup File	: ${backupFile.path}")),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.green,
+
         ),
       );
 

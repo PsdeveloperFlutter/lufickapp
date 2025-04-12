@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:flip_card/flip_card.dart';
+import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
@@ -291,58 +292,59 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           icon: Icon(Icons.delete, color: Colors.red.shade700),
                                         ),
 
+                                             IconButton(
+                                        onPressed: () async {
+                                          final eventDetails = '''
+Event: ${getValue(event['name'])}
+Date & Time: ${getValue(event['date_time'])}
+Category: ${getValue(event['category'])}
+Location: ${getValue(event['location'])}
+Description: ${getValue(event['description'])}
+Priority: ${getValue(event['priority'])}
+Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
+''';
 
-                                        IconButton(
-                                          onPressed: () async {
-                                            final eventDetails = '''
-                                    Event: ${getValue(event['name'])}
-                                    Date & Time: ${getValue(event['date_time'])}
-                                    Category: ${getValue(event['category'])}
-                                    Location: ${getValue(event['location'])}
-                                    Description: ${getValue(event['description'])}
-                                    Priority: ${getValue(event['priority'])}
-                                    Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}
-                                    ''';
+                                          final tempDir = await getTemporaryDirectory();
+                                          final zipFolder = Directory('${tempDir.path}/share_data');
+                                          if (await zipFolder.exists()) {
+                                            await zipFolder.delete(recursive: true);
+                                          }
+                                          await zipFolder.create(recursive: true);
 
-                                            // Initialize a list for media paths (XFile)
-                                            List<XFile> mediaPaths = [];
+                                          // Step 1: Write event details to a text file
+                                          final detailsFile = File('${zipFolder.path}/event_details.txt');
+                                          await detailsFile.writeAsString(eventDetails);
 
-                                            // Check if there's an image and copy it to a shareable directory
-                                            if (event['image_path'] != null && event['image_path'] != '') {
-                                              try {
-                                                XFile imageFile = await _copyImageToTempDirectory(event['image_path']);
-                                                mediaPaths.add(imageFile);
-                                              } catch (e) {
-                                                print("Error copying image: $e");
-                                              }
-                                            }
+                                          // Step 2: Copy media files
+                                          List<File> mediaFiles = [];
+                                          if (event['image_path'] != null && event['image_path'] != '') {
+                                            mediaFiles.add(File(event['image_path']));
+                                          }
+                                          if (event['video_path'] != null && event['video_path'] != '') {
+                                            mediaFiles.add(File(event['video_path']));
+                                          }
+                                          if (event['file_path'] != null && event['file_path'] != '') {
+                                            mediaFiles.add(File(event['file_path']));
+                                          }
 
-                                            // Check if there's a video and add it to the mediaPaths
-                                            if (event['video_path'] != null && event['video_path'] != '') {
-                                              mediaPaths.add(XFile(event['video_path']));
-                                            }
+                                          for (File media in mediaFiles) {
+                                            final fileName = media.path.split('/').last;
+                                            await media.copy('${zipFolder.path}/$fileName');
+                                          }
 
-                                            // Check if there's a file and add it to the mediaPaths
-                                            if (event['file_path'] != null && event['file_path'] != '') {
-                                              mediaPaths.add(XFile(event['file_path']));
-                                            }
+                                          // Step 3: Create ZIP from the folder
+                                          final zipPath = '${tempDir.path}/event_backup.zip';
+                                          final zipFile = File(zipPath);
+                                          if (await zipFile.exists()) await zipFile.delete();
+                                          final encoder = ZipFileEncoder();
+                                          encoder.create(zipPath);
+                                          encoder.addDirectory(zipFolder);
+                                          encoder.close();
 
-                                            // Combine event details and media paths to share
-                                            String shareText = eventDetails;
-                                            if (mediaPaths.isNotEmpty) {
-                                              shareText += '\n\nMedia Files:\n${mediaPaths.map((e) => e.path).join("\n")}';
-                                            }
-
-                                            // Share media files along with event details
-                                            if (mediaPaths.isNotEmpty) {
-                                              Share.shareXFiles(mediaPaths, text: shareText);
-                                            } else {
-                                              // Share only the event details if there are no media files
-                                              Share.share(shareText);
-                                            }
-                                          },
-                                          icon: Icon(Icons.share, color: Colors.blue.shade700),
-                                        ),
+                                          // Step 4: 	Share the zip file
+                                          await Share.shareXFiles([XFile(zipPath)], text: "Event Backup with Media 🎉");
+                                        },
+                                             icon: Icon(Icons.share, color: Colors.blue.shade700),),
 
 
                                         IconButton(

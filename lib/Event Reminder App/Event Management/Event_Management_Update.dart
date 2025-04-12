@@ -114,15 +114,8 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Update Event Details",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-          
+
+              SizedBox(height: 10,),
               // Event Name Field
               TextField(
                 controller: _eventNameController,

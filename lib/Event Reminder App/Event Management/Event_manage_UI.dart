@@ -44,10 +44,11 @@ class Mainpage_event_management extends StatelessWidget {
 
       PopupMenuButton<String>(
         onSelected: (value) {
-          if (value == 'Set Pin') {
-            // Handle Set Pin logic here
+          if (value == 'App Lock') {
+            // Handle App Lock logic here
           } else if (value == 'Backup Data') {
             // Handle Backup Data logic here
+
           }
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
