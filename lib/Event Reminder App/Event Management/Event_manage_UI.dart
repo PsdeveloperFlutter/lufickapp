@@ -314,7 +314,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
 
 
             Text(
-              "Select Date and Time",
+              "Schedule Date and Time",
               style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold),
             ),
 
@@ -491,11 +491,15 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                           child: Row(
                             children: [
                               Radio<PriorityLevel>(
+
                                 value: priority,
                                 groupValue: selectedPriority,
                                 onChanged: (PriorityLevel? value) {
                                   if (value != null) {
 
+                                    setState(() {
+                                      selectedPriority = value;
+                                    });
                                     ref.read(radioButtonProvider.notifier).state = value;
                                   }
                                 },
@@ -689,7 +693,13 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
   //This is for the Manging the File
   // Function to pick a file
   Future<void> _pickFile(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
+    );
 
     if (result != null && result.files.isNotEmpty) {
      file = result.files.first;
