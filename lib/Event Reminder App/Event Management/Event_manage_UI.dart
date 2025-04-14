@@ -121,7 +121,7 @@ class Mainpage_event_management extends StatelessWidget {
                   return Consumer(builder: (context,ref,child){
                     return
                       AlertDialog(
-                        title: const Text('Logout'), // Your title here
+                        title: const Text('Confirm Logout'), // Your title here
                         content: const Text('Are you sure you want to logout.'), // Your content here
                         actions: <Widget>[ // Buttons at the bottom
                           TextButton(

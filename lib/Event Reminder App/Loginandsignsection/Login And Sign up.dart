@@ -15,6 +15,7 @@ import '../Getx Storage/Them e Change getxController.dart';
 import '../NotificationCode/Local_Notification.dart';
 import '../NotificationCode/UI_Notification/UI_Notification.dart';
 
+import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Firebase Functionality/GoogleAuth.dart';
 import 'Firebase Functionality/Login and Signin Functionality .dart';
 import 'SiginUp.dart';
@@ -91,6 +92,13 @@ class LoginPage extends ConsumerWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+
+  //This is for the purpose for the Set the loader to the Login Screen make sure of that
+
+  bool loading=false;
+
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isValidEmail = ref.watch(isValidEmailProvider);
@@ -101,7 +109,8 @@ class LoginPage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
-          child: Column(
+          child:  loading==false?
+          Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Center(
@@ -168,7 +177,18 @@ class LoginPage extends ConsumerWidget {
                 onPressed: () async {
                   final email = emailController.text.trim();
                   final password = passwordController.text.trim();
-                  await LoggingService.login(email, password, context);
+                  ref.read(loadingProvider.notifier).setloading(true);
+
+                  Future.delayed(Duration(seconds: 2), () async {
+                    await LoggingService.login(email, password, context);
+                    ref.read(loadingProvider.notifier).setloading(false);
+                  });
+
+
+
+
+
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -239,7 +259,14 @@ class LoginPage extends ConsumerWidget {
               ),
 
             ],
-          ),
+          )
+              :
+              Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                  strokeWidth: 2,
+                ),
+              )
         ),
       ),
     );
