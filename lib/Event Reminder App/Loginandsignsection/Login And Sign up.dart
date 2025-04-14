@@ -238,33 +238,6 @@ class LoginPage extends ConsumerWidget {
                 child: Text('Don’t have an account? Sign Up', style: TextStyle(color: Colors.blue)),
               ),
 
-              SizedBox(height: 10),
-
-              // Set Pin & Enter Pin Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => SetPinScreen(),
-                      );
-                    },
-                    child: Text("Set Pin", style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold)),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => EnterPinScreen(),
-                      );
-                    },
-                    child: Text("Enter Pin", style: GoogleFonts.aBeeZee(fontSize: 15, fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
