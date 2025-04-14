@@ -152,12 +152,12 @@ class LoginPage extends ConsumerWidget {
                   hintText: 'Enter your password',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   prefixIcon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () {
-                      ref.read(switchValueProvider.notifier).state = !isObscured;
-                    },
-                  ),
+                  // suffixIcon: IconButton(
+                  //   icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+                  //   onPressed: () {
+                  //     ref.read(switchValueProvider.notifier).state = !isObscured;
+                  //   },
+                  // ),
                 ),
               ),
 
