@@ -333,7 +333,7 @@ Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 
                                           }
 
                                           // Step 3: Create ZIP from the folder
-                                          final zipPath = '${tempDir.path}/event_backup.zip';
+                                          final zipPath = '${tempDir.path}/Mainevent_details.zip';
                                           final zipFile = File(zipPath);
                                           if (await zipFile.exists()) await zipFile.delete();
                                           final encoder = ZipFileEncoder();
@@ -347,12 +347,7 @@ Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 
                                              icon: Icon(Icons.share, color: Colors.blue.shade700),),
 
 
-                                        IconButton(
-                                          onPressed: () async {
-                                            await PdfGenerator.generatePdf(event,event['name']);
-                                          },
-                                          icon: Icon(Icons.picture_as_pdf, color: Colors.green.shade700),
-                                        ),
+
                                         IconButton(
                                           onPressed: () async {
                                             try{
