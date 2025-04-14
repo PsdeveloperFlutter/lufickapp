@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,8 @@ import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/Get%20X%20St
 import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
+import '../Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
+import '../Loginandsignsection/Login And Sign up.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
@@ -48,6 +51,11 @@ class Mainpage_event_management extends StatelessWidget {
             // Handle App Lock logic here
           } else if (value == 'Backup Data') {
             // Handle Backup Data logic here
+
+          }
+          else if(value =="Logout"){
+
+
 
           }
         },
@@ -94,6 +102,43 @@ class Mainpage_event_management extends StatelessWidget {
                         ),
                       ],
                     );
+                  });
+                },
+              );
+
+            },
+          ),
+
+
+
+          PopupMenuItem<String>(
+            value: 'Logout',
+            child: const Text('Logout'),
+            onTap: (){
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Consumer(builder: (context,ref,child){
+                    return
+                      AlertDialog(
+                        title: const Text('Logout'), // Your title here
+                        content: const Text('Are you sure you want to logout.'), // Your content here
+                        actions: <Widget>[ // Buttons at the bottom
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: const Text('No'),
+                          ),
+                          TextButton(
+                            onPressed: () async{
+                              LoggingService.logout();
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                            },
+                            child: const Text('Yes'),
+                          ),
+                        ],
+                      );
                   });
                 },
               );
