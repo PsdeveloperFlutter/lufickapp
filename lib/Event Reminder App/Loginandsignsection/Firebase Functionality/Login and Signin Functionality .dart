@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lufickapp/Todo_Application/screen/Main%20Screen.dart';
 
 class LoggingService {
   // Helper function to show a Snackbar
@@ -26,7 +27,7 @@ class LoggingService {
 
       // Navigate to main page
       // Navigate to main page
-      Navigator.pushReplacementNamed(context, '/mainpage');
+Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Mainscreen()));
 
 
     } on FirebaseAuthException catch (e) {
