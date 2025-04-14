@@ -348,19 +348,6 @@ Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 
 
 
 
-                                        IconButton(
-                                          onPressed: () async {
-                                            try{
-                                              await PdfGenerator.generatePdf(event,event['name']).then((value) =>SnackBar(content: Text("PDF Downloaded Successfully")));
-                                            }catch(e){
-                                              SnackBar(content: Text("PDF Downloaded Successfully"));
-                                            }
-                                            finally{
-                                              print("Code Here Successfully Executed");
-                                            }
-                                          },
-                                          icon: Icon(Icons.download, color: Colors.blue.shade700),
-                                        ),
                                         IconButton(onPressed: (){
                                           Navigator.push(
                                             context,
