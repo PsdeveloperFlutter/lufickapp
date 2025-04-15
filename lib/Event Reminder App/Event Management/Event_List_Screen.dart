@@ -219,8 +219,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   SizedBox(height: 8),
                                   Text('Date & Time: ${formatDate(event['date_time'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
-                                  Text('Category: ${getValue(event['category'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 8),
                                   Text('Location: ${getValue(event['location'])}', style: GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text('Description: ${getValue(event ['description'])}', style:GoogleFonts.aboreto(fontSize: 14, color: Colors.grey[700],fontWeight: FontWeight.bold)),

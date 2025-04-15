@@ -1,16 +1,14 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Database/Main_Database_App.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/Get%20X%20Storage.dart';
 import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
-import 'package:video_player/video_player.dart';
 import '../Getx Storage/Them e Change getxController.dart';
 import '../Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
 import '../Loginandsignsection/Login And Sign up.dart';
@@ -615,10 +613,13 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                    //First notification set up and after that Database set with data
                    _scheduleNotification();
 
+                   // Parse the custom date string properly
+                   DateTime parsedDate = DateFormat("dd-MM-yyyy hh:mm a").parse(_eventDateTimeController.text.trim());
+
                    // ✅ Pass Validated Data to AttachWithDB Class (Maintaining Your Structure)
                    AttachWithDB newEvent = AttachWithDB(
                      name: _eventNameController.text.trim(),
-                     date: _eventDateTimeController.text.trim(),
+                     date:parsedDate.toString(),
                      description: _eventDescriptionController.text.trim(),
                      location: _eventLocationController.text.trim(),
                      category: categoriesvalue.toString(),
