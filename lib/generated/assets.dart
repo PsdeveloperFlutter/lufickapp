@@ -106,8 +106,8 @@ class Assets {
   static const String loginandsignwithNodejsSendData = 'lib/LoginandsignwithNodejs/send_data.dart';
   static const String loginandsignwithNodejsSignUp with new User = 'lib/LoginandsignwithNodejs/SignUp with new User.dart';
   static const String loginandsignwithNodejsUpdateData = 'lib/LoginandsignwithNodejs/update_data.dart';
+  static const String loginandsignwithNodejsUserSignandLogin = 'lib/LoginandsignwithNodejs/UserSignandLogin.dart';
   static const String lufickappAssetsNew Resume PRIYANSHU SATIJA = 'assets/New Resume PRIYANSHU SATIJA.pdf';
-  static const String lufickappLibMain = 'lib/main.dart~';
   static const String notificationCodeLocalNotification = 'lib/Event Reminder App/NotificationCode/Local_Notification.dart';
   static const String notificationCodeMainFile = 'lib/Event Reminder App/NotificationCode/Main_File.dart';
   static const String notificationCodeNotification4 = 'lib/Event Reminder App/NotificationCode/Notification4.dart~';
