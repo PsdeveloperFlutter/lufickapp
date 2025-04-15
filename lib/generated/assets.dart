@@ -44,10 +44,10 @@ class Assets {
   static const String event ManagementGet X Storage = 'lib/Event Reminder App/Event Management/Get X Storage.dart';
   static const String event ManagementPDFGeneration = 'lib/Event Reminder App/Event Management/PDF_generation.dart';
   static const String event ManagementVideoPlayer = 'lib/Event Reminder App/Event Management/Video_Player.dart';
-  static const String event Reminder AppController of AppController1 = 'lib/Event Reminder App/Controller of App/Controller1.dart~';
   static const String event Reminder AppEvent ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart~';
-  static const String event Reminder AppEvent ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart~';
-  static const String event Reminder AppLoginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart~';
+  static const String event Reminder AppEvent ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart~';
+  static const String event Reminder AppEvent ManagementGet X Storage = 'lib/Event Reminder App/Event Management/Get X Storage.dart~';
+  static const String event Reminder AppRiverpodManagementRiverpodAddManagement = 'lib/Event Reminder App/Riverpod_Management/Riverpod_add_Management.dart~';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
   static const String firebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
   static const String firebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart';
@@ -95,6 +95,7 @@ class Assets {
   static const String libWeatherAPPSearchApiWeather = 'lib/Weather_APP/Search_api_Weather.dart~';
   static const String loginandsignsectionAuthroized = 'lib/Event Reminder App/Loginandsignsection/authroized.dart';
   static const String loginandsignsectionChecker = 'lib/Event Reminder App/Loginandsignsection/checker.dart';
+  static const String loginandsignsectionFirebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart~';
   static const String loginandsignsectionGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/GoogleAuth.dart~';
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
@@ -103,6 +104,7 @@ class Assets {
   static const String loginandsignwithNodejsLogin = 'lib/LoginandsignwithNodejs/login.dart';
   static const String loginandsignwithNodejsLoginSignupNodejs = 'lib/LoginandsignwithNodejs/Login_signup_nodejs.dart';
   static const String loginandsignwithNodejsSendData = 'lib/LoginandsignwithNodejs/send_data.dart';
+  static const String loginandsignwithNodejsSignUp with new User = 'lib/LoginandsignwithNodejs/SignUp with new User.dart';
   static const String loginandsignwithNodejsUpdateData = 'lib/LoginandsignwithNodejs/update_data.dart';
   static const String lufickappAssetsNew Resume PRIYANSHU SATIJA = 'assets/New Resume PRIYANSHU SATIJA.pdf';
   static const String lufickappLibMain = 'lib/main.dart~';
