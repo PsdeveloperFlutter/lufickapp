@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -52,8 +51,6 @@ class Mainpage_event_management extends StatelessWidget {
 
           }
           else if(value =="Logout"){
-
-
 
           }
         },
