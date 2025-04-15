@@ -6,10 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
+import 'Event Reminder App/Event Management/Event_manage_UI.dart';
 import 'Event Reminder App/Getx Storage/Them e Change getxController.dart';
 import 'Event Reminder App/Loginandsignsection/Login And Sign up.dart';
 import 'Event Reminder App/NotificationCode/Local_Notification.dart';
 import 'Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';
+import 'Flutter_Social_App/ScreenS/login_Page.dart';
 import 'Weather_APP/Screens_of_APP/Google_authentication.dart';
 
 class Mainclass extends StatelessWidget {
@@ -44,7 +46,7 @@ class Mainclass extends StatelessWidget {
                 // Navigate to the next screen
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => LoginPage(),
+                    builder: (context) => Mainpage_event_management(),
                   ),
                 );
               },
