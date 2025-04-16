@@ -84,6 +84,7 @@ class Assets {
   static const String libAnimationInFlutterRotateImage = 'lib/Animation_in_Flutter/RotateImage.dart~';
   static const String libAnimationInFlutterZoominFlutter = 'lib/Animation_in_Flutter/ZoominFlutter.dart~';
   static const String libCopywithMethod = 'lib/CopywithMethod.dart';
+  static const String libLoginandsignwithNodejsUserSignandLogin = 'lib/LoginandsignwithNodejs/UserSignandLogin.dart~';
   static const String libMain = 'lib/main.dart';
   static const String libPortfolioProjectContactFile = 'lib/PortfolioProject/Contact_File.dart~';
   static const String libPortfolioProjectHomeScreen = 'lib/PortfolioProject/Home_Screen.dart~';
@@ -99,6 +100,7 @@ class Assets {
   static const String loginandsignsectionGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/GoogleAuth.dart~';
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
+  static const String loginandsignwithNodejsCRUDCreate = 'lib/LoginandsignwithNodejs/CRUD_create.dart';
   static const String loginandsignwithNodejsDeleteData = 'lib/LoginandsignwithNodejs/Delete_data.dart';
   static const String loginandsignwithNodejsGetData = 'lib/LoginandsignwithNodejs/get_data.dart';
   static const String loginandsignwithNodejsLogin = 'lib/LoginandsignwithNodejs/login.dart';
@@ -108,6 +110,7 @@ class Assets {
   static const String loginandsignwithNodejsUpdateData = 'lib/LoginandsignwithNodejs/update_data.dart';
   static const String loginandsignwithNodejsUserSignandLogin = 'lib/LoginandsignwithNodejs/UserSignandLogin.dart';
   static const String lufickappAssetsNew Resume PRIYANSHU SATIJA = 'assets/New Resume PRIYANSHU SATIJA.pdf';
+  static const String lufickappLibMain = 'lib/main.dart~';
   static const String notificationCodeLocalNotification = 'lib/Event Reminder App/NotificationCode/Local_Notification.dart';
   static const String notificationCodeMainFile = 'lib/Event Reminder App/NotificationCode/Main_File.dart';
   static const String notificationCodeNotification4 = 'lib/Event Reminder App/NotificationCode/Notification4.dart~';
