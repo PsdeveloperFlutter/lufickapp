@@ -101,6 +101,7 @@ class Assets {
   static const String loginandsignsectionLogin And Sign up = 'lib/Event Reminder App/Loginandsignsection/Login And Sign up.dart';
   static const String loginandsignsectionSiginUp = 'lib/Event Reminder App/Loginandsignsection/SiginUp.dart';
   static const String loginandsignwithNodejsCRUDCreate = 'lib/LoginandsignwithNodejs/CRUD_create.dart';
+  static const String loginandsignwithNodejsCRUDFetch = 'lib/LoginandsignwithNodejs/CRUD_fetch.dart';
   static const String loginandsignwithNodejsDeleteData = 'lib/LoginandsignwithNodejs/Delete_data.dart';
   static const String loginandsignwithNodejsGetData = 'lib/LoginandsignwithNodejs/get_data.dart';
   static const String loginandsignwithNodejsLogin = 'lib/LoginandsignwithNodejs/login.dart';

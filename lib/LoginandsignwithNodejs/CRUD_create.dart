@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
+import 'CRUD_fetch.dart';
+
 class CRUDCreate extends StatefulWidget {
   const CRUDCreate({Key? key}) : super(key: key);
 
@@ -155,6 +157,15 @@ class _CRUDCreateState extends State<CRUDCreate> {
                   onPressed: createuser_data,
                   child: Text('Create User'),
                 ),
+                ElevatedButton(
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return FetchDataScreen();
+                    }));
+                  },
+                  child: Text('Get User'),
+                ),
+
               ],
             ),
           ),
