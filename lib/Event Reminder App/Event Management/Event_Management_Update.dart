@@ -39,18 +39,18 @@ class UpdateEventUI extends StatefulWidget {
   dynamic filepath;
   dynamic id;
   dynamic videopath;
-  UpdateEventUI({
-    required this.index,
-    required this.eventName,
-    required this.eventDateTime,
-    required this.eventLocation,
-    required this.eventDescription,
-    required this.eventPriority, // String value for priority
-    this.imagepath,
-    this.filepath,
-    this.id,
-    this.videopath
-  });
+
+  UpdateEventUI(
+      {required this.index,
+      required this.eventName,
+      required this.eventDateTime,
+      required this.eventLocation,
+      required this.eventDescription,
+      required this.eventPriority, // String value for priority
+      this.imagepath,
+      this.filepath,
+      this.id,
+      this.videopath});
 
   @override
   _UpdateEventUIState createState() => _UpdateEventUIState();
@@ -67,10 +67,14 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
   void initState() {
     super.initState();
     _eventNameController = TextEditingController(text: widget.eventName);
-    _eventDateTimeController = TextEditingController(text: widget.eventDateTime);
-    _eventLocationController = TextEditingController(text: widget.eventLocation);
-    _eventDescriptionController = TextEditingController(text: widget.eventDescription);
-    _selectedPriority = stringToPriorityLevel(widget.eventPriority); // Convert string to enum
+    _eventDateTimeController =
+        TextEditingController(text: widget.eventDateTime);
+    _eventLocationController =
+        TextEditingController(text: widget.eventLocation);
+    _eventDescriptionController =
+        TextEditingController(text: widget.eventDescription);
+    _selectedPriority =
+        stringToPriorityLevel(widget.eventPriority); // Convert string to enum
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -96,7 +100,8 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
           pickedTime.minute,
         );
 
-        _eventDateTimeController.text = DateFormat('dd-MM-yyyy HH:mm').format(combined);
+        _eventDateTimeController.text =
+            DateFormat('dd-MM-yyyy HH:mm').format(combined);
       }
     }
   }
@@ -105,7 +110,8 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Update Event", style: TextStyle(color: Colors.white)),
+        title:
+            const Text("Update Event", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
@@ -114,8 +120,9 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               // Event Name Field
               TextField(
                 controller: _eventNameController,
@@ -128,7 +135,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 ),
               ),
               const SizedBox(height: 16),
-          
+
               // Event Date and Time Field
               TextField(
                 controller: _eventDateTimeController,
@@ -143,7 +150,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 ),
               ),
               const SizedBox(height: 16),
-          
+
               // Event Location Field
               TextField(
                 controller: _eventLocationController,
@@ -156,7 +163,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 ),
               ),
               const SizedBox(height: 16),
-          
+
               // Event Description Field
               TextField(
                 controller: _eventDescriptionController,
@@ -170,14 +177,15 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 ),
               ),
               const SizedBox(height: 16),
-          
+
               // Priority Dropdown
               DropdownButtonFormField<PriorityLevel>(
                 value: _selectedPriority,
                 items: PriorityLevel.values.map((PriorityLevel priority) {
                   return DropdownMenuItem(
                     value: priority,
-                    child: Text(priority.toString().split('.').last.capitalize()),
+                    child:
+                        Text(priority.toString().split('.').last.capitalize()),
                   );
                 }).toList(),
                 onChanged: (PriorityLevel? newValue) {
@@ -193,213 +201,321 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 ),
               ),
               const SizedBox(height: 24),
-              widget.imagepath!=null?
-          
-              Center(
-                child: Column(
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.file(File(widget.imagepath),height: 200,width: 300,)),
-                    SizedBox(height: 10,),
-                    ElevatedButton.icon(
-                      label: Text("Upload another Image",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                      onPressed: ()async{
-                        ImagePicker image=ImagePicker();
-                        XFile ?file=await image.pickImage(source:ImageSource.gallery);
-                        if(file!=null){
-                          setState(() {
-                            widget.imagepath=file.path;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image uploaded successfully")));
-                        }
-                        else{
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image not uploaded")));
-                        }
-                      },
-                      icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
-                    ),
-                  ],
-                ),
-              ):
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                     child:
-                     Text("No Image ",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),)),
-                      SizedBox(height: 10,),
-                      ElevatedButton.icon(
-                        label: Text("Upload Image",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                        onPressed: ()async{
-                          ImagePicker image= await ImagePicker();
-                           XFile ? imagestore=await image.pickImage(source: ImageSource.gallery);
-                           if(imagestore!=null){
-                             setState(() {
-                               widget.imagepath=imagestore.path;
-                             });
-                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image uploaded successfully")));
-                           }
-                           else {
-                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Image not uploaded")));
-                           }
-                          },
-                        icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
+              widget.imagepath != null
+                  ? Center(
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.file(
+                                File(widget.imagepath),
+                                height: 200,
+                                width: 300,
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton.icon(
+                            label: Text(
+                              "Upload another Image",
+                              style: GoogleFonts.aBeeZee(
+                                  fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                            onPressed: () async {
+                              ImagePicker image = ImagePicker();
+                              XFile? file = await image.pickImage(
+                                  source: ImageSource.gallery);
+                              if (file != null) {
+                                setState(() {
+                                  widget.imagepath = file.path;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "Image uploaded successfully")));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text("Image not uploaded")));
+                              }
+                            },
+                            icon: Icon(
+                              Icons.track_changes_outlined,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-              const SizedBox(height: 24,),
-
-
-            widget.filepath!=null ?
-             Column(
-               children: [
-                 Center(
-                   child: ClipRRect(
-                       borderRadius: BorderRadius.circular(50),
-                       child: Container(
-                           width: 200,
-                           height: 200,
-                           child: seefile(widget.filepath))),
-                 ),
-                     SizedBox(height: 10,)
-               ,ElevatedButton.icon(
-                   label: Text("Upload another file",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                   onPressed: ()async{
-                     FilePickerResult? result=await FilePicker.platform.pickFiles();
-                     if(result!=null){
-                       setState(() {
-                         widget.filepath=result.files.single.path;
-                       });
-                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File uploaded successfully")));
-                     }
-                   },
-                   icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
-                 ),
-               ],
-             ):
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(child: Text("No File ",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),)),
-                SizedBox(height: 10,),
-                ElevatedButton.icon(
-                  label: Text("Upload File",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                  onPressed: ()async{
-                    FilePickerResult? result=await FilePicker.platform.pickFiles();
-                    if(result!=null){
-                     setState(() {
-                       widget.filepath=result.files.single.path;
-                     });
-                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File uploaded successfully")));
-                    }
-                    else{
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File not uploaded")));
-                    }
-                  },
-                  icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
-                ),
-              ],
-            ),
-
-        const SizedBox(height: 24,),
-              widget.videopath!=null ?
-              Column(
-                children: [
-                  Center(
-                    child: Text("Video Selected",style: GoogleFonts.aBeeZee(fontSize: 15),),
-                  ),
-                  SizedBox(height: 10,)
-                  ,ElevatedButton.icon(
-                    label: Text("Upload another Video",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                    onPressed: ()async{
-                      ImagePicker picker=ImagePicker();
-                      final XFile? result = await picker.pickVideo(source: ImageSource.gallery);
-                      if(result!=null){
-                        setState(() {
-                          widget.videopath = result.path;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video uploaded successfully")));
-                      }
-                    },
-                    icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
-                  ),
-                ],
-              ):
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(child: Text("No File ",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 15),)),
-                  SizedBox(height: 10,),
-                  ElevatedButton.icon(
-                    label: Text("Upload Video",style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,fontSize: 12),),
-                    onPressed: ()async{
-                      ImagePicker picker=ImagePicker();
-                      final XFile? result = await picker.pickVideo(source: ImageSource.gallery);
-                      if(result!=null){
-                        setState(() {
-                          widget.videopath = result.path;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video uploaded successfully")));
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Video not uploaded")));
-                      }
-                    },
-                    icon: Icon(Icons.track_changes_outlined,color: Colors.red,),
-                  ),
-                ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                            child: Text(
+                          "No Image ",
+                          style: GoogleFonts.aBeeZee(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          label: Text(
+                            "Upload Image",
+                            style: GoogleFonts.aBeeZee(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                          onPressed: () async {
+                            ImagePicker image = await ImagePicker();
+                            XFile? imagestore = await image.pickImage(
+                                source: ImageSource.gallery);
+                            if (imagestore != null) {
+                              setState(() {
+                                widget.imagepath = imagestore.path;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("Image uploaded successfully")));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Image not uploaded")));
+                            }
+                          },
+                          icon: Icon(
+                            Icons.track_changes_outlined,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+              const SizedBox(
+                height: 24,
               ),
 
+              widget.filepath != null
+                  ? Column(
+                      children: [
+                        Center(
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Container(
+                                  width: 200,
+                                  height: 200,
+                                  child: seefile(widget.filepath))),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          label: Text(
+                            "Upload another file",
+                            style: GoogleFonts.aBeeZee(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                          onPressed: () async {
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles();
+                            if (result != null) {
+                              setState(() {
+                              //int age = 10;
+                                widget.filepath = result.files.single.path;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("File uploaded successfully")));
+                            }
+                          },
+                          icon: Icon(
+                            Icons.track_changes_outlined,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                            child: Text(
+                          "No File ",
+                          style: GoogleFonts.aBeeZee(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          label: Text(
+                            "Upload File",
+                            style: GoogleFonts.aBeeZee(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                          onPressed: () async {
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles();
+                            if (result != null) {
+                              setState(() {
+                                widget.filepath = result.files.single.path;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("File uploaded successfully")));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("File not uploaded")));
+                            }
+                          },
+                          icon: Icon(
+                            Icons.track_changes_outlined,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
 
+              const SizedBox(
+                height: 24,
+              ),
+              widget.videopath != null
+                  ? Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            "Video Selected",
+                            style: GoogleFonts.aBeeZee(fontSize: 15),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          label: Text(
+                            "Upload another Video",
+                            style: GoogleFonts.aBeeZee(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                          onPressed: () async {
+                            ImagePicker picker = ImagePicker();
+                            final XFile? result = await picker.pickVideo(
+                                source: ImageSource.gallery);
+                            if (result != null) {
+                              setState(() {
+                                widget.videopath = result.path;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("Video uploaded successfully")));
+                            }
+                          },
+                          icon: Icon(
+                            Icons.track_changes_outlined,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                            child: Text(
+                          "No File ",
+                          style: GoogleFonts.aBeeZee(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          label: Text(
+                            "Upload Video",
+                            style: GoogleFonts.aBeeZee(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                          onPressed: () async {
+                            ImagePicker picker = ImagePicker();
+                            final XFile? result = await picker.pickVideo(
+                                source: ImageSource.gallery);
+                            if (result != null) {
+                              setState(() {
+                                widget.videopath = result.path;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("Video uploaded successfully")));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Video not uploaded")));
+                            }
+                          },
+                          icon: Icon(
+                            Icons.track_changes_outlined,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
 
-
-
-        const SizedBox(height: 24,),
-
+              const SizedBox(
+                height: 24,
+              ),
 
               // Buttons Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       // Handle event update logic here
-                      final DatabaseHelper database=await DatabaseHelper.instance;
+                      final DatabaseHelper database =
+                          await DatabaseHelper.instance;
 
-                      final Map<String, dynamic> data={
+                      final Map<String, dynamic> data = {
                         'name': _eventNameController.text,
                         'date_time': _eventDateTimeController.text,
                         'location': _eventLocationController.text,
                         'description': _eventDescriptionController.text,
-                        'priority': _selectedPriority.toString().split('.').last,
+                        'priority':
+                            _selectedPriority.toString().split('.').last,
                         'image_path': widget.imagepath,
                         'file_path': widget.filepath,
                         'video_path': widget.videopath
                       };
 
-
                       //This is for the Show Result of Updation of the Data
-                      database.updateEvent(data, widget.id).then((value)=>{
-                        print("Event updated successfully!"),
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Event updated successfully!"))),
-                        Timer(Duration (seconds: 2), () => Navigator.pop(context)),
-                      });
-
-
+                      database.updateEvent(data, widget.id).then((value) => {
+                            print("Event updated successfully!"),
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text("Event updated successfully!"))),
+                            Timer(Duration(seconds: 2),
+                                () => Navigator.pop(context)),
+                          });
                     },
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    child: const Text("Save Changes", style: TextStyle(color: Colors.white)),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Text("Save Changes",
+                        style: TextStyle(color: Colors.white)),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: const Text("Cancel", style: TextStyle(color: Colors.white)),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: const Text("Cancel",
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
@@ -418,7 +534,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     _eventDescriptionController.dispose();
     super.dispose();
   }
-
 
   //This is for See the video
   Widget seeVideo(String filepath) {
@@ -465,9 +580,9 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
         Center(
           child: _controller?.value.isInitialized ?? false
               ? AspectRatio(
-            aspectRatio: _controller!.value.aspectRatio,
-            child: VideoPlayer(_controller!),
-          )
+                  aspectRatio: _controller!.value.aspectRatio,
+                  child: VideoPlayer(_controller!),
+                )
               : CircularProgressIndicator(),
         ),
         SizedBox(height: 10),
@@ -504,7 +619,13 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
 
     if (["jpg", "jpeg", "png", "gif"].contains(fileExtension)) {
       // Display Image
-      return Center(child: Image.file(file, fit: BoxFit.cover,width: 300,height: 200,));
+      return Center(
+          child: Image.file(
+        file,
+        fit: BoxFit.cover,
+        width: 300,
+        height: 200,
+      ));
     } else if (["mp4", "mov", "avi"].contains(fileExtension)) {
       // Display Video
       return VideoPlayerWidget(videoFile: file);
@@ -529,8 +650,6 @@ extension StringCapitalizeExtension on String {
     return this[0].toUpperCase() + this.substring(1).toLowerCase();
   }
 }
-
-
 
 /*
 
@@ -820,13 +939,11 @@ So yes, you are passing a string and then converting it into the corresponding e
 
 */
 
-
-
-
-
 class VideoPlayerWidget extends StatefulWidget {
   final File videoFile;
-  const VideoPlayerWidget({Key? key, required this.videoFile}) : super(key: key);
+
+  const VideoPlayerWidget({Key? key, required this.videoFile})
+      : super(key: key);
 
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
@@ -855,17 +972,16 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   Widget build(BuildContext context) {
     return _controller.value.isInitialized
         ? AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
-    )
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          )
         : Center(child: CircularProgressIndicator());
   }
 }
 
-
-
 class PDFViewWidget extends StatelessWidget {
   final File pdfFile;
+
   const PDFViewWidget({Key? key, required this.pdfFile}) : super(key: key);
 
   @override
