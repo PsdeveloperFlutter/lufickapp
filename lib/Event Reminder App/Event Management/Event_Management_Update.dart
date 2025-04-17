@@ -1,15 +1,16 @@
 // Extension to convert string to enum
 import 'dart:async';
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tzData;
 import '../Database/Main_Database_App.dart';
 
 PriorityLevel stringToPriorityLevel(String priority) {
@@ -57,6 +58,10 @@ class UpdateEventUI extends StatefulWidget {
 }
 
 class _UpdateEventUIState extends State<UpdateEventUI> {
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  DateTime? selectedDate = DateTime.now();
+  TimeOfDay? selectedTime = TimeOfDay.now();
   late TextEditingController _eventNameController;
   late TextEditingController _eventDateTimeController;
   late TextEditingController _eventLocationController;
@@ -64,8 +69,9 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
   late PriorityLevel _selectedPriority;
 
   @override
-  void initState() {
+  void initState()async {
     super.initState();
+    await initNotifications();
     _eventNameController = TextEditingController(text: widget.eventName);
     _eventDateTimeController =
         TextEditingController(text: widget.eventDateTime);
@@ -105,7 +111,65 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       }
     }
   }
+//This is configuration code of notifications
 
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  Future<void> initNotifications() async {
+    // Initialize timezone database
+    tzData.initializeTimeZones();
+
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> scheduleNotification(
+      DateTime scheduledTime,
+      String message,
+      String name,
+      String location,
+      String description,
+
+      ) async {
+    // Convert DateTime to TZDateTime
+    final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
+      scheduledTime,
+      tz.local,
+    );
+
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'your_channel_description',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0, // Notification ID
+      '$name', // Notification Title
+      '$description', // Notification Body
+      scheduledTZDateTime, // Scheduled Time
+      platformChannelSpecifics, // Notification Details
+      uiLocalNotificationDateInterpretation:
+      UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
+  //Here is Build Method
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +265,155 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 ),
               ),
               const SizedBox(height: 24),
+
+              //Here we set the Notification Updation code
+              Text(
+                "Update Notification",
+                style: GoogleFonts.aBeeZee(
+                    fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: _dateController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'Select Date',
+                  labelStyle: TextStyle(
+                    color: Colors.blueGrey,
+                  ),
+                  hintText: 'Tap to choose a date',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                  ),
+                  prefixIcon: Icon(
+                    Icons.calendar_today,
+                    color: Colors.blue,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.blue,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blueAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey[400]!,
+                      width: 1.0,
+                    ),
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                    builder: (BuildContext context, Widget? child) {
+                      return Theme(
+                        data: ThemeData.light().copyWith(
+                          primaryColor: Colors.blue,
+                          colorScheme: ColorScheme.light(primary: Colors.blue),
+                          buttonTheme: ButtonThemeData(
+                              textTheme: ButtonTextTheme.primary),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      _dateController.text =
+                          DateFormat('dd-MM-yyyy').format(pickedDate);
+                      selectedDate = pickedDate;
+                    });
+                  }
+                },
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: _timeController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'Select Time',
+                  labelStyle: TextStyle(
+                    color: Colors.blueGrey,
+                  ),
+                  hintText: 'Tap to choose a time',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                  ),
+                  prefixIcon: Icon(
+                    Icons.access_time,
+                    color: Colors.blue,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.blue,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blueAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey[400]!,
+                      width: 1.0,
+                    ),
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+                onTap: () async {
+                  TimeOfDay? pickedTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                    builder: (BuildContext context, Widget? child) {
+                      return Theme(
+                        data: ThemeData.light().copyWith(
+                          primaryColor: Colors.blue,
+                          colorScheme: ColorScheme.light(primary: Colors.blue),
+                          buttonTheme: ButtonThemeData(
+                              textTheme: ButtonTextTheme.primary),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  );
+                  if (pickedTime != null) {
+                    setState(() {
+                      selectedTime = pickedTime;
+                      _timeController.text = pickedTime.format(context);
+                    });
+                  }
+                },
+              ),
+
               widget.imagepath != null
                   ? Center(
                       child: Column(
@@ -477,31 +690,9 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                   ElevatedButton(
                     onPressed: () async {
                       // Handle event update logic here
-                      final DatabaseHelper database =
-                          await DatabaseHelper.instance;
+                      updatefunctionality();
+                      _scheduleNotification();
 
-                      final Map<String, dynamic> data = {
-                        'name': _eventNameController.text,
-                        'date_time': _eventDateTimeController.text,
-                        'location': _eventLocationController.text,
-                        'description': _eventDescriptionController.text,
-                        'priority':
-                            _selectedPriority.toString().split('.').last,
-                        'image_path': widget.imagepath,
-                        'file_path': widget.filepath,
-                        'video_path': widget.videopath
-                      };
-
-                      //This is for the Show Result of Updation of the Data
-                      database.updateEvent(data, widget.id).then((value) => {
-                            print("Event updated successfully!"),
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text("Event updated successfully!"))),
-                            Timer(Duration(seconds: 2),
-                                () => Navigator.pop(context)),
-                          });
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -524,6 +715,71 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
         ),
       ),
     );
+  }
+
+
+
+  //This is the code of the Schedule Notification Functionality
+  void _scheduleNotification() {
+
+
+    if (widget.eventName.isEmpty ||
+        widget.eventLocation.isEmpty ||
+        widget.eventDescription.isEmpty ||
+        widget.eventPriority.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill all event details')),
+      );
+      return;
+    }
+
+    final scheduledDateTime = DateTime(
+      selectedDate!.year,
+      selectedDate!.month,
+      selectedDate!.day,
+      selectedTime!.hour,
+      selectedTime!.minute,
+    );
+
+    final formattedDate =
+    DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
+
+    // Call the Schedule Notification Function
+    scheduleNotification(
+      scheduledDateTime,
+      'Notification at $formattedDate',
+      widget.eventName,
+      widget.eventLocation,
+      widget.eventDescription
+    );
+
+    // Show the result
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Notification scheduled for $formattedDate')),
+    );
+  }
+  //This is the code of Update functionality
+  void updatefunctionality() async {
+    final DatabaseHelper database = await DatabaseHelper.instance;
+
+    final Map<String, dynamic> data = {
+      'name': _eventNameController.text,
+      'date_time': _eventDateTimeController.text,
+      'location': _eventLocationController.text,
+      'description': _eventDescriptionController.text,
+      'priority': _selectedPriority.toString().split('.').last,
+      'image_path': widget.imagepath,
+      'file_path': widget.filepath,
+      'video_path': widget.videopath
+    };
+
+    //This is for the Show Result of Updation of the Data
+    database.updateEvent(data, widget.id).then((value) => {
+          print("Event updated successfully!"),
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Event updated successfully!"))),
+          Timer(Duration(seconds: 2), () => Navigator.pop(context)),
+        });
   }
 
   @override
