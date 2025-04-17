@@ -5,7 +5,23 @@ import 'package:flutter/material.dart';
 import'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 final GetStorage storage=GetStorage();
-
+Map<String,dynamic> setdatatoGetxStorage(Map<String,dynamic>event){
+  Map<String, dynamic> data = {
+    'name': event['name'],
+    'date_time': event['date_time'],
+    'category': event['category'],
+    'location': event['location'],
+    'description':
+    event['description'],
+    'priority': event['priority'],
+    'video_path':
+    event['video_path'],
+    'image_path':
+    event['image_path'],
+    'file_path': event['file_path']
+  };
+  return data;
+}
 Future<void> saveEvent(Map<String, dynamic> event, BuildContext context) async {
   try {
     print("Code run here successfully");

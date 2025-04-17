@@ -22,6 +22,7 @@ class EventsScreen extends ConsumerStatefulWidget {
   @override
   _EventsScreenState createState() => _EventsScreenState();
 }
+
 class _EventsScreenState extends ConsumerState<EventsScreen> {
   // Selected date for the Flutter TimeLine
   DateTime focusedDay = DateTime.now(); // Declare this in your state
@@ -37,10 +38,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   void initState() {
     super.initState();
   }
+
   @override
   void dispose() {
     super.dispose();
   }
+
   // Helper function for handling null values
   String getValue(String? value, {String defaultValue = 'Not selected'}) {
     return value ?? defaultValue;
@@ -296,20 +299,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                         //Here We Recover the data from the GetXStorage make sure of this
                                         IconButton(
                                             onPressed: () {
-                                              Map<String, dynamic> data = {
-                                                'name': event['name'],
-                                                'date_time': event['date_time'],
-                                                'category': event['category'],
-                                                'location': event['location'],
-                                                'description':
-                                                    event['description'],
-                                                'priority': event['priority'],
-                                                'video_path':
-                                                    event['video_path'],
-                                                'image_path':
-                                                    event['image_path'],
-                                                'file_path': event['file_path']
-                                              };
+                                              final data =
+                                                  setdatatoGetxStorage(event);
                                               saveEvent(data, context);
                                               print(getSavedEvents());
                                             },
