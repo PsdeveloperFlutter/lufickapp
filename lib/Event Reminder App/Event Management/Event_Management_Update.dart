@@ -1,18 +1,16 @@
 // Extension to convert string to enum
 import 'dart:async';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tzData;
+import 'package:timezone/timezone.dart' as tz;
 import '../Database/Main_Database_App.dart';
-
 PriorityLevel stringToPriorityLevel(String priority) {
   switch (priority.toLowerCase()) {
     case 'high':
@@ -25,10 +23,8 @@ PriorityLevel stringToPriorityLevel(String priority) {
       return PriorityLevel.medium; // Default value
   }
 }
-
 // Enum for priority levels
 enum PriorityLevel { high, medium, low }
-
 class UpdateEventUI extends StatefulWidget {
   final int index;
   final String eventName;
@@ -40,7 +36,6 @@ class UpdateEventUI extends StatefulWidget {
   dynamic filepath;
   dynamic id;
   dynamic videopath;
-
   UpdateEventUI(
       {required this.index,
       required this.eventName,
@@ -69,9 +64,8 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
   late PriorityLevel _selectedPriority;
 
   @override
-  void initState()async {
+  void initState() {
     super.initState();
-    await initNotifications();
     _eventNameController = TextEditingController(text: widget.eventName);
     _eventDateTimeController =
         TextEditingController(text: widget.eventDateTime);
@@ -111,20 +105,21 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       }
     }
   }
+
 //This is configuration code of notifications
 
-
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   Future<void> initNotifications() async {
     // Initialize timezone database
     tzData.initializeTimeZones();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
@@ -132,13 +127,12 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
   }
 
   Future<void> scheduleNotification(
-      DateTime scheduledTime,
-      String message,
-      String name,
-      String location,
-      String description,
-
-      ) async {
+    DateTime scheduledTime,
+    String message,
+    String name,
+    String location,
+    String description,
+  ) async {
     // Convert DateTime to TZDateTime
     final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
       scheduledTime,
@@ -146,7 +140,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
 
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
       channelDescription: 'your_channel_description',
@@ -155,7 +149,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
 
     NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       0, // Notification ID
@@ -164,7 +158,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       scheduledTZDateTime, // Scheduled Time
       platformChannelSpecifics, // Notification Details
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
@@ -414,270 +408,141 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 },
               ),
 
-              widget.imagepath != null
-                  ? Center(
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.file(
-                                File(widget.imagepath),
-                                height: 200,
-                                width: 300,
-                              )),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          ElevatedButton.icon(
-                            label: Text(
-                              "Upload another Image",
-                              style: GoogleFonts.aBeeZee(
-                                  fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                            onPressed: () async {
-                              ImagePicker image = ImagePicker();
-                              XFile? file = await image.pickImage(
-                                  source: ImageSource.gallery);
-                              if (file != null) {
-                                setState(() {
-                                  widget.imagepath = file.path;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            "Image uploaded successfully")));
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text("Image not uploaded")));
-                              }
-                            },
-                            icon: Icon(
-                              Icons.track_changes_outlined,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                            child: Text(
-                          "No Image ",
-                          style: GoogleFonts.aBeeZee(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton.icon(
-                          label: Text(
-                            "Upload Image",
-                            style: GoogleFonts.aBeeZee(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          onPressed: () async {
-                            ImagePicker image = await ImagePicker();
-                            XFile? imagestore = await image.pickImage(
-                                source: ImageSource.gallery);
-                            if (imagestore != null) {
-                              setState(() {
-                                widget.imagepath = imagestore.path;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("Image uploaded successfully")));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text("Image not uploaded")));
-                            }
-                          },
-                          icon: Icon(
-                            Icons.track_changes_outlined,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
               const SizedBox(
                 height: 24,
               ),
-
-              widget.filepath != null
-                  ? Column(
-                      children: [
-                        Center(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  widget.imagepath != null
+                      ? Center(
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(50),
                               child: Container(
                                   width: 200,
                                   height: 200,
                                   child: seefile(widget.filepath))),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton.icon(
-                          label: Text(
-                            "Upload another file",
-                            style: GoogleFonts.aBeeZee(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          onPressed: () async {
-                            FilePickerResult? result =
-                                await FilePicker.platform.pickFiles();
-                            if (result != null) {
-                              setState(() {
-                                //int age = 10;
-                                widget.filepath = result.files.single.path;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("File uploaded successfully")));
-                            }
-                          },
-                          icon: Icon(
-                            Icons.track_changes_outlined,
-                            color: Colors.red,
+                        )
+                      : Center(
+                          child: Text(
+                            "No image selected",
+                            style: TextStyle(fontSize: 12, color: Colors.red),
                           ),
                         ),
-                      ],
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                            child: Text(
-                          "No File ",
-                          style: GoogleFonts.aBeeZee(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton.icon(
-                          label: Text(
-                            "Upload File",
-                            style: GoogleFonts.aBeeZee(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          onPressed: () async {
-                            FilePickerResult? result =
-                                await FilePicker.platform.pickFiles();
-                            if (result != null) {
-                              setState(() {
-                                widget.filepath = result.files.single.path;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("File uploaded successfully")));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("File not uploaded")));
-                            }
-                          },
-                          icon: Icon(
-                            Icons.track_changes_outlined,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: ElevatedButton.icon(
+                      label: Text(
+                        widget.filepath != null
+                            ? "Upload another Image"
+                            : "Upload Image",
+                        style: GoogleFonts.aBeeZee(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      onPressed: () async {
+                        getFile();
+                      },
+                      icon: Icon(
+                        Icons.track_changes_outlined,
+                        color: Colors.red,
+                      ),
                     ),
+                  ),
+                ],
+              ),
 
               const SizedBox(
                 height: 24,
               ),
-              widget.videopath != null
-                  ? Column(
-                      children: [
-                        Center(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  widget.filepath != null
+                      ? Center(
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Container(
+                                  width: 200,
+                                  height: 200,
+                                  child: seefile(widget.filepath))),
+                        )
+                      : Center(
                           child: Text(
-                            "Video Selected",
-                            style: GoogleFonts.aBeeZee(fontSize: 15),
+                            "No file selected",
+                            style: TextStyle(fontSize: 12, color: Colors.red),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton.icon(
-                          label: Text(
-                            "Upload another Video",
-                            style: GoogleFonts.aBeeZee(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          onPressed: () async {
-                            ImagePicker picker = ImagePicker();
-                            final XFile? result = await picker.pickVideo(
-                                source: ImageSource.gallery);
-                            if (result != null) {
-                              setState(() {
-                                widget.videopath = result.path;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("Video uploaded successfully")));
-                            }
-                          },
-                          icon: Icon(
-                            Icons.track_changes_outlined,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                            child: Text(
-                          "No File ",
-                          style: GoogleFonts.aBeeZee(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton.icon(
-                          label: Text(
-                            "Upload Video",
-                            style: GoogleFonts.aBeeZee(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          onPressed: () async {
-                            ImagePicker picker = ImagePicker();
-                            final XFile? result = await picker.pickVideo(
-                                source: ImageSource.gallery);
-                            if (result != null) {
-                              setState(() {
-                                widget.videopath = result.path;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("Video uploaded successfully")));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text("Video not uploaded")));
-                            }
-                          },
-                          icon: Icon(
-                            Icons.track_changes_outlined,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: ElevatedButton.icon(
+                      label: Text(
+                        widget.filepath != null
+                            ? "Upload another file"
+                            : "Upload file",
+                        style: GoogleFonts.aBeeZee(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      onPressed: () async {
+                        getFile();
+                      },
+                      icon: Icon(
+                        Icons.track_changes_outlined,
+                        color: Colors.red,
+                      ),
                     ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(
+                height: 24,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  widget.videopath != null
+                      ? Center(
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Container(
+                                  width: 200,
+                                  height: 200,
+                                  child: seefile(widget.videopath))),
+                        )
+                      : Text(
+                          "No video selected",
+                          style: TextStyle(fontSize: 12, color: Colors.red),
+                        ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: ElevatedButton.icon(
+                      label: Text(
+                        widget.videopath == null
+                            ? "Upload Video"
+                            : "Upload another Video",
+                        style: GoogleFonts.aBeeZee(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      onPressed: () async {
+                        getvideo();
+                      },
+                      icon: Icon(
+                        Icons.track_changes_outlined,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
               const SizedBox(
                 height: 24,
@@ -692,7 +557,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                       // Handle event update logic here
                       updatefunctionality();
                       _scheduleNotification();
-
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -717,12 +581,8 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
   }
 
-
-
   //This is the code of the Schedule Notification Functionality
   void _scheduleNotification() {
-
-
     if (widget.eventName.isEmpty ||
         widget.eventLocation.isEmpty ||
         widget.eventDescription.isEmpty ||
@@ -742,22 +602,18 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
 
     final formattedDate =
-    DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
+        DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
 
     // Call the Schedule Notification Function
-    scheduleNotification(
-      scheduledDateTime,
-      'Notification at $formattedDate',
-      widget.eventName,
-      widget.eventLocation,
-      widget.eventDescription
-    );
+    scheduleNotification(scheduledDateTime, 'Notification at $formattedDate',
+        widget.eventName, widget.eventLocation, widget.eventDescription);
 
     // Show the result
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Notification scheduled for $formattedDate')),
     );
   }
+
   //This is the code of Update functionality
   void updatefunctionality() async {
     final DatabaseHelper database = await DatabaseHelper.instance;
@@ -791,76 +647,9 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     super.dispose();
   }
 
-  //This is for See the video
-  Widget seeVideo(String filepath) {
-    // Create a video player controller
-    VideoPlayerController? _controller;
-    bool isPlaying = false;
-
-    // Initialize the controller and play/pause functionality
-    Future<void> _initializeVideoPlayer() async {
-      _controller = VideoPlayerController.file(File(filepath))
-        ..initialize().then((_) {
-          setState(() {});
-          _controller!.play();
-          isPlaying = true;
-        });
-    }
-
-    // Play or pause the video based on the current state
-    void _togglePlayPause() {
-      if (isPlaying) {
-        _controller?.pause();
-      } else {
-        _controller?.play();
-      }
-      isPlaying = !isPlaying;
-      setState(() {});
-    }
-
-    // Check if file exists and show video player or error message
-    if (!File(filepath).existsSync()) {
-      return Center(
-        child: Text(
-          "File not found!",
-          style: TextStyle(fontSize: 18, color: Colors.red),
-        ),
-      );
-    }
-
-    // Initialize the video player asynchronously
-    _initializeVideoPlayer();
-
-    return Column(
-      children: [
-        Center(
-          child: _controller?.value.isInitialized ?? false
-              ? AspectRatio(
-                  aspectRatio: _controller!.value.aspectRatio,
-                  child: VideoPlayer(_controller!),
-                )
-              : CircularProgressIndicator(),
-        ),
-        SizedBox(height: 10),
-        ElevatedButton.icon(
-          label: Text(
-            isPlaying ? "Pause Video" : "Play Video",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          ),
-          onPressed: _togglePlayPause,
-          icon: Icon(
-            isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
-            color: Colors.red,
-          ),
-        ),
-      ],
-    );
-  }
-
   //This is for see the File
   Widget seefile(String filepath) {
     File file = File(filepath);
-
     if (!file.existsSync()) {
       return Center(
         child: Text(
@@ -882,9 +671,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
         width: 300,
         height: 200,
       ));
-    } else if (["mp4", "mov", "avi"].contains(fileExtension)) {
-      // Display Video
-      return VideoPlayerWidget(videoFile: file);
     } else if (["pdf"].contains(fileExtension)) {
       // Display PDF
       return PDFViewWidget(pdfFile: file);
@@ -898,6 +684,53 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       );
     }
   }
+
+  //This code for uploading the image
+  void UploadImage() async {
+    ImagePicker image = ImagePicker();
+    XFile? file = await image.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        widget.imagepath = file.path;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Image uploaded successfully")));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Image not uploaded")));
+    }
+  }
+
+  //This is for Getting file from user
+  void getFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      setState(() {
+        widget.filepath = result.files.single.path;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("File uploaded successfully")));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("File not uploaded")));
+    }
+  }
+
+//This is for getting the video from user
+  void getvideo() async {
+    ImagePicker picker = ImagePicker();
+    final XFile? result = await picker.pickVideo(source: ImageSource.gallery);
+    if (result != null) {
+      setState(() {
+        widget.videopath = result.path;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Video uploaded successfully")));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Video not uploaded")));
+    }
+  }
 }
 
 // Extension to capitalize strings
@@ -907,46 +740,7 @@ extension StringCapitalizeExtension on String {
   }
 }
 
-class VideoPlayerWidget extends StatefulWidget {
-  final File videoFile;
-
-  const VideoPlayerWidget({Key? key, required this.videoFile})
-      : super(key: key);
-
-  @override
-  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
-}
-
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.file(widget.videoFile)
-      ..initialize().then((_) {
-        setState(() {}); // Update the UI after initialization
-        _controller.play(); // Auto-play video
-      });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          )
-        : Center(child: CircularProgressIndicator());
-  }
-}
-
+//This is for showing th pdf file
 class PDFViewWidget extends StatelessWidget {
   final File pdfFile;
 

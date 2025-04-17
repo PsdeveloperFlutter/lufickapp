@@ -13,7 +13,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../Database/Main_Database_App.dart';
-import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
 import 'Event_Management_Update.dart';
 import 'Get X Storage.dart';
@@ -249,9 +248,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         IconButton(
-                                          onPressed: () {
+                                          onPressed: () async {
                                             navigateToUpdateScreen(
                                                 context, event);
                                           },
@@ -271,28 +272,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                             ShareEvent(event);
                                           },
                                           icon: Icon(Icons.share,
-                                              color: Colors.blue.shade700),
-                                        ),
-
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      NotificationScreen(
-                                                          name: event['name'],
-                                                          location:
-                                                              event['location'],
-                                                          description: event[
-                                                              'description'],
-                                                          category:
-                                                              event['category'],
-                                                          priority: event[
-                                                              'priority'])),
-                                            );
-                                          },
-                                          icon: Icon(Icons.notification_add,
                                               color: Colors.blue.shade700),
                                         ),
 
@@ -529,9 +508,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   }
 
   //This is the function for the Navigation to update section of project
-  void navigateToUpdateScreen(
-      BuildContext context, Map<String, dynamic> event) {
-    Navigator.push(
+  Future<void> navigateToUpdateScreen(
+      BuildContext context, Map<String, dynamic> event) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => UpdateEventUI(
