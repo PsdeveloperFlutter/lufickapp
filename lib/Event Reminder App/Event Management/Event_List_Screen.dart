@@ -1,15 +1,17 @@
-import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'dart:async';
-import 'package:flip_card/flip_card.dart';
+import 'dart:io';
+
 import 'package:archive/archive_io.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:open_file/open_file.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 import '../Database/Main_Database_App.dart';
 import '../NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
@@ -20,7 +22,6 @@ class EventsScreen extends ConsumerStatefulWidget {
   @override
   _EventsScreenState createState() => _EventsScreenState();
 }
-
 class _EventsScreenState extends ConsumerState<EventsScreen> {
   // Selected date for the Flutter TimeLine
   DateTime focusedDay = DateTime.now(); // Declare this in your state
@@ -36,12 +37,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   void initState() {
     super.initState();
   }
-
   @override
   void dispose() {
     super.dispose();
   }
-
   // Helper function for handling null values
   String getValue(String? value, {String defaultValue = 'Not selected'}) {
     return value ?? defaultValue;
@@ -240,7 +239,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           fontSize: 14,
                                           color: Colors.grey[700],
                                           fontWeight: FontWeight.bold)),
-
                                   // Actions (Edit, Delete, Share, PDF)
                                   SizedBox(height: 12),
                                   SingleChildScrollView(
@@ -313,7 +311,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                                 'file_path': event['file_path']
                                               };
                                               saveEvent(data, context);
-
                                               print(getSavedEvents());
                                             },
                                             icon: Icon(Icons.save_alt,
@@ -561,6 +558,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       ),
     );
   }
+
   //This is the function for the dialogbox of delete
   Future<void> deleteconfirmation(
     BuildContext context,
@@ -598,6 +596,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       ),
     );
   }
+
   //This is the function for the image ,video,file
   Widget _buildSection({required String title, required Widget child}) {
     return Column(
@@ -616,6 +615,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       ],
     );
   }
+
   //This is the function for the open file
   void _openFile(BuildContext context, String path) {
     final file = File(path);
