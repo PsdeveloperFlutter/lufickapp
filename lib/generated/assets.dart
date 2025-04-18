@@ -14,10 +14,11 @@ class Assets {
   static const String event ManagementEventManageUI = 'lib/Event Reminder App/Event Management/Event_manage_UI.dart';
   static const String event ManagementEventManagementUpdate = 'lib/Event Reminder App/Event Management/Event_Management_Update.dart';
   static const String event ManagementGet X Storage = 'lib/Event Reminder App/Event Management/Get X Storage.dart';
+  static const String event ManagementMultipleFilesFetch = 'lib/Event Reminder App/Event Management/multipleFilesFetch.dart';
   static const String event ManagementPDFGeneration = 'lib/Event Reminder App/Event Management/PDF_generation.dart';
   static const String event ManagementVideoPlayer = 'lib/Event Reminder App/Event Management/Video_Player.dart';
   static const String event Reminder AppEvent ManagementCustom Tags Class  = 'lib/Event Reminder App/Event Management/Custom Tags Class .dart~';
-  static const String event Reminder AppEvent ManagementGet X Storage = 'lib/Event Reminder App/Event Management/Get X Storage.dart~';
+  static const String event Reminder AppEvent ManagementEventListScreen = 'lib/Event Reminder App/Event Management/Event_List_Screen.dart~';
   static const String firebase FunctionalityGoogleAuth = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/GoogleAuth.dart';
   static const String firebase FunctionalityLogin and Signin Functionality  = 'lib/Event Reminder App/Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
   static const String firebaseRelatedCodeGoogleSignIn = 'lib/Flutter_Social_App/Firebase_Related_Code/Google_Sign_In.dart';
@@ -74,7 +75,6 @@ class Assets {
   static const String notificationCodeMainFile = 'lib/Event Reminder App/NotificationCode/Main_File.dart';
   static const String notificationCodeNotification4 = 'lib/Event Reminder App/NotificationCode/Notification4.dart~';
   static const String notificationCodePeriodicNotifications. = 'lib/Event Reminder App/NotificationCode/PeriodicNotifications..dart';
-  static const String notificationCodeUINotificationSecondUIofNotifications = 'lib/Event Reminder App/NotificationCode/UI_Notification/SecondUIofNotifications.dart~';
   static const String otpScreenAdd friend list = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Add friend list.dart';
   static const String otpScreenOtpScreenS = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/Otp_Screen_s.dart';
   static const String otpScreenOtpscreen = 'lib/Flutter_Social_App/ScreenS/Otp_Screen/otpscreen.dart';

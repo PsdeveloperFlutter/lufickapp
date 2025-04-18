@@ -1,18 +1,19 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Database/Main_Database_App.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/Get%20X%20Storage.dart';
 import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
+
 import '../Getx Storage/Them e Change getxController.dart';
 import '../Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
 import '../Loginandsignsection/Login And Sign up.dart';
 import '../Riverpod_Management/Riverpod_add_Management.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'Custom Tags Class .dart';
 import 'Event_List_Screen.dart';
 // Main application class
@@ -229,7 +230,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
         );
 
         bool is24HourFormat = MediaQuery.of(context).alwaysUse24HourFormat;
-
         _eventDateTimeController.text = DateFormat(
                 is24HourFormat ? 'dd-MM-yyyy HH:mm' : 'dd-MM-yyyy hh:mm a')
             .format(combined);
@@ -241,7 +241,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
   Widget build(BuildContext context) {
     // // Watch the state of the radio button provider
     var selectedPriority = ref.watch(radioButtonProvider);
-
+    List<Map<String, String>> fileListToInsert = [];
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -273,12 +273,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                 ],
               ),
             ),
-
             // Event Name Field
             _buildTextField(_eventNameController, "Event Name", Icons.event),
-
             const SizedBox(height: 16),
-
             // Event Date and Time Field
             GestureDetector(
               onTap: () => _selectDateTime(context),
@@ -287,38 +284,28 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     "Event Date and Time", Icons.calendar_today),
               ),
             ),
-
             const SizedBox(height: 16),
-
             // Event Location Field
             _buildTextField(
                 _eventLocationController, "Event Location", Icons.location_on),
-
             const SizedBox(height: 16),
-
             // Event Description Field
             _buildTextField(_eventDescriptionController, "Event Description",
                 Icons.description,
                 maxLines: 3),
-
             const SizedBox(height: 16),
-
             SizedBox(
               height: 16,
             ),
-
             CustomTagsWidget(),
-
             SizedBox(
               height: 14,
             ),
-
             Text(
               "Schedule Date and Time",
               style: GoogleFonts.aBeeZee(
                   fontSize: 15, fontWeight: FontWeight.bold),
             ),
-
             SizedBox(height: 15),
             TextField(
               controller: _dateController,
@@ -393,7 +380,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
             ),
 
             SizedBox(height: 20),
-
             TextField(
               controller: _timeController,
               readOnly: true,
@@ -462,9 +448,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                 }
               },
             ),
-
             SizedBox(height: 22),
-
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -527,51 +511,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
               ],
             ),
 
-            // Row(
-            //   children: [
-            //     Radio<PriorityLevel>(
-            //       value: PriorityLevel.high,
-            //       groupValue: selectedPriority,
-            //       onChanged: (PriorityLevel? value) {
-            //         // Update the state using the provider's notifier
-            //         ref.read(radioButtonProvider.notifier).state = value;
-            //       },
-            //     ),
-            //      Text("High",style: GoogleFonts.poppins(
-            //        fontSize: 13,
-            //        fontWeight: FontWeight.w600
-            //      ),),
-            //
-            //     Radio<PriorityLevel>(
-            //       value: PriorityLevel.medium,
-            //       groupValue: selectedPriority,
-            //       onChanged: (PriorityLevel? value) {
-            //         // Update the state using the provider's notifier
-            //         ref.read(radioButtonProvider.notifier).state = value;
-            //       },
-            //     ),
-            //      Text("Medium", style: GoogleFonts.poppins(
-            //        fontSize: 13,
-            //        fontWeight: FontWeight.w600
-            //      ),),
-            //
-            //     Radio<PriorityLevel>(
-            //       value: PriorityLevel.low,
-            //       groupValue: selectedPriority,
-            //       onChanged: (PriorityLevel? value) {
-            //         // Update the state using the provider's notifier
-            //         ref.read(radioButtonProvider.notifier).state = value;
-            //       },
-            //     ),
-            //     Text("Low",style: GoogleFonts.poppins(
-            //       fontSize: 13,
-            //       fontWeight: FontWeight.w600,
-            //     ),),
-            //   ],
-            // ),
-
-            // Display the selected option
-
             SizedBox(
               height: 16,
             ),
@@ -594,8 +533,8 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     Icons.photo_album, "Photo", () => _pickImage(context)),
                 _buildMediaButton(
                     Icons.video_call, "Video", () => _pickVideo(context)),
-                _buildMediaButton(
-                    Icons.file_copy, "File", () => _pickFile(context)),
+                _buildMediaButton(Icons.file_copy, "File",
+                    () => pickFile(context, fileListToInsert)),
               ],
             ),
 
@@ -603,7 +542,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
               height: 16,
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 if (_eventDateTimeController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Please Select Date and Time")));
@@ -622,11 +561,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                 } else {
                   //First notification set up and after that Database set with data
                   _scheduleNotification();
-
                   // Parse the custom date string properly
                   DateTime parsedDate = DateFormat("dd-MM-yyyy hh:mm a")
                       .parse(_eventDateTimeController.text.trim());
-
                   // ✅ Pass Validated Data to AttachWithDB Class (Maintaining Your Structure)
                   AttachWithDB newEvent = AttachWithDB(
                     name: _eventNameController.text.trim(),
@@ -644,21 +581,24 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     customCategory:
                         categories, // Keep structure (pass category list)
                   );
-
-                  print("${newEvent.name}" +
-                      "${newEvent.date}" +
-                      "${newEvent.description}" +
-                      "${newEvent.location}" +
-                      "${newEvent.category}" +
-                      "${newEvent.priority}" +
-                      "${newEvent.file}" +
-                      "${newEvent.image}" +
-                      "${newEvent.video}" +
-                      "${newEvent.customCategory}");
-                  //This is the Sending Data to the Database
-
                   newEvent.connect(
                       context); //call the function which connect the database to our project
+                  // Insert files into database if there are valid files
+
+                    try {
+                      await DatabaseHelper.instance
+                          .insertEventFiles(newEvent.eventId, fileListToInsert);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                                Text("Files Selected and Saved Successfully")),
+                      );
+                    } catch (e) {
+                      // Handle potential errors in file insertion
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Error saving files: $e")),
+                      );
+                    }
                 }
               },
               child: Container(
@@ -677,6 +617,34 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
         ),
       ),
     );
+  }
+
+  //
+  Future<void> pickFile(
+      BuildContext context, List<Map<String, String>> fileListToInsert) async {
+    // Open the file picker dialog
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: true,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
+    );
+
+    if (result != null) {
+      // Loop through selected files
+      for (var file in result.files) {
+        String? path = file.path;
+        String? extension = file.extension;
+        debugPrint("📁 Picked file: path=$path, extension=$extension");
+        // Ensure both path and extension are not null
+        if (path != null && extension != null) {
+          setState(() {
+            fileListToInsert.add({'path': path, 'extension': extension});
+          });
+        }
+      }
+      print("\n");
+      print(fileListToInsert.length.toString());
+    }
   }
 
   //This is for the Managing the Image
@@ -700,24 +668,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       ref.read(videoControllerProvider.notifier).setVideo(video!);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Video Selected Successfully")));
-    }
-  }
-
-  //This is for the Manging the File
-  // Function to pick a file
-  Future<void> _pickFile(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
-    );
-
-    if (result != null && result.files.isNotEmpty) {
-      file = result.files.first;
-
-      // Updating the provider state
-      ref.read(fileProvider.notifier).state = file;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("File Selected Successfully")));
     }
   }
 
