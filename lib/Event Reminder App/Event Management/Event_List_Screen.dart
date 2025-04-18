@@ -113,7 +113,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
               if (isExpanded) {
                 setState(() {
                   selectedDatetl =
-                      DateTime(DateTime.now().year, DateTime.now().month, 1);
+                      DateTime(DateTime
+                          .now()
+                          .year, DateTime
+                          .now()
+                          .month, 1);
                 });
               }
             },
@@ -156,7 +160,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                 // Filter events based on search
                 filteredEvents = events
                     .where((event) =>
-                        event['name'].toLowerCase().contains(searchQuery))
+                    event['name'].toLowerCase().contains(searchQuery))
                     .toList();
 
                 // Sort by date if sorting is enabled
@@ -208,35 +212,41 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   ),
                                   SizedBox(height: 8),
                                   Text(
-                                      'Date & Time: ${formatDate(event['date_time'])}',
+                                      'Date & Time: ${formatDate(
+                                          event['date_time'])}',
                                       style: GoogleFonts.aboreto(
                                           fontSize: 14,
                                           color: Colors.grey[700],
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text(
-                                      'Location: ${getValue(event['location'])}',
+                                      'Location: ${getValue(
+                                          event['location'])}',
                                       style: GoogleFonts.aboreto(
                                           fontSize: 14,
                                           color: Colors.grey[700],
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text(
-                                      'Description: ${getValue(event['description'])}',
+                                      'Description: ${getValue(
+                                          event['description'])}',
                                       style: GoogleFonts.aboreto(
                                           fontSize: 14,
                                           color: Colors.grey[700],
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text(
-                                      'Priority: ${formatPriority(event['priority'])}',
+                                      'Priority: ${formatPriority(
+                                          event['priority'])}',
                                       style: GoogleFonts.aboreto(
                                           fontSize: 14,
                                           color: Colors.grey[700],
                                           fontWeight: FontWeight.bold)),
                                   SizedBox(height: 8),
                                   Text(
-                                      'Custom Category : ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}',
+                                      'Custom Category : ${getValue(
+                                          event['custom_interval']?.toString(),
+                                          defaultValue: 'Not set')}',
                                       style: GoogleFonts.aboreto(
                                           fontSize: 14,
                                           color: Colors.grey[700],
@@ -247,12 +257,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      CrossAxisAlignment.center,
                                       children: [
                                         IconButton(
                                           onPressed: () async {
+                                            //this is function for update data
                                             navigateToUpdateScreen(
                                                 context, event);
                                           },
@@ -261,6 +272,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                         ),
                                         IconButton(
                                           onPressed: () async {
+                                            //this is for deletion purpose
                                             deleteconfirmation(context, event);
                                           },
                                           icon: Icon(Icons.delete,
@@ -269,6 +281,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
 
                                         IconButton(
                                           onPressed: () {
+                                            //this is function for save data
                                             ShareEvent(event);
                                           },
                                           icon: Icon(Icons.share,
@@ -278,8 +291,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                         //Here We Recover the data from the GetXStorage make sure of this
                                         IconButton(
                                             onPressed: () {
+                                              //Here we get data and save data
                                               final data =
-                                                  setdatatoGetxStorage(event);
+                                              setdatatoGetxStorage(event);
+                                              //Here we backupdata
                                               saveEvent(data, context);
                                               print(getSavedEvents());
                                             },
@@ -326,14 +341,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     Text("No Image",
                                         style: TextStyle(
                                             color: Colors.red.shade700)),
-
                                   // File Section
                                   if (event['file_path'] != null)
                                     _buildSection(
                                       title: "File Section",
                                       child: ElevatedButton.icon(
-                                        onPressed: () => _openFile(
-                                            context, event['file_path']),
+                                        onPressed: () =>
+                                            _openFile(
+                                                context, event['file_path']),
                                         icon: const Icon(
                                             Icons.insert_drive_file,
                                             color: Colors.purple),
@@ -352,8 +367,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     _buildSection(
                                       title: "Video Section",
                                       child: ElevatedButton.icon(
-                                        onPressed: () => _openFile(
-                                            context, event['video_path']),
+                                        onPressed: () =>
+                                            _openFile(
+                                                context, event['video_path']),
                                         icon: const Icon(Icons.videocam,
                                             color: Colors.purple),
                                         label: Text("Play Video",
@@ -365,11 +381,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     Text("No Video",
                                         style: TextStyle(
                                             color: Colors.red.shade700)),
-
                                   //This is for the Operation Purpose for the Events make sure of this
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       IconButton(
                                         onPressed: () {
@@ -419,16 +434,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           setState(() {
             isSorted = true; // Always enable sorting when button is pressed
             isAscending = !isAscending; // Toggle sorting order
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              return ref.refresh(eventsProvider);
-            });
           });
         },
         child: Icon(Icons.sort, color: Colors.white),
       ),
     );
   }
-
   dynamic formatPriority(String? event) {
     String? priority = event; // Extract priority string
 
@@ -442,7 +453,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       return "Not set";
     }
   }
-
   formatDate(event) {
     if (event == null) {
       return 'Not set'; // Handle null case
@@ -454,7 +464,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       return 'Invalid date'; // In case the parsing fails
     }
   }
-
   //This function for the share functionality
   void ShareEvent(Map<String, dynamic> event) async {
     final eventDetails = '''
@@ -464,7 +473,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
          Location: ${getValue(event['location'])}
         Description: ${getValue(event['description'])}
         Priority: ${getValue(event['priority'])}
-       Custom Category: ${getValue(event['custom_interval']?.toString(), defaultValue: 'Not set')}''';
+       Custom Category: ${getValue(
+        event['custom_interval']?.toString(), defaultValue: 'Not set')}''';
     final tempDir = await getTemporaryDirectory();
     final zipFolder = Directory('${tempDir.path}/share_data');
     if (await zipFolder.exists()) {
@@ -475,7 +485,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     // Step 1: Write event details to a text file
     final detailsFile = File('${zipFolder.path}/event_details.txt');
     await detailsFile.writeAsString(eventDetails);
-
     // Step 2: Copy media files
     List<File> mediaFiles = [];
     if (event['image_path'] != null && event['image_path'] != '') {
@@ -489,7 +498,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     }
 
     for (File media in mediaFiles) {
-      final fileName = media.path.split('/').last;
+      final fileName = media.path
+          .split('/')
+          .last;
       await media.copy('${zipFolder.path}/$fileName');
     }
 
@@ -508,62 +519,63 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   }
 
   //This is the function for the Navigation to update section of project
-  Future<void> navigateToUpdateScreen(
-      BuildContext context, Map<String, dynamic> event) async {
+  Future<void> navigateToUpdateScreen(BuildContext context,
+      Map<String, dynamic> event) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UpdateEventUI(
-          index: event['id'],
-          eventName: event['name'],
-          eventDateTime: event['date_time'],
-          eventLocation: event['location'],
-          eventDescription: event['description'],
-          eventPriority: event['priority'],
-          imagepath: event['image_path'],
-          filepath: event['file_path'],
-          id: event['id'],
-          videopath: event['video_path'],
-        ),
+        builder: (context) =>
+            UpdateEventUI(
+              index: event['id'],
+              eventName: event['name'],
+              eventDateTime: event['date_time'],
+              eventLocation: event['location'],
+              eventDescription: event['description'],
+              eventPriority: event['priority'],
+              imagepath: event['image_path'],
+              filepath: event['file_path'],
+              id: event['id'],
+              videopath: event['video_path'],
+            ),
       ),
     );
   }
 
   //This is the function for the dialogbox of delete
-  Future<void> deleteconfirmation(
-    BuildContext context,
-    Map<String, dynamic> event,
-  ) async {
+  Future<void> deleteconfirmation(BuildContext context,
+      Map<String, dynamic> event,) async {
     return await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Confirm Delete",
-            style: TextStyle(color: Colors.red.shade700)),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Cancel',
-                    style: TextStyle(color: Colors.green.shade700)),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await DatabaseHelper.instance.deleteEvent(event['id']).then(
-                        (value) => ref.refresh(eventsProvider),
+      builder: (context) =>
+          AlertDialog(
+            title: Text("Confirm Delete",
+                style: TextStyle(color: Colors.red.shade700)),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel',
+                        style: TextStyle(color: Colors.green.shade700)),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      await DatabaseHelper.instance.deleteEvent(event['id'])
+                          .then(
+                            (value) => ref.refresh(eventsProvider),
                       );
-                  Navigator.pop(context);
-                },
-                child: Text('Delete',
-                    style: TextStyle(color: Colors.red.shade700)),
+                      Navigator.pop(context);
+                    },
+                    child: Text('Delete',
+                        style: TextStyle(color: Colors.red.shade700)),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
     );
   }
 
@@ -585,7 +597,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       ],
     );
   }
-
   //This is the function for the open file
   void _openFile(BuildContext context, String path) {
     final file = File(path);

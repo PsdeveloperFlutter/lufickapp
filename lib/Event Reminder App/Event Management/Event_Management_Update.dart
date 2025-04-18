@@ -55,8 +55,8 @@ class UpdateEventUI extends StatefulWidget {
 class _UpdateEventUIState extends State<UpdateEventUI> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-  DateTime? selectedDate = DateTime.now();
-  TimeOfDay? selectedTime = TimeOfDay.now();
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
   late TextEditingController _eventNameController;
   late TextEditingController _eventDateTimeController;
   late TextEditingController _eventLocationController;
@@ -417,12 +417,10 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 children: [
                   widget.imagepath != null
                       ? Center(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Container(
-                                  width: 200,
-                                  height: 200,
-                                  child: seefile(widget.filepath))),
+                          child: Container(
+                              width: 100,
+                              height: 100,
+                              child: seefile(widget.filepath)),
                         )
                       : Center(
                           child: Text(
@@ -463,12 +461,10 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 children: [
                   widget.filepath != null
                       ? Center(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Container(
-                                  width: 200,
-                                  height: 200,
-                                  child: seefile(widget.filepath))),
+                          child: Container(
+                            height: 100,
+                              width: 100,
+                              child: seefile(widget.filepath)),
                         )
                       : Center(
                           child: Text(
@@ -509,12 +505,10 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 children: [
                   widget.videopath != null
                       ? Center(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Container(
-                                  width: 200,
-                                  height: 200,
-                                  child: seefile(widget.videopath))),
+                          child: Container(
+                              height: 40,
+                              width: 140,
+                              child: seefile(widget.videopath)),
                         )
                       : Text(
                           "No video selected",
@@ -556,7 +550,9 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                     onPressed: () async {
                       // Handle event update logic here
                       updatefunctionality();
+                    if(selectedTime != null && selectedDate != null) {
                       _scheduleNotification();
+                    }
                     },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -592,7 +588,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       );
       return;
     }
-
     final scheduledDateTime = DateTime(
       selectedDate!.year,
       selectedDate!.month,
@@ -607,17 +602,14 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     // Call the Schedule Notification Function
     scheduleNotification(scheduledDateTime, 'Notification at $formattedDate',
         widget.eventName, widget.eventLocation, widget.eventDescription);
-
     // Show the result
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Notification scheduled for $formattedDate')),
     );
   }
-
   //This is the code of Update functionality
   void updatefunctionality() async {
     final DatabaseHelper database = await DatabaseHelper.instance;
-
     final Map<String, dynamic> data = {
       'name': _eventNameController.text,
       'date_time': _eventDateTimeController.text,
@@ -628,7 +620,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       'file_path': widget.filepath,
       'video_path': widget.videopath
     };
-
     //This is for the Show Result of Updation of the Data
     database.updateEvent(data, widget.id).then((value) => {
           print("Event updated successfully!"),
@@ -646,7 +637,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     _eventDescriptionController.dispose();
     super.dispose();
   }
-
   //This is for see the File
   Widget seefile(String filepath) {
     File file = File(filepath);
@@ -654,37 +644,19 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       return Center(
         child: Text(
           "File not found!",
-          style: TextStyle(fontSize: 18, color: Colors.red),
+          style: TextStyle(fontSize: 18, color: Colors.black),
         ),
       );
-    }
-
-    // Check file type based on extension
-    String fileExtension = filepath.split('.').last.toLowerCase();
-
-    if (["jpg", "jpeg", "png", "gif"].contains(fileExtension)) {
-      // Display Image
-      return Center(
-          child: Image.file(
-        file,
-        fit: BoxFit.cover,
-        width: 300,
-        height: 200,
-      ));
-    } else if (["pdf"].contains(fileExtension)) {
+    } else if (["pdf"].contains(file.path.split('.').last)) {
       // Display PDF
-      return PDFViewWidget(pdfFile: file);
-    } else {
-      // Unsupported file type
-      return Center(
-        child: Text(
-          "Unsupported file format!",
-          style: TextStyle(fontSize: 18, color: Colors.red),
-        ),
-      );
+      return PDFViewWidget(context, filePath: filepath);
     }
+    return Center(
+      child: Text("video Selected",
+          style: TextStyle(fontSize: 15, color: Colors.black)
+      ),
+    );
   }
-
   //This code for uploading the image
   void UploadImage() async {
     ImagePicker image = ImagePicker();
@@ -703,7 +675,11 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
 
   //This is for Getting file from user
   void getFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
     if (result != null) {
       setState(() {
         widget.filepath = result.files.single.path;
@@ -715,7 +691,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
           .showSnackBar(SnackBar(content: Text("File not uploaded")));
     }
   }
-
 //This is for getting the video from user
   void getvideo() async {
     ImagePicker picker = ImagePicker();
@@ -732,28 +707,17 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     }
   }
 }
-
 // Extension to capitalize strings
 extension StringCapitalizeExtension on String {
   String capitalize() {
     return this[0].toUpperCase() + this.substring(1).toLowerCase();
   }
 }
-
 //This is for showing th pdf file
-class PDFViewWidget extends StatelessWidget {
-  final File pdfFile;
-
-  const PDFViewWidget({Key? key, required this.pdfFile}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PDFView(
-      filePath: pdfFile.path,
-      enableSwipe: true,
-      swipeHorizontal: false,
-      autoSpacing: true,
-      pageFling: true,
-    );
-  }
+Widget 	PDFViewWidget( BuildContext context,{required String filePath}) {
+  return PDFView(
+    filePath: filePath,
+    enableSwipe: true,
+    swipeHorizontal: false,
+    autoSpacing: true,);
 }

@@ -43,7 +43,6 @@ Future<void> saveEvent(Map<String, dynamic> event, BuildContext context) async {
     storage.write('savedEvents', savedEvent);
 
 
-
     try {
       // ✅ Backup logic begins here
 
