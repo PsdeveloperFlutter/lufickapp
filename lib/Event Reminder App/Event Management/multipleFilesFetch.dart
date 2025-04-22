@@ -54,6 +54,46 @@ class _FetchMultipleFileState extends State<FetchMultipleFile> {
                 }
                 return ListTile(
                   title: Text('File ${index + 1}'),
+                  trailing: IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Delete Confirmation'),
+                              content: const Text(
+                                  'Are you sure you want to delete this file?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    Navigator.pop(
+                                        context); // Close the dialog first
+                                    // Delete the file from the database
+                                    final fileId = file['id'];
+                                    await DatabaseHelper.instance
+                                        .deleteEventFiles(fileId);
+                                    setState(() {
+                                      _filesFuture = DatabaseHelper.instance
+                                          .fetchEventFiles(widget.eventId);
+                                    });
+                                  },
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.deepPurple.shade200,
+                      )),
                   onTap: () {
                     // On tapping, open PDF view for this file
                     Navigator.push(

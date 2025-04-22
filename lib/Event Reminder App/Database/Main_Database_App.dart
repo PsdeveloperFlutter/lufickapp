@@ -163,6 +163,19 @@ class DatabaseHelper {
       return []; // Return an empty list if fetching fails
     }
   }
+    //This is for the Deleting the file with the event ID
+    Future<void>deleteEventFiles(int Id)async{
+      final db=await database;
+      try{
+       await db?.delete('event_files',where :'id = ?',whereArgs: [Id]).
+      then((value){
+        print("\n Deleted event files with event ID: $Id \n");
+       });
+
+      }catch(e){
+        debugPrint("SQLite Delete Error: $e");
+      }
+    }
   Future<void> printAllFiles() async {
     final db = await database;
     final files = await db!.query('event_files');
