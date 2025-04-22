@@ -131,8 +131,8 @@ class DatabaseHelper {
       int eventId, List<Map<String, String>> files) async {
     files.length > 0
         ? print("✅ Files to be inserted: $files")
-        :print("❌ No files to insert.");
-    print("\n"+eventId.toString()+"\n");
+        : print("❌ No files to insert.");
+    print("\n" + eventId.toString() + "\n");
     print("\n Insert function work here properly ");
     final db = await database;
     for (var file in files) {
@@ -150,32 +150,55 @@ class DatabaseHelper {
 
   // Fetch event files based on the eventId
   Future<List<Map<String, dynamic>>> fetchEventFiles(int eventId) async {
-    print("\n"+ "EVENT-ID NUMBER"+eventId.toString()+"\n");
+    print("\n" + "EVENT-ID NUMBER" + eventId.toString() + "\n");
     final db = await database;
     try {
-      dynamic store=await db!
-          .query('event_files', where: 'eventfile_id = ?', whereArgs: [eventId]);
+      dynamic store = await db!.query('event_files',
+          where: 'eventfile_id = ?', whereArgs: [eventId]);
 
-      print("\n"+store.toString()+"\n");
+      print("\n" + store.toString() + "\n");
       return store;
     } catch (e) {
       debugPrint("SQLite Fetch Error: $e");
       return []; // Return an empty list if fetching fails
     }
   }
-    //This is for the Deleting the file with the event ID
-    Future<void>deleteEventFiles(int Id)async{
-      final db=await database;
-      try{
-       await db?.delete('event_files',where :'id = ?',whereArgs: [Id]).
-      then((value){
-        print("\n Deleted event files with event ID: $Id \n");
-       });
 
-      }catch(e){
-        debugPrint("SQLite Delete Error: $e");
-      }
+  //This is for the Deleting the file with the event ID
+  Future<void> deleteEventFiles(int Id) async {
+    final db = await database;
+    try {
+      await db?.delete('event_files', where: 'id = ?', whereArgs: [Id]).then(
+          (value) {
+        print("\n Deleted event files with event ID: $Id \n");
+      });
+    } catch (e) {
+      debugPrint("SQLite Delete Error: $e");
     }
+  }
+
+  //This is the function for the Updation of the File
+  Future<void> updatefilefunction(
+      String? path, String? extension, int id) async {
+    final db = await database;
+    try {
+      await db!
+          .update(
+              'event_files',
+              {
+                'path': path,
+                'extension': extension,
+              },
+              where: 'id=?',
+              whereArgs: [id])
+          .then((value) {
+        print("\n Updated event files with event ID: $id \n");
+      });
+    } catch (e) {
+      print("SQLite Update Error: $e");
+    }
+  }
+
   Future<void> printAllFiles() async {
     final db = await database;
     final files = await db!.query('event_files');
@@ -183,5 +206,4 @@ class DatabaseHelper {
       print("📄 File: $file");
     }
   }
-
 }
