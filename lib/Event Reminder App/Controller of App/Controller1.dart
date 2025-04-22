@@ -39,7 +39,7 @@ class AttachWithDB {
     this.customInterval,
   });
   int eventId=0;
-  void connect(BuildContext context) async {
+  Future<int> connect(BuildContext context) async {
     final DatabaseHelper databaseHelper = DatabaseHelper.instance;
     try {
       final eventData = {
@@ -57,21 +57,12 @@ class AttachWithDB {
         'custom_interval': customInterval ?? null, // ✅ Correct NULL handling
       };
        eventId = await databaseHelper.insertEvent(eventData);
-      if (eventId != -1) {
-        print('✅ Event added with ID: $eventId');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Event Created Sucessfully")));
-        Timer(Duration(seconds: 2), () {
-          // Get TabController and switch to first tab
-          DefaultTabController.of(context)
-              ?.animateTo(0); // If using DefaultTabController
-        });
-      } else {
-        print('❌ Failed to insert event');
-      }
+       print("Event ID in  AttachwithDB function : $eventId");
     } catch (e) {
       print("❌ Database Insert Error: $e");
     }
+    return eventId;
   }
-}
+  }
+
 //This is for the Manging the File

@@ -29,7 +29,7 @@ void main() {
 final ThemeController themeController =
     Get.put(ThemeController()); // Inject Controller
 List<String> categories = ['Work', 'Personal', 'Meeting', 'Birthday'];
-
+List<Map<String, String>> fileListToInsert = [];
 class Mainpage_event_management extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -241,7 +241,7 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
   Widget build(BuildContext context) {
     // // Watch the state of the radio button provider
     var selectedPriority = ref.watch(radioButtonProvider);
-    List<Map<String, String>> fileListToInsert = [];
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -581,24 +581,22 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     customCategory:
                         categories, // Keep structure (pass category list)
                   );
-                  newEvent.connect(
-                      context); //call the function which connect the database to our project
+                  print("\n Event ID: ${newEvent.eventId}");
+                  int eventId =await newEvent.connect(
+                      context);
+                  //call the function which connect the database to our project
                   // Insert files into database if there are valid files
 
-                    try {
-                      await DatabaseHelper.instance
-                          .insertEventFiles(newEvent.eventId, fileListToInsert);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content:
-                                Text("Files Selected and Saved Successfully")),
-                      );
-                    } catch (e) {
-                      // Handle potential errors in file insertion
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Error saving files: $e")),
-                      );
-                    }
+                  try {
+                    print("\n Jab hum Insert kar rhe hai files \n"+newEvent.eventId.toString());
+                    await DatabaseHelper.instance
+                        .insertEventFiles(eventId, fileListToInsert);
+                  } catch (e) {
+                    // Handle potential errors in file insertion
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error saving files: $e")),
+                    );
+                  }
                 }
               },
               child: Container(
@@ -634,18 +632,19 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       for (var file in result.files) {
         String? path = file.path;
         String? extension = file.extension;
+
         debugPrint("📁 Picked file: path=$path, extension=$extension");
+
         // Ensure both path and extension are not null
         if (path != null && extension != null) {
-          setState(() {
-            fileListToInsert.add({'path': path, 'extension': extension});
-          });
+          fileListToInsert.add({'path': path, 'extension': extension});
         }
       }
-      print("\n");
-      print(fileListToInsert.length.toString());
+
+      print("\nTotal files picked: ${fileListToInsert.length}");
     }
   }
+
 
   //This is for the Managing the Image
   Future<void> _pickImage(BuildContext context) async {

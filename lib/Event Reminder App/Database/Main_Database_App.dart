@@ -129,35 +129,46 @@ class DatabaseHelper {
   // Insert file data into the event_files table
   Future<void> insertEventFiles(
       int eventId, List<Map<String, String>> files) async {
+    files.length > 0
+        ? print("✅ Files to be inserted: $files")
+        :print("❌ No files to insert.");
     print("\n"+eventId.toString()+"\n");
+    print("\n Insert function work here properly ");
     final db = await database;
     for (var file in files) {
       final path = file['path'];
       final extension = file['extension'];
-      if (path != null && extension != null) {
-        await db!.insert('event_files', {
-          'eventfile_id': eventId,
-          'path': path,
-          'extension': extension,
-        });
-        debugPrint("\n ✅ File inserted: $path, extension: $extension \n");
-      } else {
-        debugPrint("❌ Skipping file: path or extension is null -> $file");
-      }
+      db!.insert('event_files', {
+        'eventfile_id': eventId,
+        'path': path,
+        'extension': extension,
+      });
+      debugPrint("\n ✅ File inserted: $path, extension: $extension \n");
     }
     debugPrint("✅ Files inserted into event_files table.");
   }
 
   // Fetch event files based on the eventId
-  Future<List<Map<String, dynamic>>> fetchEventFiles() async {
-    //print("\n"+ "EVENT-ID NUMBER"+eventfile_id.toString()+"\n");
+  Future<List<Map<String, dynamic>>> fetchEventFiles(int eventId) async {
+    print("\n"+ "EVENT-ID NUMBER"+eventId.toString()+"\n");
     final db = await database;
     try {
-      return await db!
-          .query('event_files');
+      dynamic store=await db!
+          .query('event_files', where: 'eventfile_id = ?', whereArgs: [eventId]);
+
+      print("\n"+store.toString()+"\n");
+      return store;
     } catch (e) {
       debugPrint("SQLite Fetch Error: $e");
       return []; // Return an empty list if fetching fails
     }
   }
+  Future<void> printAllFiles() async {
+    final db = await database;
+    final files = await db!.query('event_files');
+    for (var file in files) {
+      print("📄 File: $file");
+    }
+  }
+
 }
