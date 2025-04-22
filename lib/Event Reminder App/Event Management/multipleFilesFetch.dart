@@ -26,30 +26,34 @@ class _FetchMultipleFileState extends State<FetchMultipleFile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: ()async{
-        FilePickerResult?	 result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['pdf'],
-          allowMultiple: false,
-        );
-        if(result!=null){
-          final path= result.files.single.path;
-          final extension= result.files.single.extension;
-          final List<Map<String,String>>fileData=[{
-            'path': path!,
-            'extension': extension!,
-          }];
-          //insert more files
-          await DatabaseHelper.instance.insertEventFiles(
-            widget.eventId,
-            fileData,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          FilePickerResult? result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['pdf'],
+            allowMultiple: true,
           );
-          setState(() {
-            _filesFuture=DatabaseHelper.instance.fetchEventFiles(widget.eventId);
-          });
-        }
-      },child: Icon( Icons.add),),
-
+          if (result != null) {
+            List<Map<String, String>> fileData = [];
+            for (var file in result.files) {
+              fileData.add({
+                'path': file.path!,
+                'extension': file.extension!,
+              });
+            }
+            //insert more files
+            await DatabaseHelper.instance.insertEventFiles(
+              widget.eventId,
+              fileData,
+            );
+            setState(() {
+              _filesFuture =
+                  DatabaseHelper.instance.fetchEventFiles(widget.eventId);
+            });
+          }
+        },
+        child: Icon(Icons.add),
+      ),
       appBar: AppBar(
         title: const Text('Files'),
       ),
