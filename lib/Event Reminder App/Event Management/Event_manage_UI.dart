@@ -10,7 +10,6 @@ import 'package:lufickapp/Event%20Reminder%20App/Database/Main_Database_App.dart
 import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/Get%20X%20Storage.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/pinFunctionality.dart';
 import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
-
 import '../Getx Storage/Them e Change getxController.dart';
 import '../Loginandsignsection/Firebase Functionality/Login and Signin Functionality .dart';
 import '../Loginandsignsection/Login And Sign up.dart';
@@ -239,7 +238,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     // // Watch the state of the radio button provider
