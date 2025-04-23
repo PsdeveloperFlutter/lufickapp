@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Controller%20of%20App/Controller1.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Database/Main_Database_App.dart';
 import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/Get%20X%20Storage.dart';
+import 'package:lufickapp/Event%20Reminder%20App/Event%20Management/pinFunctionality.dart';
 import 'package:lufickapp/Event%20Reminder%20App/NotificationCode/UI_Notification/SecondUIofNotifications.dart';
 
 import '../Getx Storage/Them e Change getxController.dart';
@@ -54,8 +55,10 @@ class Mainpage_event_management extends StatelessWidget {
                         : Colors.yellow.shade500)),
             PopupMenuButton<String>(
               onSelected: (value) {
-                if (value == 'App Lock') {
+                if (value == 'Set Pin') {
                   // Handle App Lock logic here
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const SetPin()));
                 } else if (value == 'Backup Data') {
                   // Handle Backup Data logic here
                 } else if (value == "Logout") {}
