@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -19,15 +19,16 @@ class _CRUDCreateState extends State<CRUDCreate> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  File? _image;  // To store the selected image
+  File? _image; // To store the selected image
   final ImagePicker _picker = ImagePicker(); // To pick images from gallery
 
   // Method to pick an image from the gallery
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);  // Set the picked image
+        _image = File(pickedFile.path); // Set the picked image
       });
     }
   }
@@ -58,9 +59,18 @@ class _CRUDCreateState extends State<CRUDCreate> {
       request.fields['phone'] = phoneController.text.trim();
 
       // Add the image file
-      var imageFile = await http.MultipartFile.fromPath('image', _image!.path);
-      request.files.add(imageFile);
-
+      if (_image != null) {
+        var imageFile =
+            await http.MultipartFile.fromPath('image', _image!.path);
+        request.files.add(imageFile);
+      }
+      if (_pdfFile != null) {
+        var pdfMutlipartFile = await http.MultipartFile.fromPath(
+          'file',
+          _pdfFile!.path,
+        );
+        request.files.add(pdfMutlipartFile);
+      }
       try {
         // Send the request
         var response = await request.send();
@@ -88,6 +98,7 @@ class _CRUDCreateState extends State<CRUDCreate> {
     }
   }
 
+  File? _pdfFile; // To store the picked PDF
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,20 +163,37 @@ class _CRUDCreateState extends State<CRUDCreate> {
                   ),
 
                 SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles(
+                      allowMultiple: false,
+                      allowedExtensions: ['pdf'],
+                      type: FileType.custom,
+                    );
+
+                    if (result != null && result.files.single.path != null) {
+                      setState(() {
+                        _pdfFile = File(result.files.single.path!);
+                      });
+                    }
+                  },
+                  child: Text("Upload File"),
+                ),
 
                 ElevatedButton(
                   onPressed: createuser_data,
                   child: Text('Create User'),
                 ),
                 ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return FetchDataScreen();
                     }));
                   },
                   child: Text('Get User'),
                 ),
-
               ],
             ),
           ),
