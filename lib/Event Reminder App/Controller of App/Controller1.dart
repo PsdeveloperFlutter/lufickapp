@@ -22,7 +22,7 @@ class AttachWithDB {
   final String? reminderTime; // Stores the reminder time
   final String? repeatOption; // Repeat type (Daily, Weekly, etc.)
   final int? customInterval; // Stores custom interval (e.g., every 3 days)
- // Optional event ID for updating
+  // Optional event ID for updating
   AttachWithDB({
     required this.name,
     required this.date,
@@ -38,7 +38,9 @@ class AttachWithDB {
     this.repeatOption,
     this.customInterval,
   });
-  int eventId=0;
+
+  int eventId = 0;
+
   Future<int> connect(BuildContext context) async {
     final DatabaseHelper databaseHelper = DatabaseHelper.instance;
     try {
@@ -56,13 +58,13 @@ class AttachWithDB {
         'repeat_option': repeatOption ?? '',
         'custom_interval': customInterval ?? null, // ✅ Correct NULL handling
       };
-       eventId = await databaseHelper.insertEvent(eventData);
-       print("Event ID in  AttachwithDB function : $eventId");
+      eventId = await databaseHelper.insertEvent(eventData);
+      print("Event ID in  AttachwithDB function : $eventId");
     } catch (e) {
       print("❌ Database Insert Error: $e");
     }
     return eventId;
   }
-  }
+}
 
 //This is for the Manging the File

@@ -354,29 +354,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           else
                                             Text("No Image",
                                                 style: TextStyle(
-                                                    color:
-                                                        Colors.red.shade700)),
-                                          // File Section
-                                          if (event['file_path'] != null)
-                                            _buildSection(
-                                              title: "File Section",
-                                              child: ElevatedButton.icon(
-                                                onPressed: () => _openFile(
-                                                    context,
-                                                    event['file_path']),
-                                                icon: const Icon(
-                                                    Icons.insert_drive_file,
-                                                    color: Colors.purple),
-                                                label: Text("Open File",
-                                                    style: GoogleFonts.aBeeZee(
-                                                        fontSize: 16)),
-                                              ),
-                                            )
-                                          else
-                                            Text("No File",
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.red.shade700)),
+                                                    color: Colors.black)),
                                           const SizedBox(height: 10),
                                           // Video Section
                                           if (event['video_path'] != null)
@@ -396,14 +374,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                           else
                                             Text("No Video",
                                                 style: TextStyle(
-                                                    color:
-                                                        Colors.red.shade700)),
+                                                    color: Colors.black)),
                                           //This is for the Operation Purpose for the Events make sure of this
                                           const SizedBox(height: 10),
                                           IconButton(
-
-                                              onPressed: () async{
-                                                await DatabaseHelper.instance.printAllFiles();
+                                              onPressed: () async {
+                                                await DatabaseHelper.instance
+                                                    .printAllFiles();
                                                 AttachWithDB newEvent =
                                                     AttachWithDB(
                                                   name: " ",
@@ -425,7 +402,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        FetchMultipleFile(eventId: events[index]['id'],), // Pass event ID
+                                                        FetchMultipleFile(
+                                                      eventId: events[index]
+                                                          ['id'],
+                                                    ), // Pass event ID
                                                   ),
                                                 );
                                               },

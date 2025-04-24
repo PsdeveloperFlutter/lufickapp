@@ -30,6 +30,7 @@ final ThemeController themeController =
     Get.put(ThemeController()); // Inject Controller
 List<String> categories = ['Work', 'Personal', 'Meeting', 'Birthday'];
 List<Map<String, String>> fileListToInsert = [];
+
 class Mainpage_event_management extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -213,14 +214,14 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-
     if (pickedDate != null) {
       TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       );
-
       if (pickedTime != null) {
+        selectedDate = pickedDate;
+        selectedTime = pickedTime;
         final DateTime combined = DateTime(
           pickedDate.year,
           pickedDate.month,
@@ -228,7 +229,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
           pickedTime.hour,
           pickedTime.minute,
         );
-
         bool is24HourFormat = MediaQuery.of(context).alwaysUse24HourFormat;
         _eventDateTimeController.text = DateFormat(
                 is24HourFormat ? 'dd-MM-yyyy HH:mm' : 'dd-MM-yyyy hh:mm a')
@@ -241,7 +241,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
   Widget build(BuildContext context) {
     // // Watch the state of the radio button provider
     var selectedPriority = ref.watch(radioButtonProvider);
-
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -559,8 +558,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Please Select Priority")));
                 } else {
-                  //First notification set up and after that Database set with data
-                  _scheduleNotification();
                   // Parse the custom date string properly
                   DateTime parsedDate = DateFormat("dd-MM-yyyy hh:mm a")
                       .parse(_eventDateTimeController.text.trim());
@@ -581,14 +578,15 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
                     customCategory:
                         categories, // Keep structure (pass category list)
                   );
+                  //Second notification set up and after that Database set with data
+                  _scheduleNotification();
                   print("\n Event ID: ${newEvent.eventId}");
-                  int eventId =await newEvent.connect(
-                      context);
+                  int eventId = await newEvent.connect(context);
                   //call the function which connect the database to our project
                   // Insert files into database if there are valid files
-
                   try {
-                    print("\n Jab hum Insert kar rhe hai files \n"+newEvent.eventId.toString());
+                    print("\n Jab hum Insert kar rhe hai files \n" +
+                        newEvent.eventId.toString());
                     await DatabaseHelper.instance
                         .insertEventFiles(eventId, fileListToInsert);
                   } catch (e) {
@@ -640,11 +638,9 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
           fileListToInsert.add({'path': path, 'extension': extension});
         }
       }
-
       print("\nTotal files picked: ${fileListToInsert.length}");
     }
   }
-
 
   //This is for the Managing the Image
   Future<void> _pickImage(BuildContext context) async {
@@ -686,7 +682,6 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       );
       return;
     }
-
     final scheduledDateTime = DateTime(
       selectedDate!.year,
       selectedDate!.month,
@@ -694,10 +689,8 @@ class EventCreationUIState extends ConsumerState<EventCreationUI> {
       selectedTime!.hour,
       selectedTime!.minute,
     );
-
     final formattedDate =
         DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
-
     // Call the Schedule Notification Function
     scheduleNotification(
       scheduledDateTime,

@@ -1,7 +1,6 @@
 // Extension to convert string to enum
 import 'dart:async';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -42,16 +41,17 @@ class UpdateEventUI extends StatefulWidget {
   dynamic id;
   dynamic videopath;
 
-  UpdateEventUI({required this.index,
-    required this.eventName,
-    required this.eventDateTime,
-    required this.eventLocation,
-    required this.eventDescription,
-    required this.eventPriority, // String value for priority
-    this.imagepath,
-    this.filepath,
-    this.id,
-    this.videopath});
+  UpdateEventUI(
+      {required this.index,
+      required this.eventName,
+      required this.eventDateTime,
+      required this.eventLocation,
+      required this.eventDescription,
+      required this.eventPriority, // String value for priority
+      this.imagepath,
+      this.filepath,
+      this.id,
+      this.videopath});
 
   @override
   _UpdateEventUIState createState() => _UpdateEventUIState();
@@ -110,26 +110,30 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       }
     }
   }
+
 //This is configuration code of notifications
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
+
   Future<void> initNotifications() async {
     // Initialize timezone database
     tzData.initializeTimeZones();
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const InitializationSettings initializationSettings =
-    InitializationSettings(
+        InitializationSettings(
       android: initializationSettingsAndroid,
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> scheduleNotification(DateTime scheduledTime,
-      String message,
-      String name,
-      String location,
-      String description,) async {
+  Future<void> scheduleNotification(
+    DateTime scheduledTime,
+    String message,
+    String name,
+    String location,
+    String description,
+  ) async {
     // Convert DateTime to TZDateTime
     final tz.TZDateTime scheduledTZDateTime = tz.TZDateTime.from(
       scheduledTime,
@@ -137,7 +141,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
 
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
       channelDescription: 'your_channel_description',
@@ -146,7 +150,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
 
     NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       0, // Notification ID
@@ -155,17 +159,18 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       scheduledTZDateTime, // Scheduled Time
       platformChannelSpecifics, // Notification Details
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
+
   //Here is Build Method
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title:
-        const Text("Update Event", style: TextStyle(color: Colors.white)),
+            const Text("Update Event", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
@@ -238,11 +243,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                   return DropdownMenuItem(
                     value: priority,
                     child:
-                    Text(priority
-                        .toString()
-                        .split('.')
-                        .last
-                        .capitalize()),
+                        Text(priority.toString().split('.').last.capitalize()),
                   );
                 }).toList(),
                 onChanged: (PriorityLevel? newValue) {
@@ -307,7 +308,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                     ),
                   ),
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
@@ -379,7 +380,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                     ),
                   ),
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
                 onTap: () async {
                   TimeOfDay? pickedTime = await showTimePicker(
@@ -414,17 +415,17 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 children: [
                   widget.imagepath != null
                       ? Center(
-                    child: Container(
-                        width: 100,
-                        height: 100,
-                        child: seefile(widget.imagepath)),
-                  )
+                          child: Container(
+                              width: 100,
+                              height: 100,
+                              child: seefile(widget.imagepath)),
+                        )
                       : Center(
-                    child: Text(
-                      "No image selected",
-                      style: TextStyle(fontSize: 12, color: Colors.red),
-                    ),
-                  ),
+                          child: Text(
+                            "No image selected",
+                            style: TextStyle(fontSize: 12, color: Colors.red),
+                          ),
+                        ),
                   SizedBox(
                     height: 10,
                   ),
@@ -448,51 +449,6 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                   ),
                 ],
               ),
-
-              const SizedBox(
-                height: 24,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  widget.filepath != null
-                      ? Center(
-                    child: Container(
-                        height: 100,
-                        width: 100,
-                        child: seefile(widget.filepath)),
-                  )
-                      : Center(
-                    child: Text(
-                      "No file selected",
-                      style: TextStyle(fontSize: 12, color: Colors.red),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton.icon(
-                      label: Text(
-                        widget.filepath != null
-                            ? "Upload another file"
-                            : "Upload file",
-                        style: GoogleFonts.aBeeZee(
-                            fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                      onPressed: () async {
-                        getFile();
-                      },
-                      icon: Icon(
-                        Icons.track_changes_outlined,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
               const SizedBox(
                 height: 24,
               ),
@@ -502,15 +458,15 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                 children: [
                   widget.videopath != null
                       ? Center(
-                    child: Container(
-                        height: 40,
-                        width: 140,
-                        child: seefile(widget.videopath)),
-                  )
+                          child: Container(
+                              height: 40,
+                              width: 140,
+                              child: seefile(widget.videopath)),
+                        )
                       : Text(
-                    "No video selected",
-                    style: TextStyle(fontSize: 12, color: Colors.red),
-                  ),
+                          "No video selected",
+                          style: TextStyle(fontSize: 12, color: Colors.red),
+                        ),
                   SizedBox(
                     height: 10,
                   ),
@@ -552,7 +508,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                       }
                     },
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     child: const Text("Save Changes",
                         style: TextStyle(color: Colors.white)),
                   ),
@@ -561,7 +517,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
                       Navigator.pop(context);
                     },
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     child: const Text("Cancel",
                         style: TextStyle(color: Colors.white)),
                   ),
@@ -594,7 +550,7 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
     );
 
     final formattedDate =
-    DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
+        DateFormat('dd-MM-yyyy – kk:mm').format(scheduledDateTime);
 
     // Call the Schedule Notification Function
     scheduleNotification(scheduledDateTime, 'Notification at $formattedDate',
@@ -613,22 +569,18 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
       'date_time': _eventDateTimeController.text,
       'location': _eventLocationController.text,
       'description': _eventDescriptionController.text,
-      'priority': _selectedPriority
-          .toString()
-          .split('.')
-          .last,
+      'priority': _selectedPriority.toString().split('.').last,
       'image_path': widget.imagepath,
       'file_path': widget.filepath,
       'video_path': widget.videopath
     };
     //This is for the Show Result of Updation of the Data
-    database.updateEvent(data, widget.id).then((value) =>
-    {
-      print("Event updated successfully!"),
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Event updated successfully!"))),
-      Timer(Duration(seconds: 2), () => Navigator.pop(context)),
-    });
+    database.updateEvent(data, widget.id).then((value) => {
+          print("Event updated successfully!"),
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Event updated successfully!"))),
+          Timer(Duration(seconds: 2), () => Navigator.pop(context)),
+        });
   }
 
   @override
@@ -650,14 +602,10 @@ class _UpdateEventUIState extends State<UpdateEventUI> {
           style: TextStyle(fontSize: 18, color: Colors.black),
         ),
       );
-    } else if (["pdf"].contains(file.path
-        .split('.')
-        .last)) {
+    } else if (["pdf"].contains(file.path.split('.').last)) {
       // Display PDF
       return PDFViewWidget(context, filePath: filepath);
-    } else if (["jpg", "jpeg", "png"].contains(file.path
-        .split('.')
-        .last)) {
+    } else if (["jpg", "jpeg", "png"].contains(file.path.split('.').last)) {
       // Display Image
       return Image.file(
         file,
