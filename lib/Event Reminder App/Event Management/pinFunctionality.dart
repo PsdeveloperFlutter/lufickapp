@@ -31,8 +31,10 @@ class _SetPinState extends State<SetPin> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('PIN and security details saved')),
     );
+    print('PIN: ${_pinController.text}');
+    print('Security Question: ${_selectedQuestion}');
+    print('Security Answer: ${_securityAnswerController.text}');
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +77,6 @@ class _SetPinState extends State<SetPin> {
               "All your security answers will be encrypted and stored only on the local device.",
             ),
             const SizedBox(height: 20),
-
             // Dropdown for selecting security question
             DropdownButtonFormField<String>(
               value: _selectedQuestion,
@@ -98,7 +99,6 @@ class _SetPinState extends State<SetPin> {
               },
             ),
             const SizedBox(height: 20),
-
             // Security answer input
             TextField(
               controller: _securityAnswerController,
@@ -110,7 +110,6 @@ class _SetPinState extends State<SetPin> {
               ),
             ),
             const SizedBox(height: 30),
-
             // Save button
             Center(
               child: ElevatedButton(
