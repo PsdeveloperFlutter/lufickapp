@@ -71,10 +71,10 @@ void main() async {
           themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       initialRoute:
-      user != null && getPin.length != 2
-          ? '/mainpage'
+      user != null && getPin.length == 2
+          ? '/setpin'
           : user != null && getPin.length == 2
-              ? 'setpin'
+              ? '/setpin'
               : '/login',
       // 👈 Check if user is logged in
       routes: {
